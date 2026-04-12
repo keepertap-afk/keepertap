@@ -266,6 +266,7 @@
   #btn-next   { background: var(--accent); color: #111; }
   #btn-share  { background: #1a4a2a; color: #44dd88; display: none; }
   #btn-reset  { background: #2a2a2a; color: #aaa; }
+  #btn-lb     { background: #1a2a4a; color: #4488ff; }
 
   .legend {
     display: flex; gap: 14px; font-size: 0.7rem; color: var(--muted);
@@ -392,6 +393,7 @@
     <button id="btn-next" disabled>Next Round →</button>
     <button id="btn-share">📋 Copy Score</button>
     <button id="btn-reset">New Game</button>
+    <button id="btn-lb">🏆 Leaderboard</button>
   </div>
 
   <div class="legend">
@@ -735,6 +737,7 @@ function renderRound() {
   wrapper.classList.remove('answered');
   endSummary.style.display='none';
   leaderboard.style.display='none';
+  document.getElementById('btn-lb').textContent = '🏆 Leaderboard';
   btnShare.style.display='none';
   btnNext.style.display='inline-block';
   feedPanel.className='';
@@ -870,7 +873,19 @@ function boot() {
   document.getElementById('btn-reset').addEventListener('click',()=>{
     roundIdx=0; roundScores=[];
     scenarios=shuffle([...SCENARIOS]);
+    leaderboard.style.display = 'none';
     renderRound();
+  });
+
+  document.getElementById('btn-lb').addEventListener('click', async () => {
+    if (leaderboard.style.display === 'block') {
+      leaderboard.style.display = 'none';
+      document.getElementById('btn-lb').textContent = '🏆 Leaderboard';
+    } else {
+      leaderboard.style.display = 'block';
+      document.getElementById('btn-lb').textContent = '✖ Hide';
+      await loadLeaderboard();
+    }
   });
 
   svg.addEventListener('click',e=>{
