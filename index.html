@@ -409,7 +409,7 @@
 const SUPABASE_URL  = 'https://scthmlptetwhmiulhqpi.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdGhtbHB0ZXR3aG1pdWxocXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTEyOTIsImV4cCI6MjA5MTU4NzI5Mn0.UFguArgZ9Xs9jyixnCNOvV2w-lVw2vhaLFkGaiStRL0';
 
-let supabase    = null;
+let sb = null;
 let currentUser = null;
 let isGuest     = false;
 
@@ -417,7 +417,7 @@ let isGuest     = false;
 function initSupabase() {
   try {
     if (window.supabase && window.supabase.createClient) {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
       return true;
     }
   } catch(e) { console.warn('Supabase init error:', e); }
@@ -428,9 +428,9 @@ function initSupabase() {
 // (All button listeners are wired up inside boot() below)
 
 async function initAuth() {
-  if (!supabase) return;
+  if (!sb) return;
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     if (session?.user) {
       currentUser = session.user;
       showGameScreen(session.user);
@@ -467,13 +467,13 @@ function showGameScreen(user) {
 
 async function loadUserBest(userId, name, avatar) {
   // Upsert profile so it exists
-  await supabase.from('profiles').upsert({
+  await sb.from('profiles').upsert({
     id: userId,
     username: name,
     avatar_url: avatar || null,
   }, { onConflict: 'id', ignoreDuplicates: false });
 
-  const { data } = await supabase
+  const { data } = await sb
     .from('profiles')
     .select('best_score, games_played')
     .eq('id', userId)
@@ -491,7 +491,7 @@ async function saveScore(total) {
   const userId = currentUser.id;
 
   // Get existing profile
-  const { data: profile } = await supabase
+  const { data: profile } = await sb
     .from('profiles')
     .select('best_score, games_played')
     .eq('id', userId)
@@ -502,7 +502,7 @@ async function saveScore(total) {
   const newBest    = Math.max(prevBest, total);
   const newGames   = prevGames + 1;
 
-  await supabase.from('profiles').upsert({
+  await sb.from('profiles').upsert({
     id:           userId,
     best_score:   newBest,
     games_played: newGames,
@@ -520,7 +520,7 @@ async function loadLeaderboard() {
   const lbEl = document.getElementById('lb-rows');
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('profiles')
     .select('username, best_score, avatar_url')
     .order('best_score', { ascending: false })
@@ -836,9 +836,9 @@ function boot() {
 
   // ── Wire up ALL buttons here, after DOM is guaranteed ready ──────
   document.getElementById('btn-google-signin').addEventListener('click', async () => {
-    if (!supabase) { alert('Still loading — please try again in a moment.'); return; }
+    if (!sb) { alert('Still loading — please try again in a moment.'); return; }
     try {
-      await supabase.auth.signInWithOAuth({
+      await sb.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.origin + window.location.pathname }
       });
@@ -851,7 +851,7 @@ function boot() {
   });
 
   document.getElementById('btn-signout').addEventListener('click', async () => {
-    if (supabase) await supabase.auth.signOut();
+    if (sb) await sb.auth.signOut();
     currentUser = null; isGuest = false;
     document.getElementById('auth-screen').style.display = 'flex';
     document.getElementById('game-screen').classList.remove('visible');
