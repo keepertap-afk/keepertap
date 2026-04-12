@@ -1,13 +1,9 @@
-Keepertap · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KeeperTap</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +28,7 @@ Copy
     padding: 12px 16px;
     gap: 10px;
   }
- 
+
   /* ── AUTH SCREEN ─────────────────────────────────────────────────── */
   #auth-screen {
     display: flex;
@@ -105,7 +101,7 @@ Copy
   }
   .btn-guest:hover { opacity: 0.8; }
   .auth-note { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
- 
+
   /* ── USER BAR ────────────────────────────────────────────────────── */
   #user-bar {
     display: none;
@@ -140,11 +136,11 @@ Copy
     border-radius: 6px;
     cursor: pointer;
   }
- 
+
   /* ── GAME SCREEN ─────────────────────────────────────────────────── */
   #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; gap: 10px; }
   #game-screen.visible { display: flex; }
- 
+
   header { text-align: center; }
   header h1 {
     font-family: 'Bebas Neue', sans-serif;
@@ -153,7 +149,7 @@ Copy
     color: var(--accent);
   }
   header p { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.5px; }
- 
+
   #stats-bar {
     display: flex; gap: 14px;
     background: var(--ui-surface);
@@ -165,7 +161,7 @@ Copy
   .stat { display: flex; flex-direction: column; align-items: center; gap: 1px; }
   .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; line-height: 1; color: var(--accent); }
   .stat-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
- 
+
   #round-scores {
     display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;
     max-width: 640px; width: 100%;
@@ -183,7 +179,7 @@ Copy
   .pip-bar.s1   { background: #e84040; }
   .pip-bar.s0   { background: #444; }
   .pip-num { font-size: 0.6rem; color: var(--muted); font-weight: 600; }
- 
+
   #pitch-wrapper {
     width: 100%; max-width: 640px;
     cursor: crosshair; user-select: none;
@@ -192,14 +188,14 @@ Copy
   }
   #pitch-wrapper.answered { cursor: default; }
   #pitch-svg { width: 100%; height: auto; display: block; }
- 
+
   .ideal-zone {
     fill: rgba(68,221,136,0.2);
     stroke: rgba(68,221,136,0.8);
     stroke-width: 2; stroke-dasharray: 6 3;
     pointer-events: none;
   }
- 
+
   #feedback-panel {
     background: var(--ui-surface);
     border-radius: 10px; padding: 12px 18px;
@@ -215,7 +211,7 @@ Copy
   #feedback-icon { font-size: 1.7rem; flex-shrink: 0; }
   #feedback-body h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
   #feedback-body p  { font-size: 0.75rem; color: var(--muted); line-height: 1.45; }
- 
+
   #end-summary {
     background: var(--ui-surface);
     border-radius: 12px; padding: 18px 24px;
@@ -229,7 +225,7 @@ Copy
   #end-summary .rank-label { font-size: 1rem; font-weight: 600; margin: 4px 0 10px; }
   #end-summary .share-text { font-size: 0.72rem; color: var(--muted); font-family: monospace; background: #0d0f14; padding: 8px 12px; border-radius: 6px; white-space: pre-wrap; margin-top: 8px; }
   #end-summary .saved-note { font-size: 0.72rem; color: var(--green); margin-top: 8px; }
- 
+
   /* ── LEADERBOARD ─────────────────────────────────────────────────── */
   #leaderboard {
     background: var(--ui-surface);
@@ -257,7 +253,7 @@ Copy
   .lb-name.you { color: var(--accent); }
   .lb-score { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; }
   .lb-loading { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 10px; }
- 
+
   #controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
   button {
     font-family: 'Bebas Neue', sans-serif;
@@ -270,7 +266,7 @@ Copy
   #btn-next   { background: var(--accent); color: #111; }
   #btn-share  { background: #1a4a2a; color: #44dd88; display: none; }
   #btn-reset  { background: #2a2a2a; color: #aaa; }
- 
+
   .legend {
     display: flex; gap: 14px; font-size: 0.7rem; color: var(--muted);
     flex-wrap: wrap; justify-content: center;
@@ -280,7 +276,7 @@ Copy
 </style>
 </head>
 <body>
- 
+
 <!-- ═══════════════════════════════════════════════════════════════════
      AUTH SCREEN
 ════════════════════════════════════════════════════════════════════ -->
@@ -288,7 +284,7 @@ Copy
   <div class="ball-icon">🧤</div>
   <h1>KeeperTap</h1>
   <p class="tagline">Can you read the angle?</p>
- 
+
   <button class="btn-google" id="btn-google-signin">
     <!-- Google G logo -->
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -299,22 +295,22 @@ Copy
     </svg>
     Sign in with Google
   </button>
- 
+
   <div class="auth-divider">or</div>
- 
+
   <button class="btn-guest" id="btn-guest">Play as Guest (no leaderboard)</button>
- 
+
   <p class="auth-note">
     Sign in to save your scores and compete on the global leaderboard.<br>
     We only store your name and best score. Nothing else.
   </p>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════════════════════
      GAME SCREEN
 ════════════════════════════════════════════════════════════════════ -->
 <div id="game-screen">
- 
+
   <!-- User bar (shown when signed in) -->
   <div id="user-bar">
     <div id="user-info">
@@ -326,12 +322,12 @@ Copy
     </div>
     <button id="btn-signout">Sign out</button>
   </div>
- 
+
   <header>
     <h1>KeeperTap</h1>
     <p>Tap the pitch to position your goalkeeper</p>
   </header>
- 
+
   <div id="stats-bar">
     <div class="stat"><span class="stat-val" id="total-val">0</span><span class="stat-label">Total</span></div>
     <div class="stat-divider"></div>
@@ -340,7 +336,7 @@ Copy
     <div class="stat"><span class="stat-val" id="best-val">—</span><span class="stat-label">Best Round</span></div>
   </div>
   <div id="round-scores"></div>
- 
+
   <div id="pitch-wrapper">
     <svg id="pitch-svg" viewBox="0 0 370 460" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -368,7 +364,7 @@ Copy
       <g id="dynamic-layer"></g>
     </svg>
   </div>
- 
+
   <div id="feedback-panel">
     <div id="feedback-icon">👆</div>
     <div id="feedback-body">
@@ -376,7 +372,7 @@ Copy
       <p id="scenario-label">—</p>
     </div>
   </div>
- 
+
   <div id="end-summary">
     <h2>Full Time!</h2>
     <div class="final-score" id="final-score-val">0</div>
@@ -385,98 +381,113 @@ Copy
     <div class="share-text" id="share-text"></div>
     <div class="saved-note" id="saved-note"></div>
   </div>
- 
+
   <!-- Leaderboard -->
   <div id="leaderboard">
     <h3>🏆 Global Leaderboard</h3>
     <div id="lb-rows"><div class="lb-loading">Loading...</div></div>
   </div>
- 
+
   <div id="controls">
     <button id="btn-next" disabled>Next Round →</button>
     <button id="btn-share">📋 Copy Score</button>
     <button id="btn-reset">New Game</button>
   </div>
- 
+
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:#f5c518"></div> Attacker</div>
     <div class="legend-item"><div class="legend-dot" style="background:#4488ff"></div> Your GK</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(68,221,136,0.8)"></div> Optimal zone</div>
     <div class="legend-item"><div class="legend-dot" style="background:#ff6644"></div> Ideal point</div>
   </div>
- 
+
 </div><!-- /game-screen -->
- 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ═══════════════════════════════════════════════════════════════════
-// SUPABASE SETUP
 // ═══════════════════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://scthmlptetwhmiulhqpi.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdGhtbHB0ZXR3aG1pdWxocXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTEyOTIsImV4cCI6MjA5MTU4NzI5Mn0.UFguArgZ9Xs9jyixnCNOvV2w-lVw2vhaLFkGaiStRL0';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
- 
+
+let supabase    = null;
 let currentUser = null;
 let isGuest     = false;
- 
+
+// Safely initialise Supabase — falls back gracefully if CDN is slow
+function initSupabase() {
+  try {
+    if (window.supabase && window.supabase.createClient) {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      return true;
+    }
+  } catch(e) { console.warn('Supabase init error:', e); }
+  return false;
+}
+
 // ── AUTH SCREEN LOGIC ──────────────────────────────────────────────
 document.getElementById('btn-google-signin').addEventListener('click', async () => {
-  await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
+  if (!supabase) { alert('Still loading — please try again in a moment.'); return; }
+  try {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + window.location.pathname }
+    });
+  } catch(e) { console.error('Sign in error:', e); }
 });
- 
+
 document.getElementById('btn-guest').addEventListener('click', () => {
   isGuest = true;
   showGameScreen(null);
 });
- 
+
 document.getElementById('btn-signout').addEventListener('click', async () => {
-  await supabase.auth.signOut();
+  if (supabase) await supabase.auth.signOut();
   currentUser = null;
   isGuest = false;
   document.getElementById('auth-screen').style.display  = 'flex';
   document.getElementById('game-screen').classList.remove('visible');
   document.getElementById('user-bar').classList.remove('visible');
 });
- 
+
 // Check if user is already signed in (handles redirect back from Google)
 async function initAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
-    currentUser = session.user;
-    showGameScreen(session.user);
-  }
-  // else stay on auth screen
+  if (!supabase) return; // Supabase unavailable — stay on auth screen, buttons still work
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      currentUser = session.user;
+      showGameScreen(session.user);
+    }
+  } catch(e) { console.warn('Session check failed:', e); }
 }
- 
+
 function showGameScreen(user) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('game-screen').classList.add('visible');
- 
+
   if (user && !isGuest) {
     // Show user bar
     const bar    = document.getElementById('user-bar');
     const name   = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Player';
     const avatar = user.user_metadata?.avatar_url;
- 
+
     bar.classList.add('visible');
     document.getElementById('user-name').textContent = name;
- 
+
     const avatarEl = document.getElementById('user-avatar');
     if (avatar) {
       avatarEl.innerHTML = `<img src="${avatar}" alt="${name}">`;
     } else {
       document.getElementById('user-initial').textContent = name[0].toUpperCase();
     }
- 
+
     // Load their best score from profiles table
     loadUserBest(user.id, name, avatar);
   }
- 
+
   renderRound();
 }
- 
+
 async function loadUserBest(userId, name, avatar) {
   // Upsert profile so it exists
   await supabase.from('profiles').upsert({
@@ -484,65 +495,65 @@ async function loadUserBest(userId, name, avatar) {
     username: name,
     avatar_url: avatar || null,
   }, { onConflict: 'id', ignoreDuplicates: false });
- 
+
   const { data } = await supabase
     .from('profiles')
     .select('best_score, games_played')
     .eq('id', userId)
     .single();
- 
+
   if (data) {
     document.getElementById('user-best').textContent =
       `Best: ${data.best_score || 0} | Games: ${data.games_played || 0}`;
   }
 }
- 
+
 async function saveScore(total) {
   if (!currentUser || isGuest) return;
- 
+
   const userId = currentUser.id;
- 
+
   // Get existing profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('best_score, games_played')
     .eq('id', userId)
     .single();
- 
+
   const prevBest   = profile?.best_score   || 0;
   const prevGames  = profile?.games_played || 0;
   const newBest    = Math.max(prevBest, total);
   const newGames   = prevGames + 1;
- 
+
   await supabase.from('profiles').upsert({
     id:           userId,
     best_score:   newBest,
     games_played: newGames,
     updated_at:   new Date().toISOString(),
   }, { onConflict: 'id' });
- 
+
   // Update user bar
   document.getElementById('user-best').textContent =
     `Best: ${newBest} | Games: ${newGames}`;
- 
+
   return newBest;
 }
- 
+
 async function loadLeaderboard() {
   const lbEl = document.getElementById('lb-rows');
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
- 
+
   const { data, error } = await supabase
     .from('profiles')
     .select('username, best_score, avatar_url')
     .order('best_score', { ascending: false })
     .limit(10);
- 
+
   if (error || !data) {
     lbEl.innerHTML = '<div class="lb-loading">Could not load leaderboard.</div>';
     return;
   }
- 
+
   const medals = ['gold','silver','bronze'];
   lbEl.innerHTML = data.map((row, i) => {
     const isYou  = currentUser && row.username === (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]);
@@ -555,7 +566,7 @@ async function loadLeaderboard() {
       </div>`;
   }).join('');
 }
- 
+
 // ═══════════════════════════════════════════════════════════════════
 // GAME CONSTANTS
 // ═══════════════════════════════════════════════════════════════════
@@ -563,7 +574,7 @@ const GOAL_X   = 30;
 const GOAL_TOP = 196;
 const GOAL_BTM = 264;
 const GOAL_CY  = 230;
- 
+
 const SCENARIOS = [
   { label:"Central — close range",      bx:155, by:230,
     tip:"Very close and central: advance well off the line to narrow the angle dramatically. Get to the edge of the 6-yard box, staying central between the posts." },
@@ -586,9 +597,9 @@ const SCENARIOS = [
   { label:"Edge of box — left of centre",bx:178, by:162,
     tip:"Top of the area, left of centre: step forward to around the penalty spot, bisect the angle, set low for a driven shot." },
 ];
- 
+
 const MIN_GK_FROM_BALL = 45;
- 
+
 function getIdealGK(bx, by) {
   const toTop  = norm(GOAL_X - bx, GOAL_TOP - by);
   const toBtm  = norm(GOAL_X - bx, GOAL_BTM - by);
@@ -614,17 +625,17 @@ function getIdealGK(bx, by) {
   iy = Math.max(133, Math.min(327, iy));
   return { x: ix, y: iy, radius: 26 };
 }
- 
+
 function advanceFactorForDist(dist) {
   const closeRange=60, closeF=0.55, longRange=190, longF=0.20;
   if (dist <= closeRange) return closeF;
   if (dist >= longRange)  return longF;
   return closeF + (longF - closeF) * ((dist - closeRange) / (longRange - closeRange));
 }
- 
+
 function minGKDistFromBall() { return MIN_GK_FROM_BALL; }
 function norm(x,y) { const m=Math.hypot(x,y)||1; return {x:x/m,y:y/m}; }
- 
+
 // ═══════════════════════════════════════════════════════════════════
 // GAME STATE
 // ═══════════════════════════════════════════════════════════════════
@@ -633,7 +644,7 @@ let scenarios   = shuffle([...SCENARIOS]);
 let roundIdx    = 0;
 let roundScores = [];
 let answered    = false;
- 
+
 const svg           = document.getElementById('pitch-svg');
 const wrapper       = document.getElementById('pitch-wrapper');
 const layer         = document.getElementById('dynamic-layer');
@@ -653,7 +664,7 @@ const rankLabelEl   = document.getElementById('rank-label');
 const shareTextEl   = document.getElementById('share-text');
 const savedNote     = document.getElementById('saved-note');
 const leaderboard   = document.getElementById('leaderboard');
- 
+
 function shuffle(arr) {
   for (let i=arr.length-1;i>0;i--) {
     const j=Math.floor(Math.random()*(i+1));
@@ -661,28 +672,28 @@ function shuffle(arr) {
   }
   return arr;
 }
- 
+
 function svgPoint(evt) {
   const rect=svg.getBoundingClientRect(), vb=svg.viewBox.baseVal;
   const cx=evt.touches?evt.touches[0].clientX:evt.clientX;
   const cy=evt.touches?evt.touches[0].clientY:evt.clientY;
   return { x:(cx-rect.left)*(vb.width/rect.width), y:(cy-rect.top)*(vb.height/rect.height) };
 }
- 
+
 function distToScore(dist) {
   return Math.max(0, Math.min(100, Math.round(100*Math.exp(-0.025*dist))));
 }
- 
+
 function scoreColourClass(s) {
   if(s>=90)return 's100'; if(s>=70)return 's80'; if(s>=50)return 's60';
   if(s>=25)return 's40';  if(s>=1)return 's1';   return 's0';
 }
- 
+
 function scoreEmoji(s) {
   if(s>=90)return '🟩'; if(s>=70)return '🟨'; if(s>=50)return '🟧';
   if(s>=25)return '🟥'; return '⬛';
 }
- 
+
 function getRank(total) {
   const p=total/(ROUNDS_PER_GAME*100);
   if(p>=0.95) return {text:'🏆 Elite Keeper',    colour:'#f5c518'};
@@ -691,7 +702,7 @@ function getRank(total) {
   if(p>=0.45) return {text:'🟡 Amateur',          colour:'#f5c518'};
   return             {text:'🔴 Still Learning',   colour:'#e84040'};
 }
- 
+
 function updateStatsBar() {
   const total=roundScores.reduce((a,b)=>a+b,0);
   const best=roundScores.length?Math.max(...roundScores):null;
@@ -699,7 +710,7 @@ function updateStatsBar() {
   roundEl.textContent=`${Math.min(roundIdx+1,ROUNDS_PER_GAME)} / ${ROUNDS_PER_GAME}`;
   bestEl.textContent=best!==null?best:'—';
 }
- 
+
 function updatePips() {
   roundScoresEl.innerHTML='';
   for(let i=0;i<ROUNDS_PER_GAME;i++){
@@ -712,7 +723,7 @@ function updatePips() {
     roundScoresEl.appendChild(pip);
   }
 }
- 
+
 async function showEndSummary() {
   const total=roundScores.reduce((a,b)=>a+b,0);
   const rank=getRank(total);
@@ -724,7 +735,7 @@ async function showEndSummary() {
   endSummary.style.display='block';
   btnShare.style.display='inline-block';
   btnNext.style.display='none';
- 
+
   // Save score if logged in
   if(currentUser && !isGuest){
     savedNote.textContent='Saving your score...';
@@ -738,7 +749,7 @@ async function showEndSummary() {
     savedNote.style.color='var(--muted)';
   }
 }
- 
+
 function renderRound() {
   if(roundIdx>=ROUNDS_PER_GAME){ showEndSummary(); return; }
   const sc=scenarios[roundIdx%scenarios.length];
@@ -760,11 +771,11 @@ function renderRound() {
   drawExclusionZone(sc.bx,sc.by,minDist);
   drawBall(sc.bx,sc.by);
 }
- 
+
 // ── DRAWING ────────────────────────────────────────────────────────
 function mk(tag){return document.createElementNS('http://www.w3.org/2000/svg',tag);}
 function attrs(el,obj){Object.entries(obj).forEach(([k,v])=>el.setAttribute(k,v));}
- 
+
 function drawBall(bx,by){
   const g=mk('g');
   const sh=mk('ellipse'); attrs(sh,{cx:bx,cy:by+5,rx:13,ry:5,fill:'rgba(0,0,0,0.4)'}); g.appendChild(sh);
@@ -775,7 +786,7 @@ function drawBall(bx,by){
   const lbl=mk('text'); attrs(lbl,{x:bx,y:by-19,'text-anchor':'middle','font-size':9.5,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#f5c518'}); lbl.textContent='ATTACKER'; g.appendChild(lbl);
   layer.appendChild(g);
 }
- 
+
 function drawShootingLines(bx,by,revealed=false){
   const colour=revealed?'rgba(220,50,50,0.85)':'rgba(245,197,24,0.22)';
   const width=revealed?2.5:1.5, dash=revealed?'':'7 4';
@@ -785,7 +796,7 @@ function drawShootingLines(bx,by,revealed=false){
     attrs(l,a); layer.appendChild(l);
   });
 }
- 
+
 function drawExclusionZone(bx,by,r){
   const ring=mk('circle');
   attrs(ring,{cx:bx,cy:by,r,fill:'rgba(220,50,50,0.06)',stroke:'rgba(220,50,50,0.55)','stroke-width':1.5,'stroke-dasharray':'5 3','pointer-events':'none'});
@@ -794,20 +805,20 @@ function drawExclusionZone(bx,by,r){
   attrs(lbl,{x:bx,y:by+r+11,'text-anchor':'middle','font-size':8,'font-weight':'600','font-family':'DM Sans, sans-serif',fill:'rgba(220,50,50,0.7)'});
   lbl.textContent='GK CANNOT REACH HERE'; layer.appendChild(lbl);
 }
- 
+
 function showIdeal(ideal){
   const zone=mk('circle'); attrs(zone,{cx:ideal.x,cy:ideal.y,r:ideal.radius,class:'ideal-zone'}); layer.appendChild(zone);
   const dot=mk('circle'); attrs(dot,{cx:ideal.x,cy:ideal.y,r:7,fill:'#ff6644',stroke:'white','stroke-width':2.5}); layer.appendChild(dot);
   const lbl=mk('text'); attrs(lbl,{x:ideal.x,y:ideal.y-14,'text-anchor':'middle','font-size':9,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#ff6644'}); lbl.textContent='IDEAL'; layer.appendChild(lbl);
 }
- 
+
 function drawGKMarker(x,y,colour){
   const g=mk('g');
   const body=mk('circle'); attrs(body,{cx:x,cy:y,r:16,fill:colour,stroke:'white','stroke-width':2.5}); g.appendChild(body);
   const lbl=mk('text'); attrs(lbl,{x,y:y+5,'text-anchor':'middle','font-size':11,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'white'}); lbl.textContent='GK'; g.appendChild(lbl);
   layer.appendChild(g);
 }
- 
+
 function placeGK(px,py){
   if(answered) return;
   const sc=scenarios[roundIdx%scenarios.length];
@@ -839,7 +850,7 @@ function placeGK(px,py){
   else{grade='poor';icon='❌';h3text=`${roundScore} / 100 — Well off position`;}
   feedPanel.className=grade; feedIcon.textContent=icon; feedH3.textContent=h3text; feedP.textContent=sc.tip;
 }
- 
+
 // ── EVENTS ─────────────────────────────────────────────────────────
 svg.addEventListener('click',e=>{
   if(answered) return;
@@ -847,7 +858,7 @@ svg.addEventListener('click',e=>{
   if(p.x<12||p.x>370||p.y<20||p.y>440) return;
   placeGK(p.x,p.y);
 });
- 
+
 svg.addEventListener('touchstart',e=>{
   if(answered) return;
   e.preventDefault();
@@ -855,25 +866,34 @@ svg.addEventListener('touchstart',e=>{
   if(p.x<12||p.x>370||p.y<20||p.y>440) return;
   placeGK(p.x,p.y);
 },{passive:false});
- 
+
 btnNext.addEventListener('click',()=>{ roundIdx++; renderRound(); });
- 
+
 btnShare.addEventListener('click',()=>{
   navigator.clipboard.writeText(shareTextEl.textContent).then(()=>{
     btnShare.textContent='✅ Copied!';
     setTimeout(()=>{ btnShare.textContent='📋 Copy Score'; },2000);
   });
 });
- 
+
 document.getElementById('btn-reset').addEventListener('click',()=>{
   roundIdx=0; roundScores=[];
   scenarios=shuffle([...SCENARIOS]);
   renderRound();
 });
- 
+
 // ── BOOT ───────────────────────────────────────────────────────────
-initAuth();
+// Wait for DOM + Supabase CDN to both be ready before doing anything
+function boot() {
+  initSupabase();
+  initAuth(); // safe even if supabase is null
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
 </script>
 </body>
 </html>
- 
