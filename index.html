@@ -425,33 +425,10 @@ function initSupabase() {
 }
 
 // ── AUTH SCREEN LOGIC ──────────────────────────────────────────────
-document.getElementById('btn-google-signin').addEventListener('click', async () => {
-  if (!supabase) { alert('Still loading — please try again in a moment.'); return; }
-  try {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.origin + window.location.pathname }
-    });
-  } catch(e) { console.error('Sign in error:', e); }
-});
+// (All button listeners are wired up inside boot() below)
 
-document.getElementById('btn-guest').addEventListener('click', () => {
-  isGuest = true;
-  showGameScreen(null);
-});
-
-document.getElementById('btn-signout').addEventListener('click', async () => {
-  if (supabase) await supabase.auth.signOut();
-  currentUser = null;
-  isGuest = false;
-  document.getElementById('auth-screen').style.display  = 'flex';
-  document.getElementById('game-screen').classList.remove('visible');
-  document.getElementById('user-bar').classList.remove('visible');
-});
-
-// Check if user is already signed in (handles redirect back from Google)
 async function initAuth() {
-  if (!supabase) return; // Supabase unavailable — stay on auth screen, buttons still work
+  if (!supabase) return;
   try {
     const { data: { session } } = await supabase.auth.getSession();
     if (session?.user) {
@@ -852,48 +829,70 @@ function placeGK(px,py){
 }
 
 // ── EVENTS ─────────────────────────────────────────────────────────
-svg.addEventListener('click',e=>{
-  if(answered) return;
-  const p=svgPoint(e);
-  if(p.x<12||p.x>370||p.y<20||p.y>440) return;
-  placeGK(p.x,p.y);
-});
-
-svg.addEventListener('touchstart',e=>{
-  if(answered) return;
-  e.preventDefault();
-  const p=svgPoint(e);
-  if(p.x<12||p.x>370||p.y<20||p.y>440) return;
-  placeGK(p.x,p.y);
-},{passive:false});
-
-btnNext.addEventListener('click',()=>{ roundIdx++; renderRound(); });
-
-btnShare.addEventListener('click',()=>{
-  navigator.clipboard.writeText(shareTextEl.textContent).then(()=>{
-    btnShare.textContent='✅ Copied!';
-    setTimeout(()=>{ btnShare.textContent='📋 Copy Score'; },2000);
-  });
-});
-
-document.getElementById('btn-reset').addEventListener('click',()=>{
-  roundIdx=0; roundScores=[];
-  scenarios=shuffle([...SCENARIOS]);
-  renderRound();
-});
-
 // ── BOOT ───────────────────────────────────────────────────────────
-// Wait for DOM + Supabase CDN to both be ready before doing anything
 function boot() {
+  // Init Supabase
   initSupabase();
-  initAuth(); // safe even if supabase is null
+
+  // ── Wire up ALL buttons here, after DOM is guaranteed ready ──────
+  document.getElementById('btn-google-signin').addEventListener('click', async () => {
+    if (!supabase) { alert('Still loading — please try again in a moment.'); return; }
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + window.location.pathname }
+      });
+    } catch(e) { console.error('Sign in error:', e); }
+  });
+
+  document.getElementById('btn-guest').addEventListener('click', () => {
+    isGuest = true;
+    showGameScreen(null);
+  });
+
+  document.getElementById('btn-signout').addEventListener('click', async () => {
+    if (supabase) await supabase.auth.signOut();
+    currentUser = null; isGuest = false;
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('game-screen').classList.remove('visible');
+    document.getElementById('user-bar').classList.remove('visible');
+  });
+
+  btnNext.addEventListener('click',()=>{ roundIdx++; renderRound(); });
+
+  btnShare.addEventListener('click',()=>{
+    navigator.clipboard.writeText(shareTextEl.textContent).then(()=>{
+      btnShare.textContent='✅ Copied!';
+      setTimeout(()=>{ btnShare.textContent='📋 Copy Score'; },2000);
+    });
+  });
+
+  document.getElementById('btn-reset').addEventListener('click',()=>{
+    roundIdx=0; roundScores=[];
+    scenarios=shuffle([...SCENARIOS]);
+    renderRound();
+  });
+
+  svg.addEventListener('click',e=>{
+    if(answered) return;
+    const p=svgPoint(e);
+    if(p.x<12||p.x>370||p.y<20||p.y>440) return;
+    placeGK(p.x,p.y);
+  });
+
+  svg.addEventListener('touchstart',e=>{
+    if(answered) return;
+    e.preventDefault();
+    const p=svgPoint(e);
+    if(p.x<12||p.x>370||p.y<20||p.y>440) return;
+    placeGK(p.x,p.y);
+  },{passive:false});
+
+  // Check for existing session (handles Google redirect back)
+  initAuth();
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
+document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
