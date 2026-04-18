@@ -201,6 +201,18 @@
     <h3>Free Play</h3>
     <p>Practice your positioning with no time pressure. Play as many games as you like.</p>
   </div>
+
+  <!-- Leaderboard on mode screen -->
+  <div id="mode-leaderboard" style="width:100%;background:var(--ui-surface);border-radius:12px;padding:14px 18px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--accent);">🏆 Leaderboard</span>
+      <div style="display:flex;gap:6px;">
+        <button id="lb-tab-daily" style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;padding:4px 12px;border-radius:6px;border:none;background:var(--accent);color:#111;cursor:pointer;letter-spacing:1px;">Today</button>
+        <button id="lb-tab-alltime" style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;padding:4px 12px;border-radius:6px;border:none;background:#2a2a2a;color:#aaa;cursor:pointer;letter-spacing:1px;">All-Time</button>
+      </div>
+    </div>
+    <div id="mode-lb-rows"><div class="lb-loading">Loading...</div></div>
+  </div>
 </div>
 
 <!-- GAME SCREEN -->
@@ -357,6 +369,8 @@ function showModeScreen(user) {
     loadUserBest(user.id, name, avatar);
     checkDailyPlayed();
   }
+  // Always load leaderboard on mode screen
+  loadModeLeaderboard(true);
 }
 
 async function checkDailyPlayed() {
@@ -429,7 +443,44 @@ async function hasPlayedTodayAlready() {
   } catch(e) { return false; }
 }
 
-async function loadLeaderboard(daily = false) {
+async function loadModeLeaderboard(daily = true) {
+  if (!sb) return;
+  const rowsEl = document.getElementById('mode-lb-rows');
+  rowsEl.innerHTML = '<div class="lb-loading">Loading...</div>';
+
+  // Update tab styles
+  document.getElementById('lb-tab-daily').style.background   = daily ? 'var(--accent)' : '#2a2a2a';
+  document.getElementById('lb-tab-daily').style.color        = daily ? '#111' : '#aaa';
+  document.getElementById('lb-tab-alltime').style.background = daily ? '#2a2a2a' : 'var(--accent)';
+  document.getElementById('lb-tab-alltime').style.color      = daily ? '#aaa' : '#111';
+
+  let query;
+  if (daily) {
+    query = sb.from('daily_scores').select('username, score')
+      .eq('play_date', todayStr()).order('score', { ascending: false }).limit(10);
+  } else {
+    query = sb.from('profiles').select('username, best_score')
+      .order('best_score', { ascending: false }).limit(10);
+  }
+
+  const { data, error } = await query;
+  if (error || !data || data.length === 0) {
+    rowsEl.innerHTML = '<div class="lb-loading">No scores yet today — be the first!</div>';
+    return;
+  }
+
+  const myName = currentUser ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]) : null;
+  rowsEl.innerHTML = data.map((row, i) => {
+    const score  = daily ? row.score : row.best_score;
+    const isYou  = myName && row.username === myName;
+    const medal  = ['gold','silver','bronze'][i] || '';
+    return `<div class="lb-row">
+      <div class="lb-rank ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
+      <div class="lb-score">${score}</div>
+    </div>`;
+  }).join('');
+}
   const lbEl = document.getElementById('lb-rows');
   document.getElementById('lb-title').textContent = daily ? '⚡ Today\'s Leaderboard' : '🏆 All-Time Leaderboard';
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
@@ -843,11 +894,15 @@ function boot() {
     startGame('free');
   });
 
+  document.getElementById('lb-tab-daily').addEventListener('click', () => loadModeLeaderboard(true));
+  document.getElementById('lb-tab-alltime').addEventListener('click', () => loadModeLeaderboard(false));
+
   document.getElementById('btn-modes').addEventListener('click', () => {
     stopDailyTimer();
     document.getElementById('game-screen').classList.remove('visible');
     document.getElementById('mode-screen').classList.add('visible');
     checkDailyPlayed();
+    loadModeLeaderboard(true);
   });
 
   btnNext.addEventListener('click', () => { roundIdx++; renderRound(); });
@@ -901,3 +956,4 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
+ 
