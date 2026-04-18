@@ -395,15 +395,38 @@ async function saveFreeScore(total) {
 async function saveDailyScore(total, roundScoresArr) {
   if (!sb || !currentUser || isGuest) return;
   const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
-  await sb.from('daily_scores').insert({
+  const { error } = await sb.from('daily_scores').insert({
     user_id:      currentUser.id,
     username:     name,
     score:        total,
     round_scores: roundScoresArr,
     play_date:    todayStr(),
   });
+  if (error) {
+    // Unique constraint violation — they already played today
+    if (error.code === '23505') {
+      savedNote.textContent = '⚠️ You already played today — only your first attempt counts.';
+      savedNote.style.color = 'var(--accent)';
+    } else {
+      savedNote.textContent = '⚠️ Could not save score — please check your connection.';
+      savedNote.style.color = 'var(--red)';
+    }
+    return;
+  }
   // Also update best in profiles
   await saveFreeScore(total);
+}
+
+async function hasPlayedTodayAlready() {
+  if (!sb || !currentUser || isGuest) return false;
+  try {
+    const { data } = await sb.from('daily_scores')
+      .select('score')
+      .eq('user_id', currentUser.id)
+      .eq('play_date', todayStr())
+      .single();
+    return !!data;
+  } catch(e) { return false; }
 }
 
 async function loadLeaderboard(daily = false) {
@@ -614,8 +637,12 @@ async function showEndSummary() {
   if (currentUser && !isGuest) {
     savedNote.textContent = 'Saving score...';
     if (gameMode === 'daily') {
+      savedNote.textContent = 'Saving daily score...';
       await saveDailyScore(total, roundScores);
-      savedNote.textContent = '✅ Daily score saved!';
+      // savedNote is set inside saveDailyScore now
+      if (!savedNote.textContent.includes('⚠️')) {
+        savedNote.textContent = '✅ Daily score saved!';
+      }
       leaderboard.style.display = 'block';
       await loadLeaderboard(true);
     } else {
@@ -797,9 +824,18 @@ function boot() {
     document.getElementById('user-bar').classList.remove('visible');
   });
 
-  document.getElementById('btn-daily-mode').addEventListener('click', () => {
+  document.getElementById('btn-daily-mode').addEventListener('click', async () => {
     if (!currentUser || isGuest) { alert('Please sign in with Google to play the Daily Challenge.'); return; }
     if (document.getElementById('btn-daily-mode').classList.contains('daily-done')) return;
+    // Double-check server-side — prevents replaying after refresh
+    const alreadyPlayed = await hasPlayedTodayAlready();
+    if (alreadyPlayed) {
+      const card = document.getElementById('btn-daily-mode');
+      card.classList.add('daily-done');
+      card.querySelector('p').textContent = "You've already played today — come back tomorrow!";
+      card.querySelector('h3').textContent = "Today's Game ✓";
+      return;
+    }
     startGame('daily');
   });
 
