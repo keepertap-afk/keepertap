@@ -481,6 +481,8 @@ async function loadModeLeaderboard(daily = true) {
     </div>`;
   }).join('');
 }
+
+async function loadLeaderboard(daily = false) {
   const lbEl = document.getElementById('lb-rows');
   document.getElementById('lb-title').textContent = daily ? '⚡ Today\'s Leaderboard' : '🏆 All-Time Leaderboard';
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
@@ -852,7 +854,7 @@ function startGame(mode) {
 }
 
 // ── BOOT ───────────────────────────────────────────────────────────
-function boot() {
+async function boot() {
   initSupabase();
 
   document.getElementById('btn-google-signin').addEventListener('click', async () => {
@@ -956,4 +958,3 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
- 
