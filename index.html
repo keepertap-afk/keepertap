@@ -447,7 +447,7 @@ async function loadLeaderboard(daily = false) {
 const GOAL_X=30, GOAL_TOP=196, GOAL_BTM=264, GOAL_CY=230;
 const MIN_GK_FROM_BALL=45;
 const ROUNDS_PER_GAME=10;
-const DAILY_TOTAL_SECS=20;
+const DAILY_TOTAL_SECS=25;
 
 const SCENARIOS = [
   {label:"Central — close range",     bx:155,by:230, tip:"Very close and central: advance well off the line to narrow the angle dramatically. Get to the edge of the 6-yard box, staying central between the posts."},
@@ -499,6 +499,7 @@ function getRank(total){
 // ═══════════════════════════════════════════════════════════════════
 let scenarios=[], roundIdx=0, roundScores=[], answered=false;
 let dailyTimer=null, dailySecsLeft=DAILY_TOTAL_SECS, dailyAutoAdvancing=false;
+let timedOut=false; // hard lock — no taps allowed after timer expires
 
 const svg           = document.getElementById('pitch-svg');
 const wrapper       = document.getElementById('pitch-wrapper');
@@ -557,10 +558,11 @@ function stopDailyTimer() {
 }
 
 async function timeUp() {
+  timedOut = true; // hard lock — reject all future taps
+  wrapper.classList.add('answered'); // visual lock
   // Fill remaining rounds with 0
   while (roundScores.length < ROUNDS_PER_GAME) roundScores.push(0);
   updatePips();
-  wrapper.classList.add('answered');
   btnNext.disabled = false;
   feedPanel.className = 'poor';
   feedIcon.textContent = '⏱️';
@@ -697,6 +699,7 @@ function drawGKMarker(x,y,colour){
 
 // ── PLACE GK ───────────────────────────────────────────────────────
 function placeGK(px,py){
+  if(timedOut) return; // hard lock — timer has expired
   if(answered||dailyAutoAdvancing) return;
   const sc=scenarios[roundIdx];
   if(Math.hypot(px-sc.bx,py-sc.by)<MIN_GK_FROM_BALL){
@@ -747,6 +750,7 @@ function placeGK(px,py){
 function startGame(mode) {
   gameMode = mode;
   roundIdx = 0; roundScores = [];
+  timedOut = false;
 
   if (mode === 'daily') {
     scenarios = seededShuffle([...SCENARIOS], getDailySeed());
@@ -820,7 +824,7 @@ function boot() {
   });
 
   document.getElementById('btn-reset').addEventListener('click', () => {
-    roundIdx=0; roundScores=[];
+    roundIdx=0; roundScores=[]; timedOut=false;
     scenarios=shuffle([...SCENARIOS]);
     leaderboard.style.display='none';
     renderRound();
