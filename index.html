@@ -8,286 +8,160 @@
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --accent: #f5c518;
-    --green: #44dd88;
-    --red: #e84040;
-    --blue: #4488ff;
-    --ui-bg: #111318;
-    --ui-surface: #1c2028;
-    --text: #f0f0f0;
-    --muted: #888;
+    --accent: #f5c518; --green: #44dd88; --red: #e84040;
+    --blue: #4488ff; --ui-bg: #111318; --ui-surface: #1c2028;
+    --text: #f0f0f0; --muted: #888;
   }
-  body {
-    background: var(--ui-bg);
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 16px;
-    gap: 10px;
-  }
+  body { background:var(--ui-bg); font-family:'DM Sans',sans-serif; color:var(--text);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:12px 16px; gap:10px; }
 
-  /* ── AUTH SCREEN ─────────────────────────────────────────────────── */
-  #auth-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    gap: 20px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-  }
-  #auth-screen h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    letter-spacing: 4px;
-    color: var(--accent);
-  }
-  #auth-screen .tagline {
-    font-size: 1rem;
-    color: var(--muted);
-    margin-top: -10px;
-  }
-  #auth-screen .ball-icon { font-size: 3rem; }
-  .auth-divider {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 0.75rem;
-  }
-  .auth-divider::before, .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255,255,255,0.1);
-  }
-  .btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 13px 20px;
-    background: white;
-    color: #333;
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-  }
-  .btn-google:hover { opacity: 0.92; }
-  .btn-google:active { transform: scale(0.98); }
-  .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
-  .btn-guest {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: var(--muted);
-    width: 100%;
-    padding: 11px 20px;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .btn-guest:hover { opacity: 0.8; }
-  .auth-note { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+  /* AUTH */
+  #auth-screen { display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:80vh; gap:20px; max-width:400px; width:100%; text-align:center; }
+  #auth-screen h1 { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; letter-spacing:4px; color:var(--accent); }
+  #auth-screen .tagline { font-size:1rem; color:var(--muted); margin-top:-10px; }
+  #auth-screen .ball-icon { font-size:3rem; }
+  .auth-divider { width:100%; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:0.75rem; }
+  .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
+  .btn-google { display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
+    padding:13px 20px; background:white; color:#333; border:none; border-radius:10px;
+    font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:opacity 0.15s,transform 0.1s; }
+  .btn-google:hover { opacity:0.92; } .btn-google:active { transform:scale(0.98); }
+  .btn-google svg { width:20px; height:20px; flex-shrink:0; }
+  .btn-guest { background:transparent; border:1px solid rgba(255,255,255,0.15); color:var(--muted);
+    width:100%; padding:11px 20px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; transition:opacity 0.15s; }
+  .btn-guest:hover { opacity:0.8; }
+  .auth-note { font-size:0.7rem; color:var(--muted); line-height:1.5; }
 
-  /* ── USER BAR ────────────────────────────────────────────────────── */
-  #user-bar {
-    display: none;
-    width: 100%;
-    max-width: 640px;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--ui-surface);
-    border-radius: 10px;
-    padding: 7px 14px;
-  }
-  #user-bar.visible { display: flex; }
-  #user-info { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
-  #user-avatar {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.75rem; color: #111;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  #user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  #user-name { font-weight: 600; color: var(--text); }
-  #user-best { font-size: 0.7rem; color: var(--muted); }
-  #btn-signout {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.12);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
+  /* MODE SELECT */
+  #mode-screen { display:none; flex-direction:column; align-items:center; gap:16px;
+    max-width:400px; width:100%; text-align:center; padding-top:20px; }
+  #mode-screen.visible { display:flex; }
+  #mode-screen h2 { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:3px; color:var(--accent); }
+  #mode-screen p { font-size:0.82rem; color:var(--muted); }
+  .mode-card { width:100%; background:var(--ui-surface); border-radius:14px; padding:20px;
+    border:2px solid transparent; cursor:pointer; text-align:left; transition:border-color 0.2s,transform 0.1s; }
+  .mode-card:hover { transform:scale(1.01); }
+  .mode-card.daily { border-color:var(--accent); }
+  .mode-card.free  { border-color:rgba(255,255,255,0.1); }
+  .mode-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:2px; margin-bottom:4px; }
+  .mode-card.daily h3 { color:var(--accent); }
+  .mode-card.free  h3 { color:var(--text); }
+  .mode-card p { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+  .mode-card .badge { display:inline-block; font-size:0.65rem; font-weight:700; padding:2px 8px;
+    border-radius:20px; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px; }
+  .mode-card.daily .badge { background:rgba(245,197,24,0.15); color:var(--accent); }
+  .mode-card.free  .badge { background:rgba(255,255,255,0.08); color:var(--muted); }
+  .daily-done { background:rgba(245,197,24,0.08); border:2px solid rgba(245,197,24,0.3) !important; cursor:default !important; opacity:0.7; }
+  .daily-done h3 { color:var(--muted) !important; }
 
-  /* ── GAME SCREEN ─────────────────────────────────────────────────── */
-  #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; gap: 10px; }
-  #game-screen.visible { display: flex; }
+  /* USER BAR */
+  #user-bar { display:none; width:100%; max-width:640px; justify-content:space-between;
+    align-items:center; background:var(--ui-surface); border-radius:10px; padding:7px 14px; }
+  #user-bar.visible { display:flex; }
+  #user-info { display:flex; align-items:center; gap:8px; font-size:0.8rem; }
+  #user-avatar { width:28px; height:28px; border-radius:50%; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;
+    color:#111; overflow:hidden; flex-shrink:0; }
+  #user-avatar img { width:100%; height:100%; object-fit:cover; }
+  #user-name { font-weight:600; color:var(--text); }
+  #user-best { font-size:0.7rem; color:var(--muted); }
+  #btn-signout { background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted);
+    font-family:'DM Sans',sans-serif; font-size:0.7rem; padding:4px 10px; border-radius:6px; cursor:pointer; }
 
-  header { text-align: center; }
-  header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-  header p { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.5px; }
+  /* GAME SCREEN */
+  #game-screen { display:none; flex-direction:column; align-items:center; width:100%; gap:10px; }
+  #game-screen.visible { display:flex; }
+  header { text-align:center; }
+  header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,5vw,2.4rem); letter-spacing:3px; color:var(--accent); }
+  header p { font-size:0.78rem; color:var(--muted); letter-spacing:0.5px; }
 
-  #stats-bar {
-    display: flex; gap: 14px;
-    background: var(--ui-surface);
-    border-radius: 10px;
-    padding: 7px 22px;
-    align-items: center;
-  }
-  .stat-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.1); }
-  .stat { display: flex; flex-direction: column; align-items: center; gap: 1px; }
-  .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; line-height: 1; color: var(--accent); }
-  .stat-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  /* TIMER */
+  #timer-bar { width:100%; max-width:640px; display:none; }
+  #timer-bar.visible { display:block; }
+  #timer-track { width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
+  #timer-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.1s linear, background 0.3s; }
+  #timer-text { font-family:'Bebas Neue',sans-serif; font-size:2rem; text-align:center;
+    color:var(--accent); letter-spacing:2px; margin-top:4px; }
+  #timer-text.urgent { color:var(--red); animation:pulse 0.5s ease-in-out infinite alternate; }
+  @keyframes pulse { from{opacity:1} to{opacity:0.5} }
 
-  #round-scores {
-    display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;
-    max-width: 640px; width: 100%;
-  }
-  .round-pip { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .pip-bar {
-    width: 28px; height: 6px; border-radius: 3px;
-    background: rgba(255,255,255,0.1);
-    transition: background 0.4s;
-  }
-  .pip-bar.s100 { background: #44dd88; }
-  .pip-bar.s80  { background: #88cc44; }
-  .pip-bar.s60  { background: #f5c518; }
-  .pip-bar.s40  { background: #ff9933; }
-  .pip-bar.s1   { background: #e84040; }
-  .pip-bar.s0   { background: #444; }
-  .pip-num { font-size: 0.6rem; color: var(--muted); font-weight: 600; }
+  #stats-bar { display:flex; gap:14px; background:var(--ui-surface); border-radius:10px; padding:7px 22px; align-items:center; }
+  .stat-divider { width:1px; height:28px; background:rgba(255,255,255,0.1); }
+  .stat { display:flex; flex-direction:column; align-items:center; gap:1px; }
+  .stat-val { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; line-height:1; color:var(--accent); }
+  .stat-label { font-size:0.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
 
-  #pitch-wrapper {
-    width: 100%; max-width: 640px;
-    cursor: crosshair; user-select: none;
-    border-radius: 10px; overflow: hidden;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-  }
-  #pitch-wrapper.answered { cursor: default; }
-  #pitch-svg { width: 100%; height: auto; display: block; }
+  #round-scores { display:flex; gap:5px; flex-wrap:wrap; justify-content:center; max-width:640px; width:100%; }
+  .round-pip { display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .pip-bar { width:28px; height:6px; border-radius:3px; background:rgba(255,255,255,0.1); transition:background 0.4s; }
+  .pip-bar.s100{background:#44dd88} .pip-bar.s80{background:#88cc44} .pip-bar.s60{background:#f5c518}
+  .pip-bar.s40{background:#ff9933} .pip-bar.s1{background:#e84040}   .pip-bar.s0{background:#444}
+  .pip-num { font-size:0.6rem; color:var(--muted); font-weight:600; }
 
-  .ideal-zone {
-    fill: rgba(68,221,136,0.2);
-    stroke: rgba(68,221,136,0.8);
-    stroke-width: 2; stroke-dasharray: 6 3;
-    pointer-events: none;
-  }
+  #pitch-wrapper { width:100%; max-width:640px; cursor:crosshair; user-select:none;
+    border-radius:10px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.6); }
+  #pitch-wrapper.answered { cursor:default; }
+  #pitch-svg { width:100%; height:auto; display:block; }
+  .ideal-zone { fill:rgba(68,221,136,0.2); stroke:rgba(68,221,136,0.8); stroke-width:2; stroke-dasharray:6 3; pointer-events:none; }
 
-  #feedback-panel {
-    background: var(--ui-surface);
-    border-radius: 10px; padding: 12px 18px;
-    max-width: 640px; width: 100%;
-    display: flex; align-items: center; gap: 12px;
-    border-left: 4px solid transparent;
-    transition: border-left-color 0.3s;
-    min-height: 64px;
-  }
-  #feedback-panel.correct { border-left-color: var(--green); }
-  #feedback-panel.poor    { border-left-color: var(--red); }
-  #feedback-panel.ok      { border-left-color: var(--accent); }
-  #feedback-icon { font-size: 1.7rem; flex-shrink: 0; }
-  #feedback-body h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
-  #feedback-body p  { font-size: 0.75rem; color: var(--muted); line-height: 1.45; }
+  #feedback-panel { background:var(--ui-surface); border-radius:10px; padding:12px 18px;
+    max-width:640px; width:100%; display:flex; align-items:center; gap:12px;
+    border-left:4px solid transparent; transition:border-left-color 0.3s; min-height:64px; }
+  #feedback-panel.correct { border-left-color:var(--green); }
+  #feedback-panel.poor    { border-left-color:var(--red); }
+  #feedback-panel.ok      { border-left-color:var(--accent); }
+  #feedback-icon { font-size:1.7rem; flex-shrink:0; }
+  #feedback-body h3 { font-size:0.9rem; font-weight:600; margin-bottom:2px; }
+  #feedback-body p  { font-size:0.75rem; color:var(--muted); line-height:1.45; }
 
-  #end-summary {
-    background: var(--ui-surface);
-    border-radius: 12px; padding: 18px 24px;
-    max-width: 640px; width: 100%;
-    text-align: center; border: 2px solid var(--accent);
-    display: none;
-  }
-  #end-summary h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--accent); letter-spacing: 2px; }
-  #end-summary .final-score { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; line-height: 1; color: white; }
-  #end-summary .out-of { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
-  #end-summary .rank-label { font-size: 1rem; font-weight: 600; margin: 4px 0 10px; }
-  #end-summary .share-text { font-size: 0.72rem; color: var(--muted); font-family: monospace; background: #0d0f14; padding: 8px 12px; border-radius: 6px; white-space: pre-wrap; margin-top: 8px; }
-  #end-summary .saved-note { font-size: 0.72rem; color: var(--green); margin-top: 8px; }
+  #end-summary { background:var(--ui-surface); border-radius:12px; padding:18px 24px;
+    max-width:640px; width:100%; text-align:center; border:2px solid var(--accent); display:none; }
+  #end-summary h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--accent); letter-spacing:2px; }
+  #end-summary .final-score { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; line-height:1; color:white; }
+  #end-summary .out-of { font-size:0.8rem; color:var(--muted); margin-bottom:8px; }
+  #end-summary .rank-label { font-size:1rem; font-weight:600; margin:4px 0 10px; }
+  #end-summary .share-text { font-size:0.72rem; color:var(--muted); font-family:monospace;
+    background:#0d0f14; padding:8px 12px; border-radius:6px; white-space:pre-wrap; margin-top:8px; }
+  #end-summary .saved-note { font-size:0.72rem; color:var(--green); margin-top:8px; }
+  #end-summary .mode-tag { font-size:0.7rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:2px; color:var(--accent); margin-bottom:4px; }
 
-  /* ── LEADERBOARD ─────────────────────────────────────────────────── */
-  #leaderboard {
-    background: var(--ui-surface);
-    border-radius: 12px; padding: 14px 18px;
-    max-width: 640px; width: 100%;
-    display: none;
-  }
-  #leaderboard h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem; letter-spacing: 2px;
-    color: var(--accent); margin-bottom: 10px;
-    text-align: center;
-  }
-  .lb-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.82rem;
-  }
-  .lb-row:last-child { border-bottom: none; }
-  .lb-rank { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--muted); width: 24px; text-align: center; }
-  .lb-rank.gold   { color: #f5c518; }
-  .lb-rank.silver { color: #aaa; }
-  .lb-rank.bronze { color: #cd7f32; }
-  .lb-name { flex: 1; font-weight: 600; }
-  .lb-name.you { color: var(--accent); }
-  .lb-score { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; }
-  .lb-loading { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 10px; }
+  #leaderboard { background:var(--ui-surface); border-radius:12px; padding:14px 18px; max-width:640px; width:100%; display:none; }
+  #leaderboard h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px;
+    color:var(--accent); margin-bottom:10px; text-align:center; }
+  .lb-row { display:flex; align-items:center; gap:10px; padding:6px 0;
+    border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.82rem; }
+  .lb-row:last-child { border-bottom:none; }
+  .lb-rank { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--muted); width:24px; text-align:center; }
+  .lb-rank.gold{color:#f5c518} .lb-rank.silver{color:#aaa} .lb-rank.bronze{color:#cd7f32}
+  .lb-name { flex:1; font-weight:600; } .lb-name.you { color:var(--accent); }
+  .lb-score { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; }
+  .lb-loading { text-align:center; color:var(--muted); font-size:0.8rem; padding:10px; }
 
-  #controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  button {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 2px; font-size: 1rem;
-    padding: 9px 26px; border: none; border-radius: 8px;
-    cursor: pointer; transition: opacity 0.15s, transform 0.1s;
-  }
-  button:active { transform: scale(0.97); }
-  button:disabled { opacity: 0.3; cursor: default; }
-  #btn-next   { background: var(--accent); color: #111; }
-  #btn-share  { background: #1a4a2a; color: #44dd88; display: none; }
-  #btn-reset  { background: #2a2a2a; color: #aaa; }
-  #btn-lb     { background: #1a2a4a; color: #4488ff; }
+  #controls { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  button { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:1rem;
+    padding:9px 26px; border:none; border-radius:8px; cursor:pointer; transition:opacity 0.15s,transform 0.1s; }
+  button:active { transform:scale(0.97); } button:disabled { opacity:0.3; cursor:default; }
+  #btn-next  { background:var(--accent); color:#111; }
+  #btn-share { background:#1a4a2a; color:#44dd88; display:none; }
+  #btn-reset { background:#2a2a2a; color:#aaa; }
+  #btn-lb    { background:#1a2a4a; color:#4488ff; }
+  #btn-modes { background:#2a2020; color:#ff9966; }
 
-  .legend {
-    display: flex; gap: 14px; font-size: 0.7rem; color: var(--muted);
-    flex-wrap: wrap; justify-content: center;
-  }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-dot  { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .legend { display:flex; gap:14px; font-size:0.7rem; color:var(--muted); flex-wrap:wrap; justify-content:center; }
+  .legend-item { display:flex; align-items:center; gap:5px; }
+  .legend-dot  { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     AUTH SCREEN
-════════════════════════════════════════════════════════════════════ -->
+<!-- AUTH SCREEN -->
 <div id="auth-screen">
   <div class="ball-icon">🧤</div>
   <h1>KeeperTap</h1>
   <p class="tagline">Can you read the angle?</p>
-
   <button class="btn-google" id="btn-google-signin">
-    <!-- Google G logo -->
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -296,38 +170,50 @@
     </svg>
     Sign in with Google
   </button>
-
   <div class="auth-divider">or</div>
-
-  <button class="btn-guest" id="btn-guest">Play as Guest (no leaderboard)</button>
-
-  <p class="auth-note">
-    Sign in to save your scores and compete on the global leaderboard.<br>
-    We only store your name and best score. Nothing else.
-  </p>
+  <button class="btn-guest" id="btn-guest">Play as Guest (Free Play only)</button>
+  <p class="auth-note">Sign in to access Daily mode and the global leaderboard.<br>We only store your name and best score.</p>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     GAME SCREEN
-════════════════════════════════════════════════════════════════════ -->
-<div id="game-screen">
-
-  <!-- User bar (shown when signed in) -->
+<!-- MODE SELECT SCREEN -->
+<div id="mode-screen">
   <div id="user-bar">
     <div id="user-info">
       <div id="user-avatar"><span id="user-initial">?</span></div>
       <div>
-        <div id="user-name">Guest</div>
+        <div id="user-name">Player</div>
         <div id="user-best">Best: —</div>
       </div>
     </div>
     <button id="btn-signout">Sign out</button>
   </div>
+  <h2>KeeperTap</h2>
+  <p>Choose your game mode</p>
 
+  <div class="mode-card daily" id="btn-daily-mode">
+    <div class="badge">⚡ Daily Challenge</div>
+    <h3>Daily Game</h3>
+    <p>20 seconds. 10 rounds. Same scenarios for everyone today. One shot at the leaderboard — make it count.</p>
+  </div>
+
+  <div class="mode-card free" id="btn-free-mode">
+    <div class="badge">∞ Unlimited</div>
+    <h3>Free Play</h3>
+    <p>Practice your positioning with no time pressure. Play as many games as you like.</p>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen">
   <header>
     <h1>KeeperTap</h1>
-    <p>Tap the pitch to position your goalkeeper</p>
+    <p id="game-mode-label">Tap the pitch to position your goalkeeper</p>
   </header>
+
+  <div id="timer-bar">
+    <div id="timer-track"><div id="timer-fill" style="width:100%"></div></div>
+    <div id="timer-text">20</div>
+  </div>
 
   <div id="stats-bar">
     <div class="stat"><span class="stat-val" id="total-val">0</span><span class="stat-label">Total</span></div>
@@ -375,6 +261,7 @@
   </div>
 
   <div id="end-summary">
+    <div class="mode-tag" id="end-mode-tag"></div>
     <h2>Full Time!</h2>
     <div class="final-score" id="final-score-val">0</div>
     <div class="out-of">out of 1000</div>
@@ -383,15 +270,15 @@
     <div class="saved-note" id="saved-note"></div>
   </div>
 
-  <!-- Leaderboard -->
   <div id="leaderboard">
-    <h3>🏆 Global Leaderboard</h3>
+    <h3 id="lb-title">🏆 Leaderboard</h3>
     <div id="lb-rows"><div class="lb-loading">Loading...</div></div>
   </div>
 
   <div id="controls">
     <button id="btn-next" disabled>Next Round →</button>
     <button id="btn-share">📋 Copy Score</button>
+    <button id="btn-modes">← Modes</button>
     <button id="btn-reset">New Game</button>
     <button id="btn-lb">🏆 Leaderboard</button>
   </div>
@@ -402,20 +289,40 @@
     <div class="legend-item"><div class="legend-dot" style="background:rgba(68,221,136,0.8)"></div> Optimal zone</div>
     <div class="legend-item"><div class="legend-dot" style="background:#ff6644"></div> Ideal point</div>
   </div>
-
-</div><!-- /game-screen -->
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ═══════════════════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://scthmlptetwhmiulhqpi.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdGhtbHB0ZXR3aG1pdWxocXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTEyOTIsImV4cCI6MjA5MTU4NzI5Mn0.UFguArgZ9Xs9jyixnCNOvV2w-lVw2vhaLFkGaiStRL0';
 
 let sb = null;
 let currentUser = null;
-let isGuest     = false;
+let isGuest = false;
+let gameMode = 'free'; // 'free' or 'daily'
 
-// Safely initialise Supabase — falls back gracefully if CDN is slow
+// ── DAILY SEED ──────────────────────────────────────────────────────
+// Generates same scenario order for everyone on the same calendar date
+function getDailySeed() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+}
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = seed;
+  for (let i = a.length-1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = Math.abs(s) % (i+1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── SUPABASE ────────────────────────────────────────────────────────
 function initSupabase() {
   try {
     if (window.supabase && window.supabase.createClient) {
@@ -426,203 +333,172 @@ function initSupabase() {
   return false;
 }
 
-// ── AUTH SCREEN LOGIC ──────────────────────────────────────────────
-// (All button listeners are wired up inside boot() below)
-
 async function initAuth() {
   if (!sb) return;
   try {
     const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) {
-      currentUser = session.user;
-      showGameScreen(session.user);
-    }
+    if (session?.user) { currentUser = session.user; showModeScreen(session.user); }
   } catch(e) { console.warn('Session check failed:', e); }
 }
 
-function showGameScreen(user) {
+function showModeScreen(user) {
   document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('game-screen').classList.add('visible');
+  document.getElementById('mode-screen').classList.add('visible');
 
   if (user && !isGuest) {
-    // Show user bar
     const bar    = document.getElementById('user-bar');
     const name   = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Player';
     const avatar = user.user_metadata?.avatar_url;
-
     bar.classList.add('visible');
     document.getElementById('user-name').textContent = name;
-
     const avatarEl = document.getElementById('user-avatar');
-    if (avatar) {
-      avatarEl.innerHTML = `<img src="${avatar}" alt="${name}">`;
-    } else {
-      document.getElementById('user-initial').textContent = name[0].toUpperCase();
-    }
-
-    // Load their best score from profiles table
+    if (avatar) { avatarEl.innerHTML = `<img src="${avatar}" alt="${name}">`; }
+    else { document.getElementById('user-initial').textContent = name[0].toUpperCase(); }
     loadUserBest(user.id, name, avatar);
+    checkDailyPlayed();
   }
+}
 
-  renderRound();
+async function checkDailyPlayed() {
+  if (!sb || !currentUser) return;
+  const { data } = await sb.from('daily_scores')
+    .select('score')
+    .eq('user_id', currentUser.id)
+    .eq('play_date', todayStr())
+    .single();
+
+  const card = document.getElementById('btn-daily-mode');
+  if (data) {
+    card.classList.add('daily-done');
+    card.querySelector('p').textContent = `Today's score: ${data.score}/1000 — Come back tomorrow!`;
+    card.querySelector('h3').textContent = "Today's Game ✓";
+  }
 }
 
 async function loadUserBest(userId, name, avatar) {
-  // Upsert profile so it exists
-  await sb.from('profiles').upsert({
-    id: userId,
-    username: name,
-    avatar_url: avatar || null,
-  }, { onConflict: 'id', ignoreDuplicates: false });
-
-  const { data } = await sb
-    .from('profiles')
-    .select('best_score, games_played')
-    .eq('id', userId)
-    .single();
-
-  if (data) {
-    document.getElementById('user-best').textContent =
-      `Best: ${data.best_score || 0} | Games: ${data.games_played || 0}`;
-  }
+  if (!sb) return;
+  await sb.from('profiles').upsert({ id:userId, username:name, avatar_url:avatar||null }, { onConflict:'id', ignoreDuplicates:false });
+  const { data } = await sb.from('profiles').select('best_score, games_played').eq('id', userId).single();
+  if (data) document.getElementById('user-best').textContent = `Best: ${data.best_score||0} | Games: ${data.games_played||0}`;
 }
 
-async function saveScore(total) {
-  if (!currentUser || isGuest) return;
-
+async function saveFreeScore(total) {
+  if (!sb || !currentUser || isGuest) return;
   const userId = currentUser.id;
-
-  // Get existing profile
-  const { data: profile } = await sb
-    .from('profiles')
-    .select('best_score, games_played')
-    .eq('id', userId)
-    .single();
-
-  const prevBest   = profile?.best_score   || 0;
-  const prevGames  = profile?.games_played || 0;
-  const newBest    = Math.max(prevBest, total);
-  const newGames   = prevGames + 1;
-
-  await sb.from('profiles').upsert({
-    id:           userId,
-    best_score:   newBest,
-    games_played: newGames,
-    updated_at:   new Date().toISOString(),
-  }, { onConflict: 'id' });
-
-  // Update user bar
-  document.getElementById('user-best').textContent =
-    `Best: ${newBest} | Games: ${newGames}`;
-
-  return newBest;
+  const { data: profile } = await sb.from('profiles').select('best_score, games_played').eq('id', userId).single();
+  const newBest  = Math.max(profile?.best_score||0, total);
+  const newGames = (profile?.games_played||0) + 1;
+  await sb.from('profiles').upsert({ id:userId, best_score:newBest, games_played:newGames, updated_at:new Date().toISOString() }, { onConflict:'id' });
+  document.getElementById('user-best').textContent = `Best: ${newBest} | Games: ${newGames}`;
 }
 
-async function loadLeaderboard() {
+async function saveDailyScore(total, roundScoresArr) {
+  if (!sb || !currentUser || isGuest) return;
+  const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
+  await sb.from('daily_scores').insert({
+    user_id:      currentUser.id,
+    username:     name,
+    score:        total,
+    round_scores: roundScoresArr,
+    play_date:    todayStr(),
+  });
+  // Also update best in profiles
+  await saveFreeScore(total);
+}
+
+async function loadLeaderboard(daily = false) {
   const lbEl = document.getElementById('lb-rows');
+  document.getElementById('lb-title').textContent = daily ? '⚡ Today\'s Leaderboard' : '🏆 All-Time Leaderboard';
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
 
-  const { data, error } = await sb
-    .from('profiles')
-    .select('username, best_score, avatar_url')
-    .order('best_score', { ascending: false })
-    .limit(10);
-
-  if (error || !data) {
-    lbEl.innerHTML = '<div class="lb-loading">Could not load leaderboard.</div>';
-    return;
+  let query;
+  if (daily) {
+    query = sb.from('daily_scores')
+      .select('username, score')
+      .eq('play_date', todayStr())
+      .order('score', { ascending: false })
+      .limit(10);
+  } else {
+    query = sb.from('profiles')
+      .select('username, best_score')
+      .order('best_score', { ascending: false })
+      .limit(10);
   }
 
-  const medals = ['gold','silver','bronze'];
+  const { data, error } = await query;
+  if (error || !data) { lbEl.innerHTML = '<div class="lb-loading">Could not load leaderboard.</div>'; return; }
+
+  const myName = currentUser ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]) : null;
   lbEl.innerHTML = data.map((row, i) => {
-    const isYou  = currentUser && row.username === (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]);
-    const rankCl = medals[i] || '';
-    return `
-      <div class="lb-row">
-        <div class="lb-rank ${rankCl}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
-        <div class="lb-name ${isYou?'you':''}">${row.username || 'Anonymous'}${isYou?' (you)':''}</div>
-        <div class="lb-score">${row.best_score}</div>
-      </div>`;
+    const score  = daily ? row.score : row.best_score;
+    const isYou  = myName && row.username === myName;
+    const medal  = ['gold','silver','bronze'][i] || '';
+    return `<div class="lb-row">
+      <div class="lb-rank ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
+      <div class="lb-score">${score}</div>
+    </div>`;
   }).join('');
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// GAME CONSTANTS
+// GAME CONSTANTS & LOGIC
 // ═══════════════════════════════════════════════════════════════════
-const GOAL_X   = 30;
-const GOAL_TOP = 196;
-const GOAL_BTM = 264;
-const GOAL_CY  = 230;
+const GOAL_X=30, GOAL_TOP=196, GOAL_BTM=264, GOAL_CY=230;
+const MIN_GK_FROM_BALL=45;
+const ROUNDS_PER_GAME=10;
+const DAILY_TOTAL_SECS=20;
 
 const SCENARIOS = [
-  { label:"Central — close range",      bx:155, by:230,
-    tip:"Very close and central: advance well off the line to narrow the angle dramatically. Get to the edge of the 6-yard box, staying central between the posts." },
-  { label:"Left side of the box",        bx:140, by:172,
-    tip:"Wide-left inside the box: move toward the near (left) post to cut off the most direct route. Body set wide, ready to spread." },
-  { label:"Right side of the box",       bx:140, by:288,
-    tip:"Wide-right inside the box: mirror the left principle — protect the near (right) post and force the attacker to beat you at the far post." },
-  { label:"Central — long range",        bx:330, by:230,
-    tip:"Long-range central: chip risk is high — don't advance too far. Sit around the penalty spot area, stay on your feet and be set to deal with a driven shot." },
-  { label:"Left channel — mid-range",    bx:260, by:158,
-    tip:"Mid-range left channel: advance to bisect the angle but don't overcommit — a chip is very much on from here. Stay at a depth where you can still get back or claim a lofted ball." },
-  { label:"Right channel — mid-range",   bx:260, by:302,
-    tip:"Mid-range right channel: same principle — bisect the angle, protect the near post, but hold a depth that keeps a chip difficult." },
-  { label:"Penalty spot",                bx:150, by:230,
-    tip:"Penalty: stand centrally on the goal line. Stay big, react late. Any early sideways movement is a gamble." },
-  { label:"Tight left byline",           bx:58,  by:148,
-    tip:"Tight angle from the left byline: hug the near post — the acute angle does the work. Don't give the near post away." },
-  { label:"Tight right byline",          bx:58,  by:312,
-    tip:"Tight angle from the right byline: same — guard the near post. The far post is naturally covered by the extreme angle." },
-  { label:"Edge of box — left of centre",bx:178, by:162,
-    tip:"Top of the area, left of centre: step forward to around the penalty spot, bisect the angle, set low for a driven shot." },
+  {label:"Central — close range",     bx:155,by:230, tip:"Very close and central: advance well off the line to narrow the angle dramatically. Get to the edge of the 6-yard box, staying central between the posts."},
+  {label:"Left side of the box",       bx:140,by:172, tip:"Wide-left inside the box: move toward the near (left) post to cut off the most direct route. Body set wide, ready to spread."},
+  {label:"Right side of the box",      bx:140,by:288, tip:"Wide-right inside the box: mirror the left principle — protect the near (right) post and force the attacker to beat you at the far post."},
+  {label:"Central — long range",       bx:330,by:230, tip:"Long-range central: chip risk is high — don't advance too far. Sit around the penalty spot area, stay on your feet and be set to deal with a driven shot."},
+  {label:"Left channel — mid-range",   bx:260,by:158, tip:"Mid-range left channel: advance to bisect the angle but don't overcommit — a chip is very much on from here."},
+  {label:"Right channel — mid-range",  bx:260,by:302, tip:"Mid-range right channel: bisect the angle, protect the near post, but hold a depth that keeps a chip difficult."},
+  {label:"Penalty spot",               bx:150,by:230, tip:"Penalty: stand centrally on the goal line. Stay big, react late. Any early sideways movement is a gamble."},
+  {label:"Tight left byline",          bx:58, by:148, tip:"Tight angle from the left byline: hug the near post — the acute angle does the work. Don't give the near post away."},
+  {label:"Tight right byline",         bx:58, by:312, tip:"Tight angle from the right byline: same — guard the near post. The far post is naturally covered by the extreme angle."},
+  {label:"Edge of box — left",         bx:178,by:162, tip:"Top of the area, left of centre: step forward to around the penalty spot, bisect the angle, set low for a driven shot."},
 ];
 
-const MIN_GK_FROM_BALL = 45;
-
-function getIdealGK(bx, by) {
-  const toTop  = norm(GOAL_X - bx, GOAL_TOP - by);
-  const toBtm  = norm(GOAL_X - bx, GOAL_BTM - by);
-  const bisect = norm(toTop.x + toBtm.x, toTop.y + toBtm.y);
-  let goalLineY = GOAL_CY;
-  if (Math.abs(bisect.x) > 0.01) {
-    const t = (GOAL_X - bx) / bisect.x;
-    goalLineY = by + t * bisect.y;
-    goalLineY = Math.max(GOAL_TOP, Math.min(GOAL_BTM, goalLineY));
-  }
-  const totalDist = Math.hypot(bx - GOAL_X, by - goalLineY);
-  const factor    = advanceFactorForDist(totalDist);
-  const advance   = Math.min(totalDist * factor, 148);
-  const outDir    = norm(bx - GOAL_X, by - goalLineY);
-  let ix = GOAL_X + outDir.x * advance;
-  let iy = goalLineY + outDir.y * advance;
-  const gap = Math.hypot(ix - bx, iy - by);
-  if (gap < MIN_GK_FROM_BALL) {
-    const pb = MIN_GK_FROM_BALL - gap;
-    ix -= outDir.x * pb; iy -= outDir.y * pb;
-  }
-  ix = Math.max(GOAL_X + 4, Math.min(178, ix));
-  iy = Math.max(133, Math.min(327, iy));
-  return { x: ix, y: iy, radius: 26 };
+function getIdealGK(bx,by) {
+  const toTop=norm(GOAL_X-bx,GOAL_TOP-by), toBtm=norm(GOAL_X-bx,GOAL_BTM-by);
+  const bisect=norm(toTop.x+toBtm.x,toTop.y+toBtm.y);
+  let goalLineY=GOAL_CY;
+  if(Math.abs(bisect.x)>0.01){ const t=(GOAL_X-bx)/bisect.x; goalLineY=by+t*bisect.y; goalLineY=Math.max(GOAL_TOP,Math.min(GOAL_BTM,goalLineY)); }
+  const totalDist=Math.hypot(bx-GOAL_X,by-goalLineY);
+  const factor=advanceFactorForDist(totalDist), advance=Math.min(totalDist*factor,148);
+  const outDir=norm(bx-GOAL_X,by-goalLineY);
+  let ix=GOAL_X+outDir.x*advance, iy=goalLineY+outDir.y*advance;
+  const gap=Math.hypot(ix-bx,iy-by);
+  if(gap<MIN_GK_FROM_BALL){ const pb=MIN_GK_FROM_BALL-gap; ix-=outDir.x*pb; iy-=outDir.y*pb; }
+  ix=Math.max(GOAL_X+4,Math.min(178,ix)); iy=Math.max(133,Math.min(327,iy));
+  return {x:ix,y:iy,radius:26};
 }
-
 function advanceFactorForDist(dist) {
-  const closeRange=60, closeF=0.55, longRange=190, longF=0.20;
-  if (dist <= closeRange) return closeF;
-  if (dist >= longRange)  return longF;
-  return closeF + (longF - closeF) * ((dist - closeRange) / (longRange - closeRange));
+  const cr=60,cf=0.55,lr=190,lf=0.20;
+  if(dist<=cr)return cf; if(dist>=lr)return lf;
+  return cf+(lf-cf)*((dist-cr)/(lr-cr));
 }
-
-function minGKDistFromBall() { return MIN_GK_FROM_BALL; }
-function norm(x,y) { const m=Math.hypot(x,y)||1; return {x:x/m,y:y/m}; }
+function norm(x,y){const m=Math.hypot(x,y)||1;return{x:x/m,y:y/m};}
+function distToScore(dist){return Math.max(0,Math.min(100,Math.round(100*Math.exp(-0.025*dist))));}
+function scoreColourClass(s){if(s>=90)return's100';if(s>=70)return's80';if(s>=50)return's60';if(s>=25)return's40';if(s>=1)return's1';return's0';}
+function scoreEmoji(s){if(s>=90)return'🟩';if(s>=70)return'🟨';if(s>=50)return'🟧';if(s>=25)return'🟥';return'⬛';}
+function getRank(total){
+  const p=total/(ROUNDS_PER_GAME*100);
+  if(p>=0.95)return{text:'🏆 Elite Keeper',colour:'#f5c518'};
+  if(p>=0.80)return{text:'🟢 Professional',colour:'#44dd88'};
+  if(p>=0.65)return{text:'🔵 Semi-Pro',colour:'#4488ff'};
+  if(p>=0.45)return{text:'🟡 Amateur',colour:'#f5c518'};
+  return{text:'🔴 Still Learning',colour:'#e84040'};
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // GAME STATE
 // ═══════════════════════════════════════════════════════════════════
-const ROUNDS_PER_GAME = 10;
-let scenarios   = shuffle([...SCENARIOS]);
-let roundIdx    = 0;
-let roundScores = [];
-let answered    = false;
+let scenarios=[], roundIdx=0, roundScores=[], answered=false;
+let dailyTimer=null, dailySecsLeft=DAILY_TOTAL_SECS, dailyAutoAdvancing=false;
 
 const svg           = document.getElementById('pitch-svg');
 const wrapper       = document.getElementById('pitch-wrapper');
@@ -643,45 +519,57 @@ const rankLabelEl   = document.getElementById('rank-label');
 const shareTextEl   = document.getElementById('share-text');
 const savedNote     = document.getElementById('saved-note');
 const leaderboard   = document.getElementById('leaderboard');
+const timerBar      = document.getElementById('timer-bar');
+const timerFill     = document.getElementById('timer-fill');
+const timerText     = document.getElementById('timer-text');
 
-function shuffle(arr) {
-  for (let i=arr.length-1;i>0;i--) {
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
-
-function svgPoint(evt) {
-  const rect=svg.getBoundingClientRect(), vb=svg.viewBox.baseVal;
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function svgPoint(evt){
+  const rect=svg.getBoundingClientRect(),vb=svg.viewBox.baseVal;
   const cx=evt.touches?evt.touches[0].clientX:evt.clientX;
   const cy=evt.touches?evt.touches[0].clientY:evt.clientY;
-  return { x:(cx-rect.left)*(vb.width/rect.width), y:(cy-rect.top)*(vb.height/rect.height) };
+  return{x:(cx-rect.left)*(vb.width/rect.width),y:(cy-rect.top)*(vb.height/rect.height)};
 }
 
-function distToScore(dist) {
-  return Math.max(0, Math.min(100, Math.round(100*Math.exp(-0.025*dist))));
+// ── TIMER ──────────────────────────────────────────────────────────
+function startDailyTimer() {
+  dailySecsLeft = DAILY_TOTAL_SECS;
+  timerBar.classList.add('visible');
+  updateTimerDisplay();
+  dailyTimer = setInterval(() => {
+    dailySecsLeft -= 0.1;
+    updateTimerDisplay();
+    if (dailySecsLeft <= 0) { clearInterval(dailyTimer); dailyTimer = null; timeUp(); }
+  }, 100);
 }
 
-function scoreColourClass(s) {
-  if(s>=90)return 's100'; if(s>=70)return 's80'; if(s>=50)return 's60';
-  if(s>=25)return 's40';  if(s>=1)return 's1';   return 's0';
+function updateTimerDisplay() {
+  const pct = Math.max(0, dailySecsLeft / DAILY_TOTAL_SECS * 100);
+  timerFill.style.width = pct + '%';
+  const secs = Math.ceil(dailySecsLeft);
+  timerText.textContent = secs;
+  timerFill.style.background = dailySecsLeft <= 5 ? 'var(--red)' : dailySecsLeft <= 10 ? '#ff9933' : 'var(--accent)';
+  timerText.className = dailySecsLeft <= 5 ? 'urgent' : '';
 }
 
-function scoreEmoji(s) {
-  if(s>=90)return '🟩'; if(s>=70)return '🟨'; if(s>=50)return '🟧';
-  if(s>=25)return '🟥'; return '⬛';
+function stopDailyTimer() {
+  if (dailyTimer) { clearInterval(dailyTimer); dailyTimer = null; }
 }
 
-function getRank(total) {
-  const p=total/(ROUNDS_PER_GAME*100);
-  if(p>=0.95) return {text:'🏆 Elite Keeper',    colour:'#f5c518'};
-  if(p>=0.80) return {text:'🟢 Professional',    colour:'#44dd88'};
-  if(p>=0.65) return {text:'🔵 Semi-Pro',         colour:'#4488ff'};
-  if(p>=0.45) return {text:'🟡 Amateur',          colour:'#f5c518'};
-  return             {text:'🔴 Still Learning',   colour:'#e84040'};
+async function timeUp() {
+  // Fill remaining rounds with 0
+  while (roundScores.length < ROUNDS_PER_GAME) roundScores.push(0);
+  updatePips();
+  wrapper.classList.add('answered');
+  btnNext.disabled = false;
+  feedPanel.className = 'poor';
+  feedIcon.textContent = '⏱️';
+  feedH3.textContent = "Time's up!";
+  feedP.textContent = 'Remaining rounds scored zero.';
+  await showEndSummary();
 }
 
+// ── STATS & PIPS ───────────────────────────────────────────────────
 function updateStatsBar() {
   const total=roundScores.reduce((a,b)=>a+b,0);
   const best=roundScores.length?Math.max(...roundScores):null;
@@ -689,66 +577,78 @@ function updateStatsBar() {
   roundEl.textContent=`${Math.min(roundIdx+1,ROUNDS_PER_GAME)} / ${ROUNDS_PER_GAME}`;
   bestEl.textContent=best!==null?best:'—';
 }
-
 function updatePips() {
   roundScoresEl.innerHTML='';
   for(let i=0;i<ROUNDS_PER_GAME;i++){
-    const pip=document.createElement('div'); pip.className='round-pip';
+    const pip=document.createElement('div');pip.className='round-pip';
     const bar=document.createElement('div');
     bar.className='pip-bar'+(i<roundScores.length?' '+scoreColourClass(roundScores[i]):'');
-    const num=document.createElement('div'); num.className='pip-num';
+    const num=document.createElement('div');num.className='pip-num';
     num.textContent=i<roundScores.length?roundScores[i]:'·';
-    pip.appendChild(bar); pip.appendChild(num);
-    roundScoresEl.appendChild(pip);
+    pip.appendChild(bar);pip.appendChild(num);roundScoresEl.appendChild(pip);
   }
 }
 
+// ── END SUMMARY ────────────────────────────────────────────────────
 async function showEndSummary() {
+  stopDailyTimer();
   const total=roundScores.reduce((a,b)=>a+b,0);
   const rank=getRank(total);
   finalScoreEl.textContent=total;
   rankLabelEl.textContent=rank.text;
   rankLabelEl.style.color=rank.colour;
+  document.getElementById('end-mode-tag').textContent = gameMode==='daily' ? '⚡ Daily Challenge' : '∞ Free Play';
+
+  const modeLabel = gameMode==='daily' ? 'Daily' : 'Free Play';
   const bars=roundScores.map(scoreEmoji).join('');
-  shareTextEl.textContent=`⚽ KeeperTap\n${rank.text}\nScore: ${total}/${ROUNDS_PER_GAME*100}\n${bars}\nkeepertap.com`;
+  shareTextEl.textContent=`⚽ KeeperTap — ${modeLabel}\n${rank.text}\nScore: ${total}/${ROUNDS_PER_GAME*100}\n${bars}\nkeepertap.com`;
+
   endSummary.style.display='block';
   btnShare.style.display='inline-block';
   btnNext.style.display='none';
+  // Hide New Game in daily mode
+  document.getElementById('btn-reset').style.display = gameMode==='daily' ? 'none' : 'inline-block';
 
-  // Save score if logged in
-  if(currentUser && !isGuest){
-    savedNote.textContent='Saving your score...';
-    await saveScore(total);
-    savedNote.textContent='✅ Score saved to leaderboard!';
-    // Show leaderboard
-    leaderboard.style.display='block';
-    await loadLeaderboard();
-  } else if(isGuest){
-    savedNote.textContent='Sign in to save your score to the leaderboard.';
-    savedNote.style.color='var(--muted)';
+  if (currentUser && !isGuest) {
+    savedNote.textContent = 'Saving score...';
+    if (gameMode === 'daily') {
+      await saveDailyScore(total, roundScores);
+      savedNote.textContent = '✅ Daily score saved!';
+      leaderboard.style.display = 'block';
+      await loadLeaderboard(true);
+    } else {
+      await saveFreeScore(total);
+      savedNote.textContent = '✅ Score saved!';
+      leaderboard.style.display = 'block';
+      await loadLeaderboard(false);
+    }
+  } else if (isGuest) {
+    savedNote.textContent = 'Sign in to save your score to the leaderboard.';
+    savedNote.style.color = 'var(--muted)';
   }
 }
 
+// ── RENDER ROUND ───────────────────────────────────────────────────
 function renderRound() {
-  if(roundIdx>=ROUNDS_PER_GAME){ showEndSummary(); return; }
-  const sc=scenarios[roundIdx%scenarios.length];
+  if (roundIdx >= ROUNDS_PER_GAME) { showEndSummary(); return; }
+  const sc=scenarios[roundIdx];
   layer.innerHTML='';
   answered=false;
+  dailyAutoAdvancing=false;
   wrapper.classList.remove('answered');
   endSummary.style.display='none';
   leaderboard.style.display='none';
-  document.getElementById('btn-lb').textContent = '🏆 Leaderboard';
+  document.getElementById('btn-lb').textContent='🏆 Leaderboard';
   btnShare.style.display='none';
-  btnNext.style.display='inline-block';
+  btnNext.style.display= gameMode==='daily' ? 'none' : 'inline-block';
+  btnNext.disabled=true;
   feedPanel.className='';
   feedIcon.textContent='👆';
   feedH3.textContent='Tap the pitch to place your goalkeeper';
   feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`;
-  btnNext.disabled=true;
   updateStatsBar(); updatePips();
-  const minDist=minGKDistFromBall();
-  drawShootingLines(sc.bx,sc.by,false);
-  drawExclusionZone(sc.bx,sc.by,minDist);
+  // No shooting lines before tap — just ball and exclusion zone
+  drawExclusionZone(sc.bx,sc.by,MIN_GK_FROM_BALL);
   drawBall(sc.bx,sc.by);
 }
 
@@ -758,22 +658,18 @@ function attrs(el,obj){Object.entries(obj).forEach(([k,v])=>el.setAttribute(k,v)
 
 function drawBall(bx,by){
   const g=mk('g');
-  const sh=mk('ellipse'); attrs(sh,{cx:bx,cy:by+5,rx:13,ry:5,fill:'rgba(0,0,0,0.4)'}); g.appendChild(sh);
-  const b=mk('circle'); attrs(b,{cx:bx,cy:by,r:13,fill:'#f5f0e8',stroke:'#444','stroke-width':2}); g.appendChild(b);
+  const sh=mk('ellipse');attrs(sh,{cx:bx,cy:by+5,rx:13,ry:5,fill:'rgba(0,0,0,0.4)'});g.appendChild(sh);
+  const b=mk('circle');attrs(b,{cx:bx,cy:by,r:13,fill:'#f5f0e8',stroke:'#444','stroke-width':2});g.appendChild(b);
   [[bx-5,by-3,bx+1,by+7],[bx-1,by-7,bx+5,by+3],[bx-7,by+1,bx+7,by+1]].forEach(([x1,y1,x2,y2])=>{
-    const l=mk('line'); attrs(l,{x1,y1,x2,y2,stroke:'#999','stroke-width':1.2}); g.appendChild(l);
+    const l=mk('line');attrs(l,{x1,y1,x2,y2,stroke:'#999','stroke-width':1.2});g.appendChild(l);
   });
-  const lbl=mk('text'); attrs(lbl,{x:bx,y:by-19,'text-anchor':'middle','font-size':9.5,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#f5c518'}); lbl.textContent='ATTACKER'; g.appendChild(lbl);
+  const lbl=mk('text');attrs(lbl,{x:bx,y:by-19,'text-anchor':'middle','font-size':9.5,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#f5c518'});lbl.textContent='ATTACKER';g.appendChild(lbl);
   layer.appendChild(g);
 }
 
-function drawShootingLines(bx,by,revealed=false){
-  const colour=revealed?'rgba(220,50,50,0.85)':'rgba(245,197,24,0.22)';
-  const width=revealed?2.5:1.5, dash=revealed?'':'7 4';
+function drawShootingLines(bx,by){
   [[GOAL_X,GOAL_TOP],[GOAL_X,GOAL_BTM]].forEach(([gx,gy])=>{
-    const l=mk('line'), a={x1:bx,y1:by,x2:gx,y2:gy,stroke:colour,'stroke-width':width};
-    if(dash) a['stroke-dasharray']=dash;
-    attrs(l,a); layer.appendChild(l);
+    const l=mk('line');attrs(l,{x1:bx,y1:by,x2:gx,y2:gy,stroke:'rgba(220,50,50,0.85)','stroke-width':2.5});layer.appendChild(l);
   });
 }
 
@@ -783,127 +679,181 @@ function drawExclusionZone(bx,by,r){
   layer.appendChild(ring);
   const lbl=mk('text');
   attrs(lbl,{x:bx,y:by+r+11,'text-anchor':'middle','font-size':8,'font-weight':'600','font-family':'DM Sans, sans-serif',fill:'rgba(220,50,50,0.7)'});
-  lbl.textContent='GK CANNOT REACH HERE'; layer.appendChild(lbl);
+  lbl.textContent='GK CANNOT REACH HERE';layer.appendChild(lbl);
 }
 
 function showIdeal(ideal){
-  const zone=mk('circle'); attrs(zone,{cx:ideal.x,cy:ideal.y,r:ideal.radius,class:'ideal-zone'}); layer.appendChild(zone);
-  const dot=mk('circle'); attrs(dot,{cx:ideal.x,cy:ideal.y,r:7,fill:'#ff6644',stroke:'white','stroke-width':2.5}); layer.appendChild(dot);
-  const lbl=mk('text'); attrs(lbl,{x:ideal.x,y:ideal.y-14,'text-anchor':'middle','font-size':9,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#ff6644'}); lbl.textContent='IDEAL'; layer.appendChild(lbl);
+  const zone=mk('circle');attrs(zone,{cx:ideal.x,cy:ideal.y,r:ideal.radius,class:'ideal-zone'});layer.appendChild(zone);
+  const dot=mk('circle');attrs(dot,{cx:ideal.x,cy:ideal.y,r:7,fill:'#ff6644',stroke:'white','stroke-width':2.5});layer.appendChild(dot);
+  const lbl=mk('text');attrs(lbl,{x:ideal.x,y:ideal.y-14,'text-anchor':'middle','font-size':9,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#ff6644'});lbl.textContent='IDEAL';layer.appendChild(lbl);
 }
 
 function drawGKMarker(x,y,colour){
   const g=mk('g');
-  const body=mk('circle'); attrs(body,{cx:x,cy:y,r:16,fill:colour,stroke:'white','stroke-width':2.5}); g.appendChild(body);
-  const lbl=mk('text'); attrs(lbl,{x,y:y+5,'text-anchor':'middle','font-size':11,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'white'}); lbl.textContent='GK'; g.appendChild(lbl);
+  const body=mk('circle');attrs(body,{cx:x,cy:y,r:16,fill:colour,stroke:'white','stroke-width':2.5});g.appendChild(body);
+  const lbl=mk('text');attrs(lbl,{x,y:y+5,'text-anchor':'middle','font-size':11,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'white'});lbl.textContent='GK';g.appendChild(lbl);
   layer.appendChild(g);
 }
 
+// ── PLACE GK ───────────────────────────────────────────────────────
 function placeGK(px,py){
-  if(answered) return;
-  const sc=scenarios[roundIdx%scenarios.length];
-  const minDist=minGKDistFromBall();
-  if(Math.hypot(px-sc.bx,py-sc.by)<minDist){
-    feedPanel.className='poor'; feedIcon.textContent='🚫';
+  if(answered||dailyAutoAdvancing) return;
+  const sc=scenarios[roundIdx];
+  if(Math.hypot(px-sc.bx,py-sc.by)<MIN_GK_FROM_BALL){
+    feedPanel.className='poor';feedIcon.textContent='🚫';
     feedH3.textContent='Too close to the attacker!';
     feedP.textContent='A goalkeeper cannot rush out that far — place them closer to goal.';
-    setTimeout(()=>{ if(!answered){ feedPanel.className=''; feedIcon.textContent='👆'; feedH3.textContent='Tap the pitch to place your goalkeeper'; feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`; }},1800);
+    if(gameMode!=='daily') setTimeout(()=>{if(!answered){feedPanel.className='';feedIcon.textContent='👆';feedH3.textContent='Tap the pitch to place your goalkeeper';feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`;}},1800);
     return;
   }
-  answered=true; wrapper.classList.add('answered'); btnNext.disabled=false;
+  answered=true;wrapper.classList.add('answered');
+
   const ideal=getIdealGK(sc.bx,sc.by);
   const dist=Math.hypot(px-ideal.x,py-ideal.y);
   layer.innerHTML='';
-  drawShootingLines(sc.bx,sc.by,true);
-  drawExclusionZone(sc.bx,sc.by,minDist);
+  drawShootingLines(sc.bx,sc.by);
+  drawExclusionZone(sc.bx,sc.by,MIN_GK_FROM_BALL);
   drawBall(sc.bx,sc.by);
   showIdeal(ideal);
-  const line=mk('line'); attrs(line,{x1:px,y1:py,x2:ideal.x,y2:ideal.y,stroke:'rgba(255,100,68,0.55)','stroke-width':1.8,'stroke-dasharray':'5 3'}); layer.appendChild(line);
+  const line=mk('line');attrs(line,{x1:px,y1:py,x2:ideal.x,y2:ideal.y,stroke:'rgba(255,100,68,0.55)','stroke-width':1.8,'stroke-dasharray':'5 3'});layer.appendChild(line);
   drawGKMarker(px,py,'#4488ff');
+
   const roundScore=distToScore(dist);
-  roundScores.push(roundScore); updateStatsBar(); updatePips();
+  roundScores.push(roundScore);updateStatsBar();updatePips();
+
   let grade,icon,h3text;
   if(roundScore>=90){grade='correct';icon='🟢';h3text=`${roundScore} / 100 — Elite!`;}
   else if(roundScore>=70){grade='correct';icon='✅';h3text=`${roundScore} / 100 — Good positioning`;}
   else if(roundScore>=50){grade='ok';icon='⚠️';h3text=`${roundScore} / 100 — Nearly there`;}
   else if(roundScore>=25){grade='ok';icon='🟡';h3text=`${roundScore} / 100 — Off target`;}
   else{grade='poor';icon='❌';h3text=`${roundScore} / 100 — Well off position`;}
-  feedPanel.className=grade; feedIcon.textContent=icon; feedH3.textContent=h3text; feedP.textContent=sc.tip;
+  feedPanel.className=grade;feedIcon.textContent=icon;feedH3.textContent=h3text;feedP.textContent=sc.tip;
+
+  if(gameMode==='daily'){
+    // Auto-advance after 1 second
+    dailyAutoAdvancing=true;
+    setTimeout(()=>{
+      dailyAutoAdvancing=false;
+      roundIdx++;
+      if(roundIdx>=ROUNDS_PER_GAME){ stopDailyTimer(); showEndSummary(); }
+      else renderRound();
+    }, 1000);
+  } else {
+    btnNext.disabled=false;
+  }
 }
 
-// ── EVENTS ─────────────────────────────────────────────────────────
+// ── START GAME ─────────────────────────────────────────────────────
+function startGame(mode) {
+  gameMode = mode;
+  roundIdx = 0; roundScores = [];
+
+  if (mode === 'daily') {
+    scenarios = seededShuffle([...SCENARIOS], getDailySeed());
+    document.getElementById('game-mode-label').textContent = '⚡ Daily Challenge — 20 seconds!';
+  } else {
+    scenarios = shuffle([...SCENARIOS]);
+    document.getElementById('game-mode-label').textContent = 'Tap the pitch to position your goalkeeper';
+  }
+
+  document.getElementById('mode-screen').classList.remove('visible');
+  document.getElementById('game-screen').classList.add('visible');
+  timerBar.classList.remove('visible');
+  document.getElementById('btn-reset').style.display = 'inline-block';
+
+  renderRound();
+
+  if (mode === 'daily') {
+    // Short countdown before timer starts
+    setTimeout(startDailyTimer, 500);
+  }
+}
+
 // ── BOOT ───────────────────────────────────────────────────────────
 function boot() {
-  // Init Supabase
   initSupabase();
 
-  // ── Wire up ALL buttons here, after DOM is guaranteed ready ──────
   document.getElementById('btn-google-signin').addEventListener('click', async () => {
     if (!sb) { alert('Still loading — please try again in a moment.'); return; }
-    try {
-      await sb.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin + window.location.pathname }
-      });
-    } catch(e) { console.error('Sign in error:', e); }
+    try { await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo:window.location.origin+window.location.pathname } }); }
+    catch(e) { console.error('Sign in error:', e); }
   });
 
   document.getElementById('btn-guest').addEventListener('click', () => {
-    isGuest = true;
-    showGameScreen(null);
+    isGuest = true; showModeScreen(null);
   });
 
   document.getElementById('btn-signout').addEventListener('click', async () => {
     if (sb) await sb.auth.signOut();
-    currentUser = null; isGuest = false;
-    document.getElementById('auth-screen').style.display = 'flex';
+    currentUser=null; isGuest=false;
+    stopDailyTimer();
+    document.getElementById('auth-screen').style.display='flex';
+    document.getElementById('mode-screen').classList.remove('visible');
     document.getElementById('game-screen').classList.remove('visible');
     document.getElementById('user-bar').classList.remove('visible');
   });
 
-  btnNext.addEventListener('click',()=>{ roundIdx++; renderRound(); });
+  document.getElementById('btn-daily-mode').addEventListener('click', () => {
+    if (!currentUser || isGuest) { alert('Please sign in with Google to play the Daily Challenge.'); return; }
+    if (document.getElementById('btn-daily-mode').classList.contains('daily-done')) return;
+    startGame('daily');
+  });
 
-  btnShare.addEventListener('click',()=>{
-    navigator.clipboard.writeText(shareTextEl.textContent).then(()=>{
+  document.getElementById('btn-free-mode').addEventListener('click', () => {
+    startGame('free');
+  });
+
+  document.getElementById('btn-modes').addEventListener('click', () => {
+    stopDailyTimer();
+    document.getElementById('game-screen').classList.remove('visible');
+    document.getElementById('mode-screen').classList.add('visible');
+    checkDailyPlayed();
+  });
+
+  btnNext.addEventListener('click', () => { roundIdx++; renderRound(); });
+
+  btnShare.addEventListener('click', () => {
+    navigator.clipboard.writeText(shareTextEl.textContent).then(() => {
       btnShare.textContent='✅ Copied!';
-      setTimeout(()=>{ btnShare.textContent='📋 Copy Score'; },2000);
+      setTimeout(()=>{btnShare.textContent='📋 Copy Score';},2000);
     });
   });
 
-  document.getElementById('btn-reset').addEventListener('click',()=>{
+  document.getElementById('btn-reset').addEventListener('click', () => {
     roundIdx=0; roundScores=[];
     scenarios=shuffle([...SCENARIOS]);
-    leaderboard.style.display = 'none';
+    leaderboard.style.display='none';
     renderRound();
   });
 
   document.getElementById('btn-lb').addEventListener('click', async () => {
-    if (leaderboard.style.display === 'block') {
-      leaderboard.style.display = 'none';
-      document.getElementById('btn-lb').textContent = '🏆 Leaderboard';
+    if(leaderboard.style.display==='block'){
+      leaderboard.style.display='none';
+      document.getElementById('btn-lb').textContent='🏆 Leaderboard';
     } else {
-      leaderboard.style.display = 'block';
-      document.getElementById('btn-lb').textContent = '✖ Hide';
-      await loadLeaderboard();
+      leaderboard.style.display='block';
+      document.getElementById('btn-lb').textContent='✖ Hide';
+      await loadLeaderboard(gameMode==='daily');
     }
   });
 
-  svg.addEventListener('click',e=>{
-    if(answered) return;
+  svg.addEventListener('click', e => {
+    if(answered&&gameMode!=='daily') return;
+    if(dailyAutoAdvancing) return;
     const p=svgPoint(e);
     if(p.x<12||p.x>370||p.y<20||p.y>440) return;
     placeGK(p.x,p.y);
   });
 
-  svg.addEventListener('touchstart',e=>{
-    if(answered) return;
+  svg.addEventListener('touchstart', e => {
+    if(answered&&gameMode!=='daily') return;
+    if(dailyAutoAdvancing) return;
     e.preventDefault();
     const p=svgPoint(e);
     if(p.x<12||p.x>370||p.y<20||p.y>440) return;
     placeGK(p.x,p.y);
   },{passive:false});
 
-  // Check for existing session (handles Google redirect back)
   initAuth();
 }
 
