@@ -283,6 +283,7 @@
         <button class="lb-tab active" id="lb-tab-today">Today</button>
         <button class="lb-tab inactive" id="lb-tab-week">This Week</button>
         <button class="lb-tab inactive" id="lb-tab-alltime">All-Time</button>
+        <button class="lb-tab inactive" id="lb-tab-elo">⚔️ Elo</button>
       </div>
     </div>
     <div id="mode-lb-rows"><div class="lb-loading">Loading...</div></div>
@@ -618,7 +619,7 @@ async function loadModeLeaderboard(tab = 'today') {
   if (!sb) return;
   const rowsEl = document.getElementById('mode-lb-rows');
   rowsEl.innerHTML = '<div class="lb-loading">Loading...</div>';
-  ['today','week','alltime'].forEach(t => {
+  ['today','week','alltime','elo'].forEach(t => {
     const btn = document.getElementById(`lb-tab-${t}`);
     if (btn) { btn.className = `lb-tab ${t===tab?'active':'inactive'}`; }
   });
@@ -634,6 +635,9 @@ async function loadModeLeaderboard(tab = 'today') {
         data.forEach(r => { agg[r.username] = (agg[r.username]||0) + r.score; });
         data = Object.entries(agg).map(([username,score])=>({username,score})).sort((a,b)=>b.score-a.score).slice(0,10);
       }
+    } else if (tab === 'elo') {
+      ({data,error} = await sb.from('profiles').select('username,elo,average_score').order('elo',{ascending:false}).limit(10));
+      if (data) data = data.map(r=>({username:r.username, score:r.elo||1000, avg:r.average_score||0}));
     } else {
       ({data,error} = await sb.from('profiles').select('username,best_score,average_score').order('best_score',{ascending:false}).limit(10));
       if (data) data = data.map(r=>({username:r.username, score:r.best_score, avg:r.average_score||0}));
@@ -643,12 +647,13 @@ async function loadModeLeaderboard(tab = 'today') {
     rowsEl.innerHTML = data.map((row,i) => {
       const isYou = myName && row.username===myName;
       const medal = ['gold','silver','bronze'][i]||'';
-      const tier  = tab==='alltime' ? getTier(row.avg||0) : null;
+      const tier  = (tab==='alltime'||tab==='elo') ? getTier(row.avg||0) : null;
+      const scoreLabel = tab==='elo' ? `${row.score} Elo` : row.score;
       return `<div class="lb-row">
         <div class="lb-pos ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
         ${tier?`<div class="lb-tier-dot" style="background:${tier.colour}"></div>`:''}
         <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
-        <div class="lb-score">${row.score}</div>
+        <div class="lb-score">${scoreLabel}</div>
       </div>`;
     }).join('');
   } catch(e) { rowsEl.innerHTML='<div class="lb-loading">Could not load leaderboard.</div>'; }
@@ -1337,6 +1342,7 @@ async function boot() {
   document.getElementById('lb-tab-today').addEventListener('click',()=>loadModeLeaderboard('today'));
   document.getElementById('lb-tab-week').addEventListener('click',()=>loadModeLeaderboard('week'));
   document.getElementById('lb-tab-alltime').addEventListener('click',()=>loadModeLeaderboard('alltime'));
+  document.getElementById('lb-tab-elo').addEventListener('click',()=>loadModeLeaderboard('elo'));
 
   // Game controls
   btnNext.addEventListener('click',()=>{roundIdx++;renderRound();});
@@ -1358,4 +1364,3 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
- 
