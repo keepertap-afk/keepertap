@@ -972,12 +972,24 @@ async function updateElo(winnerId, loserId, iWon) {
     const K = 32;
     const {data:w} = await sb.from('profiles').select('elo').eq('id', winnerId).single();
     const {data:l} = await sb.from('profiles').select('elo').eq('id', loserId).single();
-    const we = w?.elo||1000, le = l?.elo||1000;
-    const eW = 1/(1+Math.pow(10,(le-we)/400));
-    const eL = 1-eW;
-    await sb.from('profiles').upsert({id:winnerId, elo:Math.round(we+K*(1-eW))}, {onConflict:'id'});
-    await sb.from('profiles').upsert({id:loserId,  elo:Math.round(le+K*(0-eL))}, {onConflict:'id'});
-  } catch(e) {}
+    const we = w?.elo || 1000;
+    const le = l?.elo || 1000;
+
+    // Expected scores
+    const eW = 1 / (1 + Math.pow(10, (le - we) / 400));
+    const eL = 1 - eW;
+
+    // New ratings — winner goes up, loser goes down
+    const newWinnerElo = Math.round(we + K * (1 - eW));
+    const newLoserElo  = Math.round(le + K * (0 - eL));
+
+    // Use update (not upsert) so we only change the elo column
+    const { error: e1 } = await sb.from('profiles').update({ elo: newWinnerElo }).eq('id', winnerId);
+    const { error: e2 } = await sb.from('profiles').update({ elo: newLoserElo  }).eq('id', loserId);
+
+    if (e1) console.warn('Elo winner update error:', e1);
+    if (e2) console.warn('Elo loser update error:', e2);
+  } catch(e) { console.warn('updateElo error:', e); }
 }
 
 // ── SHARE IMAGE ──────────────────────────────────────────────────────
@@ -1342,3 +1354,4 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
+ 
