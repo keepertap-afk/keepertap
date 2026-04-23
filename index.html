@@ -8,14 +8,14 @@
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --accent: #f5c518; --green: #44dd88; --red: #e84040;
-    --blue: #4488ff; --ui-bg: #111318; --ui-surface: #1c2028;
-    --text: #f0f0f0; --muted: #888;
+    --accent:#f5c518; --green:#44dd88; --red:#e84040;
+    --blue:#4488ff; --ui-bg:#111318; --ui-surface:#1c2028;
+    --text:#f0f0f0; --muted:#888;
   }
   body { background:var(--ui-bg); font-family:'DM Sans',sans-serif; color:var(--text);
     min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:12px 16px; gap:10px; }
 
-  /* AUTH */
+  /* ── AUTH ── */
   #auth-screen { display:flex; flex-direction:column; align-items:center; justify-content:center;
     min-height:80vh; gap:20px; max-width:400px; width:100%; text-align:center; }
   #auth-screen h1 { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; letter-spacing:4px; color:var(--accent); }
@@ -26,63 +26,139 @@
   .btn-google { display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
     padding:13px 20px; background:white; color:#333; border:none; border-radius:10px;
     font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:opacity 0.15s,transform 0.1s; }
-  .btn-google:hover { opacity:0.92; } .btn-google:active { transform:scale(0.98); }
+  .btn-google:hover{opacity:0.92} .btn-google:active{transform:scale(0.98)}
   .btn-google svg { width:20px; height:20px; flex-shrink:0; }
   .btn-guest { background:transparent; border:1px solid rgba(255,255,255,0.15); color:var(--muted);
-    width:100%; padding:11px 20px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; transition:opacity 0.15s; }
-  .btn-guest:hover { opacity:0.8; }
+    width:100%; padding:11px 20px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; }
   .auth-note { font-size:0.7rem; color:var(--muted); line-height:1.5; }
 
-  /* MODE SELECT */
-  #mode-screen { display:none; flex-direction:column; align-items:center; gap:16px;
-    max-width:400px; width:100%; text-align:center; padding-top:20px; }
+  /* ── MODE SCREEN ── */
+  #mode-screen { display:none; flex-direction:column; align-items:center; gap:14px;
+    max-width:420px; width:100%; padding-top:16px; }
   #mode-screen.visible { display:flex; }
-  #mode-screen h2 { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:3px; color:var(--accent); }
-  #mode-screen p { font-size:0.82rem; color:var(--muted); }
-  .mode-card { width:100%; background:var(--ui-surface); border-radius:14px; padding:20px;
+
+  /* User bar */
+  #user-bar { display:none; width:100%; justify-content:space-between; align-items:center;
+    background:var(--ui-surface); border-radius:10px; padding:8px 14px; }
+  #user-bar.visible { display:flex; }
+  #user-info { display:flex; align-items:center; gap:10px; }
+  #user-avatar { width:36px; height:36px; border-radius:50%; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;
+    color:#111; overflow:hidden; flex-shrink:0; }
+  #user-avatar img { width:100%; height:100%; object-fit:cover; }
+  .user-meta { display:flex; flex-direction:column; gap:1px; }
+  #user-name { font-weight:600; font-size:0.85rem; color:var(--text); }
+  #user-tier-badge { font-size:0.65rem; font-weight:700; padding:1px 7px; border-radius:10px;
+    display:inline-block; width:fit-content; }
+  #user-streak { font-size:0.7rem; color:var(--muted); }
+  #btn-signout { background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted);
+    font-family:'DM Sans',sans-serif; font-size:0.7rem; padding:4px 10px; border-radius:6px; cursor:pointer; }
+
+  /* Mode cards */
+  .mode-card { width:100%; background:var(--ui-surface); border-radius:14px; padding:18px 20px;
     border:2px solid transparent; cursor:pointer; text-align:left; transition:border-color 0.2s,transform 0.1s; }
   .mode-card:hover { transform:scale(1.01); }
   .mode-card.daily { border-color:var(--accent); }
   .mode-card.free  { border-color:rgba(255,255,255,0.1); }
-  .mode-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:2px; margin-bottom:4px; }
-  .mode-card.daily h3 { color:var(--accent); }
-  .mode-card.free  h3 { color:var(--text); }
-  .mode-card p { font-size:0.78rem; color:var(--muted); line-height:1.5; }
-  .mode-card .badge { display:inline-block; font-size:0.65rem; font-weight:700; padding:2px 8px;
-    border-radius:20px; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px; }
-  .mode-card.daily .badge { background:rgba(245,197,24,0.15); color:var(--accent); }
-  .mode-card.free  .badge { background:rgba(255,255,255,0.08); color:var(--muted); }
-  .daily-done { background:rgba(245,197,24,0.08); border:2px solid rgba(245,197,24,0.3) !important; cursor:default !important; opacity:0.7; }
+  .mode-card.versus{ border-color:#4488ff; }
+  .mode-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; margin-bottom:3px; }
+  .mode-card.daily  h3 { color:var(--accent); }
+  .mode-card.free   h3 { color:var(--text); }
+  .mode-card.versus h3 { color:#4488ff; }
+  .mode-card p { font-size:0.76rem; color:var(--muted); line-height:1.5; }
+  .mode-card .badge { display:inline-block; font-size:0.62rem; font-weight:700; padding:2px 8px;
+    border-radius:20px; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; }
+  .mode-card.daily  .badge { background:rgba(245,197,24,0.15); color:var(--accent); }
+  .mode-card.free   .badge { background:rgba(255,255,255,0.08); color:var(--muted); }
+  .mode-card.versus .badge { background:rgba(68,136,255,0.15); color:#4488ff; }
+  .daily-done { opacity:0.6; cursor:default !important; }
   .daily-done h3 { color:var(--muted) !important; }
 
-  /* USER BAR */
-  #user-bar { display:none; width:100%; max-width:640px; justify-content:space-between;
-    align-items:center; background:var(--ui-surface); border-radius:10px; padding:7px 14px; }
-  #user-bar.visible { display:flex; }
-  #user-info { display:flex; align-items:center; gap:8px; font-size:0.8rem; }
-  #user-avatar { width:28px; height:28px; border-radius:50%; background:var(--accent);
-    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;
-    color:#111; overflow:hidden; flex-shrink:0; }
-  #user-avatar img { width:100%; height:100%; object-fit:cover; }
-  #user-name { font-weight:600; color:var(--text); }
-  #user-best { font-size:0.7rem; color:var(--muted); }
-  #btn-signout { background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted);
-    font-family:'DM Sans',sans-serif; font-size:0.7rem; padding:4px 10px; border-radius:6px; cursor:pointer; }
+  /* Mode screen action row */
+  .mode-actions { display:flex; gap:8px; width:100%; }
+  .mode-actions button { flex:1; font-family:'Bebas Neue',sans-serif; letter-spacing:1.5px;
+    font-size:0.85rem; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; }
+  #btn-stats-page { background:var(--ui-surface); color:var(--muted); border:1px solid rgba(255,255,255,0.1); }
+  #btn-mode-lb-toggle { background:var(--ui-surface); color:#4488ff; border:1px solid rgba(68,136,255,0.2); }
 
-  /* GAME SCREEN */
+  /* Mode leaderboard */
+  #mode-leaderboard { width:100%; background:var(--ui-surface); border-radius:12px; padding:14px 18px; }
+  .lb-tabs { display:flex; gap:6px; margin-bottom:10px; }
+  .lb-tab { font-family:'Bebas Neue',sans-serif; font-size:0.75rem; padding:4px 12px;
+    border-radius:6px; border:none; cursor:pointer; letter-spacing:1px; transition:0.15s; }
+  .lb-tab.active { background:var(--accent); color:#111; }
+  .lb-tab.inactive { background:#2a2a2a; color:#aaa; }
+  .lb-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .lb-title-text { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:2px; color:var(--accent); }
+  .lb-row { display:flex; align-items:center; gap:10px; padding:6px 0;
+    border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.82rem; }
+  .lb-row:last-child { border-bottom:none; }
+  .lb-pos { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--muted); width:24px; text-align:center; }
+  .lb-pos.gold{color:#f5c518} .lb-pos.silver{color:#aaa} .lb-pos.bronze{color:#cd7f32}
+  .lb-name { flex:1; font-weight:600; } .lb-name.you { color:var(--accent); }
+  .lb-score { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; }
+  .lb-tier-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .lb-loading { text-align:center; color:var(--muted); font-size:0.8rem; padding:10px; }
+
+  /* ── STATS SCREEN ── */
+  #stats-screen { display:none; flex-direction:column; align-items:center; gap:14px;
+    max-width:420px; width:100%; padding-top:16px; }
+  #stats-screen.visible { display:flex; }
+  .stats-header { display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .stats-header h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:3px; color:var(--accent); }
+  #btn-back-modes { font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:1.5px;
+    padding:7px 16px; background:var(--ui-surface); color:var(--muted); border:1px solid rgba(255,255,255,0.1);
+    border-radius:8px; cursor:pointer; }
+  .stats-tier-card { width:100%; background:var(--ui-surface); border-radius:14px; padding:20px;
+    text-align:center; border:2px solid; }
+  .stats-tier-name { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:3px; }
+  .stats-tier-sub { font-size:0.75rem; color:var(--muted); margin-top:4px; }
+  .stats-elo { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--muted); margin-top:6px; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
+  .stats-card { background:var(--ui-surface); border-radius:10px; padding:14px; text-align:center; }
+  .stats-card .val { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--accent); line-height:1; }
+  .stats-card .lbl { font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
+  .stats-chart { width:100%; background:var(--ui-surface); border-radius:12px; padding:14px 18px; }
+  .stats-chart h4 { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:2px; color:var(--accent); margin-bottom:10px; }
+
+  /* ── VERSUS SCREEN ── */
+  #versus-screen { display:none; flex-direction:column; align-items:center; gap:14px;
+    max-width:420px; width:100%; padding-top:16px; }
+  #versus-screen.visible { display:flex; }
+  .vs-header { display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .vs-header h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:3px; color:#4488ff; }
+  .vs-section { width:100%; background:var(--ui-surface); border-radius:12px; padding:16px; }
+  .vs-section h3 { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:2px; color:var(--muted); margin-bottom:10px; }
+  .vs-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+    color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.9rem; padding:10px 14px;
+    border-radius:8px; outline:none; margin-bottom:10px; }
+  .vs-input:focus { border-color:#4488ff; }
+  .vs-btn { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:1rem;
+    padding:10px 24px; border:none; border-radius:8px; cursor:pointer; width:100%; }
+  .vs-btn.primary { background:#4488ff; color:white; }
+  .vs-btn.secondary { background:#2a2a2a; color:#aaa; margin-top:8px; }
+  .challenge-row { display:flex; align-items:center; gap:10px; padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,0.06); }
+  .challenge-row:last-child { border-bottom:none; }
+  .challenge-opp { flex:1; font-weight:600; font-size:0.85rem; }
+  .challenge-status { font-size:0.72rem; color:var(--muted); }
+  .challenge-action { font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:1px;
+    padding:5px 12px; border:none; border-radius:6px; cursor:pointer; }
+  .challenge-action.play { background:#4488ff; color:white; }
+  .challenge-action.view { background:#2a2a2a; color:#aaa; }
+
+  /* ── GAME SCREEN ── */
   #game-screen { display:none; flex-direction:column; align-items:center; width:100%; gap:10px; }
   #game-screen.visible { display:flex; }
   header { text-align:center; }
   header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,5vw,2.4rem); letter-spacing:3px; color:var(--accent); }
   header p { font-size:0.78rem; color:var(--muted); letter-spacing:0.5px; }
 
-  /* TIMER */
   #timer-bar { width:100%; max-width:640px; display:none; }
   #timer-bar.visible { display:block; }
   #timer-track { width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
-  #timer-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.1s linear, background 0.3s; }
-  #timer-text { font-family:'Bebas Neue',sans-serif; font-size:2rem; text-align:center;
-    color:var(--accent); letter-spacing:2px; margin-top:4px; }
+  #timer-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.1s linear,background 0.3s; }
+  #timer-text { font-family:'Bebas Neue',sans-serif; font-size:2rem; text-align:center; color:var(--accent); letter-spacing:2px; margin-top:4px; }
   #timer-text.urgent { color:var(--red); animation:pulse 0.5s ease-in-out infinite alternate; }
   @keyframes pulse { from{opacity:1} to{opacity:0.5} }
 
@@ -96,7 +172,7 @@
   .round-pip { display:flex; flex-direction:column; align-items:center; gap:2px; }
   .pip-bar { width:28px; height:6px; border-radius:3px; background:rgba(255,255,255,0.1); transition:background 0.4s; }
   .pip-bar.s100{background:#44dd88} .pip-bar.s80{background:#88cc44} .pip-bar.s60{background:#f5c518}
-  .pip-bar.s40{background:#ff9933} .pip-bar.s1{background:#e84040}   .pip-bar.s0{background:#444}
+  .pip-bar.s40{background:#ff9933} .pip-bar.s1{background:#e84040} .pip-bar.s0{background:#444}
   .pip-num { font-size:0.6rem; color:var(--muted); font-weight:600; }
 
   #pitch-wrapper { width:100%; max-width:640px; cursor:crosshair; user-select:none;
@@ -108,9 +184,8 @@
   #feedback-panel { background:var(--ui-surface); border-radius:10px; padding:12px 18px;
     max-width:640px; width:100%; display:flex; align-items:center; gap:12px;
     border-left:4px solid transparent; transition:border-left-color 0.3s; min-height:64px; }
-  #feedback-panel.correct { border-left-color:var(--green); }
-  #feedback-panel.poor    { border-left-color:var(--red); }
-  #feedback-panel.ok      { border-left-color:var(--accent); }
+  #feedback-panel.correct{border-left-color:var(--green)} #feedback-panel.poor{border-left-color:var(--red)}
+  #feedback-panel.ok{border-left-color:var(--accent)}
   #feedback-icon { font-size:1.7rem; flex-shrink:0; }
   #feedback-body h3 { font-size:0.9rem; font-weight:600; margin-bottom:2px; }
   #feedback-body p  { font-size:0.75rem; color:var(--muted); line-height:1.45; }
@@ -120,29 +195,23 @@
   #end-summary h2 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--accent); letter-spacing:2px; }
   #end-summary .final-score { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; line-height:1; color:white; }
   #end-summary .out-of { font-size:0.8rem; color:var(--muted); margin-bottom:8px; }
-  #end-summary .rank-label { font-size:1rem; font-weight:600; margin:4px 0 10px; }
+  #end-summary .end-tier { font-size:1rem; font-weight:700; margin:6px 0; }
   #end-summary .share-text { font-size:0.72rem; color:var(--muted); font-family:monospace;
     background:#0d0f14; padding:8px 12px; border-radius:6px; white-space:pre-wrap; margin-top:8px; }
   #end-summary .saved-note { font-size:0.72rem; color:var(--green); margin-top:8px; }
-  #end-summary .mode-tag { font-size:0.7rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:2px; color:var(--accent); margin-bottom:4px; }
+  #end-summary .mode-tag { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--accent); margin-bottom:4px; }
+  #share-canvas-wrap { margin-top:10px; }
+  #share-canvas { border-radius:10px; max-width:100%; display:none; }
+  #btn-dl-image { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:0.85rem;
+    padding:7px 18px; background:#1a2a4a; color:#4488ff; border:none; border-radius:8px; cursor:pointer; margin-top:6px; display:none; }
 
-  #leaderboard { background:var(--ui-surface); border-radius:12px; padding:14px 18px; max-width:640px; width:100%; display:none; }
-  #leaderboard h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px;
-    color:var(--accent); margin-bottom:10px; text-align:center; }
-  .lb-row { display:flex; align-items:center; gap:10px; padding:6px 0;
-    border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.82rem; }
-  .lb-row:last-child { border-bottom:none; }
-  .lb-rank { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--muted); width:24px; text-align:center; }
-  .lb-rank.gold{color:#f5c518} .lb-rank.silver{color:#aaa} .lb-rank.bronze{color:#cd7f32}
-  .lb-name { flex:1; font-weight:600; } .lb-name.you { color:var(--accent); }
-  .lb-score { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; }
-  .lb-loading { text-align:center; color:var(--muted); font-size:0.8rem; padding:10px; }
+  #game-leaderboard { background:var(--ui-surface); border-radius:12px; padding:14px 18px; max-width:640px; width:100%; display:none; }
+  #game-leaderboard h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px; color:var(--accent); margin-bottom:10px; text-align:center; }
 
-  #controls { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  #controls { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
   button { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:1rem;
-    padding:9px 26px; border:none; border-radius:8px; cursor:pointer; transition:opacity 0.15s,transform 0.1s; }
-  button:active { transform:scale(0.97); } button:disabled { opacity:0.3; cursor:default; }
+    padding:9px 22px; border:none; border-radius:8px; cursor:pointer; transition:opacity 0.15s,transform 0.1s; }
+  button:active{transform:scale(0.97)} button:disabled{opacity:0.3;cursor:default}
   #btn-next  { background:var(--accent); color:#111; }
   #btn-share { background:#1a4a2a; color:#44dd88; display:none; }
   #btn-reset { background:#2a2a2a; color:#aaa; }
@@ -156,77 +225,137 @@
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- ═══ AUTH SCREEN ═══ -->
 <div id="auth-screen">
   <div class="ball-icon">🧤</div>
   <h1>KeeperTap</h1>
   <p class="tagline">Can you read the angle?</p>
   <button class="btn-google" id="btn-google-signin">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-    </svg>
+    <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
     Sign in with Google
   </button>
   <div class="auth-divider">or</div>
   <button class="btn-guest" id="btn-guest">Play as Guest (Free Play only)</button>
-  <p class="auth-note">Sign in to access Daily mode and the global leaderboard.<br>We only store your name and best score.</p>
+  <p class="auth-note">Sign in for Daily mode, leaderboards, stats and versus.<br>We only store your name and scores.</p>
 </div>
 
-<!-- MODE SELECT SCREEN -->
+<!-- ═══ MODE SCREEN ═══ -->
 <div id="mode-screen">
   <div id="user-bar">
     <div id="user-info">
       <div id="user-avatar"><span id="user-initial">?</span></div>
-      <div>
+      <div class="user-meta">
         <div id="user-name">Player</div>
-        <div id="user-best">Best: —</div>
+        <div id="user-tier-badge"></div>
+        <div id="user-streak"></div>
       </div>
     </div>
     <button id="btn-signout">Sign out</button>
   </div>
-  <h2>KeeperTap</h2>
-  <p>Choose your game mode</p>
 
   <div class="mode-card daily" id="btn-daily-mode">
     <div class="badge">⚡ Daily Challenge</div>
     <h3>Daily Game</h3>
-    <p>20 seconds. 10 rounds. Same scenarios for everyone today. One shot at the leaderboard — make it count.</p>
+    <p>25 seconds. 10 rounds. Same scenarios for everyone today. One shot at the leaderboard.</p>
   </div>
 
   <div class="mode-card free" id="btn-free-mode">
     <div class="badge">∞ Unlimited</div>
     <h3>Free Play</h3>
-    <p>Practice your positioning with no time pressure. Play as many games as you like.</p>
+    <p>Practice with no time pressure. Play as many games as you like.</p>
   </div>
 
-  <!-- Leaderboard on mode screen -->
-  <div id="mode-leaderboard" style="width:100%;background:var(--ui-surface);border-radius:12px;padding:14px 18px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--accent);">🏆 Leaderboard</span>
-      <div style="display:flex;gap:6px;">
-        <button id="lb-tab-daily" style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;padding:4px 12px;border-radius:6px;border:none;background:var(--accent);color:#111;cursor:pointer;letter-spacing:1px;">Today</button>
-        <button id="lb-tab-alltime" style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;padding:4px 12px;border-radius:6px;border:none;background:#2a2a2a;color:#aaa;cursor:pointer;letter-spacing:1px;">All-Time</button>
+  <div class="mode-card versus" id="btn-versus-mode">
+    <div class="badge">⚔️ Versus</div>
+    <h3>Challenge</h3>
+    <p>Challenge a friend. Same scenarios, same timer. Who reads the angle better?</p>
+  </div>
+
+  <div class="mode-actions">
+    <button id="btn-stats-page">📊 My Stats</button>
+    <button id="btn-mode-lb-toggle">🏆 Leaderboard</button>
+  </div>
+
+  <div id="mode-leaderboard" style="display:none; width:100%;">
+    <div class="lb-header">
+      <span class="lb-title-text">🏆 Leaderboard</span>
+      <div class="lb-tabs">
+        <button class="lb-tab active" id="lb-tab-today">Today</button>
+        <button class="lb-tab inactive" id="lb-tab-week">This Week</button>
+        <button class="lb-tab inactive" id="lb-tab-alltime">All-Time</button>
       </div>
     </div>
     <div id="mode-lb-rows"><div class="lb-loading">Loading...</div></div>
   </div>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- ═══ STATS SCREEN ═══ -->
+<div id="stats-screen">
+  <div class="stats-header">
+    <h2>My Stats</h2>
+    <button id="btn-back-modes">← Back</button>
+  </div>
+  <div class="stats-tier-card" id="stats-tier-card">
+    <div style="font-size:2.5rem" id="stats-tier-icon">🧤</div>
+    <div class="stats-tier-name" id="stats-tier-name">Sunday League</div>
+    <div class="stats-tier-sub" id="stats-tier-sub">Keep playing to climb the ranks</div>
+    <div class="stats-elo" id="stats-elo-text">Elo: 1000</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stats-card"><div class="val" id="st-streak">0</div><div class="lbl">🔥 Current Streak</div></div>
+    <div class="stats-card"><div class="val" id="st-best-streak">0</div><div class="lbl">Best Streak</div></div>
+    <div class="stats-card"><div class="val" id="st-games">0</div><div class="lbl">Games Played</div></div>
+    <div class="stats-card"><div class="val" id="st-avg">0</div><div class="lbl">Avg Score</div></div>
+    <div class="stats-card"><div class="val" id="st-best">0</div><div class="lbl">Best Score</div></div>
+    <div class="stats-card"><div class="val" id="st-vs">0W 0L</div><div class="lbl">Versus Record</div></div>
+  </div>
+  <div class="stats-chart">
+    <h4>Last 10 Daily Scores</h4>
+    <svg id="score-chart" width="100%" height="80" viewBox="0 0 300 80"></svg>
+  </div>
+</div>
+
+<!-- ═══ VERSUS SCREEN ═══ -->
+<div id="versus-screen">
+  <div class="vs-header">
+    <h2>⚔️ Versus</h2>
+    <button id="btn-back-from-vs" style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:1.5px;padding:7px 16px;background:var(--ui-surface);color:var(--muted);border:1px solid rgba(255,255,255,0.1);border-radius:8px;cursor:pointer;">← Back</button>
+  </div>
+
+  <!-- Post open challenge -->
+  <div class="vs-section">
+    <h3>Post an Open Challenge</h3>
+    <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;">Anyone in the lobby can accept it. You'll play immediately — they play whenever they open the lobby.</p>
+    <button class="vs-btn primary" id="btn-post-open-challenge">⚔️ Post Open Challenge</button>
+    <div id="vs-post-status" style="font-size:0.75rem;color:var(--muted);margin-top:8px;text-align:center;"></div>
+  </div>
+
+  <!-- Open lobby -->
+  <div class="vs-section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h3 style="margin:0;">Open Challenges</h3>
+      <button id="btn-refresh-lobby" style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:1px;padding:4px 10px;background:#2a2a2a;color:#aaa;border:none;border-radius:6px;cursor:pointer;">↻ Refresh</button>
+    </div>
+    <div id="vs-lobby-list"><div class="lb-loading">Loading open challenges...</div></div>
+  </div>
+
+  <!-- Your active challenges -->
+  <div class="vs-section">
+    <h3>Your Challenges</h3>
+    <div id="vs-challenges-list"><div class="lb-loading">Loading...</div></div>
+  </div>
+</div>
+
+<!-- ═══ GAME SCREEN ═══ -->
 <div id="game-screen">
   <header>
     <h1>KeeperTap</h1>
     <p id="game-mode-label">Tap the pitch to position your goalkeeper</p>
   </header>
-
   <div id="timer-bar">
     <div id="timer-track"><div id="timer-fill" style="width:100%"></div></div>
-    <div id="timer-text">20</div>
+    <div id="timer-text">25</div>
   </div>
-
   <div id="stats-bar">
     <div class="stat"><span class="stat-val" id="total-val">0</span><span class="stat-label">Total</span></div>
     <div class="stat-divider"></div>
@@ -235,7 +364,6 @@
     <div class="stat"><span class="stat-val" id="best-val">—</span><span class="stat-label">Best Round</span></div>
   </div>
   <div id="round-scores"></div>
-
   <div id="pitch-wrapper">
     <svg id="pitch-svg" viewBox="0 0 370 460" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -245,9 +373,9 @@
         </pattern>
       </defs>
       <rect width="370" height="460" fill="url(#stripes)"/>
-      <line x1="30"  y1="20"  x2="30"  y2="440" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
-      <line x1="30"  y1="20"  x2="370" y2="20"  stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
-      <line x1="30"  y1="440" x2="370" y2="440" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+      <line x1="30" y1="20" x2="30" y2="440" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+      <line x1="30" y1="20" x2="370" y2="20" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+      <line x1="30" y1="440" x2="370" y2="440" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
       <line x1="370" y1="0" x2="370" y2="460" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="10 6"/>
       <path d="M 370 170 A 60 60 0 0 0 370 290" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
       <circle cx="370" cy="230" r="3" fill="rgba(255,255,255,0.45)"/>
@@ -263,7 +391,6 @@
       <g id="dynamic-layer"></g>
     </svg>
   </div>
-
   <div id="feedback-panel">
     <div id="feedback-icon">👆</div>
     <div id="feedback-body">
@@ -271,22 +398,23 @@
       <p id="scenario-label">—</p>
     </div>
   </div>
-
   <div id="end-summary">
     <div class="mode-tag" id="end-mode-tag"></div>
     <h2>Full Time!</h2>
     <div class="final-score" id="final-score-val">0</div>
     <div class="out-of">out of 1000</div>
-    <div class="rank-label" id="rank-label"></div>
+    <div class="end-tier" id="end-tier-text"></div>
     <div class="share-text" id="share-text"></div>
+    <div id="share-canvas-wrap">
+      <canvas id="share-canvas" width="600" height="340"></canvas>
+      <br><button id="btn-dl-image">📸 Save Image</button>
+    </div>
     <div class="saved-note" id="saved-note"></div>
   </div>
-
-  <div id="leaderboard">
+  <div id="game-leaderboard">
     <h3 id="lb-title">🏆 Leaderboard</h3>
     <div id="lb-rows"><div class="lb-loading">Loading...</div></div>
   </div>
-
   <div id="controls">
     <button id="btn-next" disabled>Next Round →</button>
     <button id="btn-share">📋 Copy Score</button>
@@ -294,7 +422,6 @@
     <button id="btn-reset">New Game</button>
     <button id="btn-lb">🏆 Leaderboard</button>
   </div>
-
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:#f5c518"></div> Attacker</div>
     <div class="legend-item"><div class="legend-dot" style="background:#4488ff"></div> Your GK</div>
@@ -305,651 +432,862 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ═══════════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://scthmlptetwhmiulhqpi.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdGhtbHB0ZXR3aG1pdWxocXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTEyOTIsImV4cCI6MjA5MTU4NzI5Mn0.UFguArgZ9Xs9jyixnCNOvV2w-lVw2vhaLFkGaiStRL0';
 
-let sb = null;
-let currentUser = null;
-let isGuest = false;
-let gameMode = 'free'; // 'free' or 'daily'
+let sb = null, currentUser = null, isGuest = false, gameMode = 'free';
+let currentChallengeId = null; // for versus mode
 
-// ── DAILY SEED ──────────────────────────────────────────────────────
-// Generates same scenario order for everyone on the same calendar date
-function getDailySeed() {
-  const d = new Date();
-  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+// ── TIER SYSTEM ─────────────────────────────────────────────────────
+const TIERS = [
+  { name:'Champions League', icon:'🏆', colour:'#f5c518', border:'#f5c518', min:850 },
+  { name:'Premier League',   icon:'💜', colour:'#9b59b6', border:'#9b59b6', min:700 },
+  { name:'Championship',     icon:'🔵', colour:'#3498db', border:'#3498db', min:550 },
+  { name:'League One',       icon:'🟠', colour:'#e67e22', border:'#e67e22', min:400 },
+  { name:'League Two',       icon:'🟡', colour:'#f1c40f', border:'#2ecc71', min:250 },
+  { name:'National League',  icon:'⚪', colour:'#95a5a6', border:'#95a5a6', min:100 },
+  { name:'Conference',       icon:'🟤', colour:'#795548', border:'#795548', min:50  },
+  { name:'Sunday League',    icon:'⚫', colour:'#555',    border:'#555',    min:0   },
+];
+
+function getTier(avg) {
+  return TIERS.find(t => avg >= t.min) || TIERS[TIERS.length-1];
 }
-function seededShuffle(arr, seed) {
-  const a = [...arr];
-  let s = seed;
-  for (let i = a.length-1; i > 0; i--) {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    const j = Math.abs(s) % (i+1);
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+
+function tierBadgeHTML(tier) {
+  return `<span style="background:${tier.colour}22;color:${tier.colour};padding:1px 7px;border-radius:10px;font-size:0.65rem;font-weight:700;">${tier.icon} ${tier.name}</span>`;
 }
+
+// ── DATE HELPERS ────────────────────────────────────────────────────
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function weekStart() {
+  const d = new Date();
+  const day = d.getDay(); // 0=Sun
+  const diff = (day === 0) ? -6 : 1 - day; // Monday
+  const mon = new Date(d); mon.setDate(d.getDate() + diff);
+  return `${mon.getFullYear()}-${String(mon.getMonth()+1).padStart(2,'0')}-${String(mon.getDate()).padStart(2,'0')}`;
+}
+function getDailySeed() {
+  const d = new Date();
+  return d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+}
+function seededShuffle(arr, seed) {
+  const a = [...arr]; let s = seed;
+  for (let i = a.length-1; i > 0; i--) {
+    s = (s*1664525+1013904223) & 0xffffffff;
+    const j = Math.abs(s)%(i+1); [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 }
 
 // ── SUPABASE ────────────────────────────────────────────────────────
 function initSupabase() {
   try {
-    if (window.supabase && window.supabase.createClient) {
-      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-      return true;
-    }
-  } catch(e) { console.warn('Supabase init error:', e); }
+    if (window.supabase?.createClient) { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON); return true; }
+  } catch(e) { console.warn('Supabase init:', e); }
   return false;
 }
 
 async function initAuth() {
   if (!sb) return;
   try {
-    const { data: { session } } = await sb.auth.getSession();
+    const { data:{session} } = await sb.auth.getSession();
     if (session?.user) { currentUser = session.user; showModeScreen(session.user); }
-  } catch(e) { console.warn('Session check failed:', e); }
+  } catch(e) { console.warn('Session:', e); }
 }
 
 function showModeScreen(user) {
-  document.getElementById('auth-screen').style.display = 'none';
+  hideAll();
   document.getElementById('mode-screen').classList.add('visible');
-
   if (user && !isGuest) {
-    const bar    = document.getElementById('user-bar');
     const name   = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Player';
     const avatar = user.user_metadata?.avatar_url;
+    const bar    = document.getElementById('user-bar');
     bar.classList.add('visible');
     document.getElementById('user-name').textContent = name;
-    const avatarEl = document.getElementById('user-avatar');
-    if (avatar) { avatarEl.innerHTML = `<img src="${avatar}" alt="${name}">`; }
-    else { document.getElementById('user-initial').textContent = name[0].toUpperCase(); }
-    loadUserBest(user.id, name, avatar);
+    if (avatar) document.getElementById('user-avatar').innerHTML = `<img src="${avatar}" alt="${name}">`;
+    else document.getElementById('user-initial').textContent = name[0].toUpperCase();
+    loadUserProfile(user.id, name, avatar);
     checkDailyPlayed();
   }
-  // Always load leaderboard on mode screen
-  loadModeLeaderboard(true);
+  loadModeLeaderboard('today');
+}
+
+function hideAll() {
+  ['auth-screen','mode-screen','stats-screen','versus-screen','game-screen'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display=''; el.classList.remove('visible'); }
+  });
+  document.getElementById('auth-screen').style.display = 'none';
+}
+
+// ── PROFILE ─────────────────────────────────────────────────────────
+async function loadUserProfile(userId, name, avatar) {
+  if (!sb) return;
+  try {
+    await sb.from('profiles').upsert({ id:userId, username:name, avatar_url:avatar||null }, { onConflict:'id', ignoreDuplicates:false });
+    const { data } = await sb.from('profiles').select('*').eq('id', userId).single();
+    if (!data) return;
+    const avg  = data.average_score || 0;
+    const tier = getTier(avg);
+    document.getElementById('user-tier-badge').innerHTML = tierBadgeHTML(tier);
+    const streak = data.current_streak || 0;
+    document.getElementById('user-streak').textContent = streak > 0 ? `🔥 ${streak} day streak` : '';
+  } catch(e) { /* columns may not exist yet — silently ignore */ }
 }
 
 async function checkDailyPlayed() {
   if (!sb || !currentUser) return;
-  const { data } = await sb.from('daily_scores')
-    .select('score')
-    .eq('user_id', currentUser.id)
-    .eq('play_date', todayStr())
-    .single();
-
-  const card = document.getElementById('btn-daily-mode');
-  if (data) {
-    card.classList.add('daily-done');
-    card.querySelector('p').textContent = `Today's score: ${data.score}/1000 — Come back tomorrow!`;
-    card.querySelector('h3').textContent = "Today's Game ✓";
-  }
+  try {
+    const { data } = await sb.from('daily_scores').select('score').eq('user_id', currentUser.id).eq('play_date', todayStr()).single();
+    if (data) {
+      const card = document.getElementById('btn-daily-mode');
+      card.classList.add('daily-done');
+      card.querySelector('p').textContent = `Today's score: ${data.score}/1000 — Come back tomorrow!`;
+      card.querySelector('h3').textContent = "Today's Game ✓";
+    }
+  } catch(e) {}
 }
 
-async function loadUserBest(userId, name, avatar) {
-  if (!sb) return;
-  await sb.from('profiles').upsert({ id:userId, username:name, avatar_url:avatar||null }, { onConflict:'id', ignoreDuplicates:false });
-  const { data } = await sb.from('profiles').select('best_score, games_played').eq('id', userId).single();
-  if (data) document.getElementById('user-best').textContent = `Best: ${data.best_score||0} | Games: ${data.games_played||0}`;
-}
-
+// ── SAVE SCORES ─────────────────────────────────────────────────────
 async function saveFreeScore(total) {
   if (!sb || !currentUser || isGuest) return;
-  const userId = currentUser.id;
-  const { data: profile } = await sb.from('profiles').select('best_score, games_played').eq('id', userId).single();
-  const newBest  = Math.max(profile?.best_score||0, total);
-  const newGames = (profile?.games_played||0) + 1;
-  await sb.from('profiles').upsert({ id:userId, best_score:newBest, games_played:newGames, updated_at:new Date().toISOString() }, { onConflict:'id' });
-  document.getElementById('user-best').textContent = `Best: ${newBest} | Games: ${newGames}`;
+  try {
+    const { data:profile } = await sb.from('profiles').select('best_score,games_played,average_score').eq('id', currentUser.id).single();
+    const games    = (profile?.games_played || 0) + 1;
+    const newBest  = Math.max(profile?.best_score || 0, total);
+    // Rolling average of last 10
+    const newAvg   = Math.round(((profile?.average_score || 0) * Math.min(games-1, 9) + total) / Math.min(games, 10));
+    const tier     = getTier(newAvg);
+    await sb.from('profiles').upsert({
+      id:currentUser.id, best_score:newBest, games_played:games,
+      average_score:newAvg, rank_tier:tier.name, updated_at:new Date().toISOString()
+    }, { onConflict:'id' });
+  } catch(e) { /* silently handle missing columns */ }
 }
 
 async function saveDailyScore(total, roundScoresArr) {
   if (!sb || !currentUser || isGuest) return;
-  const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
-  const { error } = await sb.from('daily_scores').insert({
-    user_id:      currentUser.id,
-    username:     name,
-    score:        total,
-    round_scores: roundScoresArr,
-    play_date:    todayStr(),
-  });
-  if (error) {
-    // Unique constraint violation — they already played today
-    if (error.code === '23505') {
-      savedNote.textContent = '⚠️ You already played today — only your first attempt counts.';
-      savedNote.style.color = 'var(--accent)';
-    } else {
-      savedNote.textContent = '⚠️ Could not save score — please check your connection.';
-      savedNote.style.color = 'var(--red)';
+  try {
+    const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
+    const { error } = await sb.from('daily_scores').insert({
+      user_id:currentUser.id, username:name, score:total,
+      round_scores:roundScoresArr, play_date:todayStr()
+    });
+    if (error?.code === '23505') {
+      savedNote.textContent = '⚠️ You already played today — first attempt counts.';
+      savedNote.style.color = 'var(--accent)'; return;
     }
-    return;
-  }
-  // Also update best in profiles
-  await saveFreeScore(total);
+    // Update streak
+    await updateStreak();
+    await saveFreeScore(total);
+    savedNote.textContent = '✅ Daily score saved!';
+  } catch(e) { savedNote.textContent = '⚠️ Could not save score.'; }
+}
+
+async function updateStreak() {
+  if (!sb || !currentUser) return;
+  try {
+    const { data:profile } = await sb.from('profiles').select('current_streak,best_streak,last_played_date').eq('id', currentUser.id).single();
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+    let streak = 1;
+    if (profile?.last_played_date === yStr) streak = (profile.current_streak || 0) + 1;
+    const best = Math.max(profile?.best_streak || 0, streak);
+    await sb.from('profiles').upsert({ id:currentUser.id, current_streak:streak, best_streak:best, last_played_date:todayStr() }, { onConflict:'id' });
+    document.getElementById('user-streak').textContent = `🔥 ${streak} day streak`;
+  } catch(e) {}
 }
 
 async function hasPlayedTodayAlready() {
-  if (!sb || !currentUser || isGuest) return false;
+  if (!sb || !currentUser) return false;
   try {
-    const { data } = await sb.from('daily_scores')
-      .select('score')
-      .eq('user_id', currentUser.id)
-      .eq('play_date', todayStr())
-      .single();
+    const { data } = await sb.from('daily_scores').select('score').eq('user_id', currentUser.id).eq('play_date', todayStr()).single();
     return !!data;
   } catch(e) { return false; }
 }
 
-async function loadModeLeaderboard(daily = true) {
+// ── LEADERBOARDS ────────────────────────────────────────────────────
+async function loadModeLeaderboard(tab = 'today') {
   if (!sb) return;
   const rowsEl = document.getElementById('mode-lb-rows');
   rowsEl.innerHTML = '<div class="lb-loading">Loading...</div>';
-
-  // Update tab styles
-  document.getElementById('lb-tab-daily').style.background   = daily ? 'var(--accent)' : '#2a2a2a';
-  document.getElementById('lb-tab-daily').style.color        = daily ? '#111' : '#aaa';
-  document.getElementById('lb-tab-alltime').style.background = daily ? '#2a2a2a' : 'var(--accent)';
-  document.getElementById('lb-tab-alltime').style.color      = daily ? '#aaa' : '#111';
-
-  let query;
-  if (daily) {
-    query = sb.from('daily_scores').select('username, score')
-      .eq('play_date', todayStr()).order('score', { ascending: false }).limit(10);
-  } else {
-    query = sb.from('profiles').select('username, best_score')
-      .order('best_score', { ascending: false }).limit(10);
-  }
-
-  const { data, error } = await query;
-  if (error || !data || data.length === 0) {
-    rowsEl.innerHTML = '<div class="lb-loading">No scores yet today — be the first!</div>';
-    return;
-  }
-
-  const myName = currentUser ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]) : null;
-  rowsEl.innerHTML = data.map((row, i) => {
-    const score  = daily ? row.score : row.best_score;
-    const isYou  = myName && row.username === myName;
-    const medal  = ['gold','silver','bronze'][i] || '';
-    return `<div class="lb-row">
-      <div class="lb-rank ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
-      <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
-      <div class="lb-score">${score}</div>
-    </div>`;
-  }).join('');
+  ['today','week','alltime'].forEach(t => {
+    const btn = document.getElementById(`lb-tab-${t}`);
+    if (btn) { btn.className = `lb-tab ${t===tab?'active':'inactive'}`; }
+  });
+  try {
+    let data, error;
+    if (tab === 'today') {
+      ({data,error} = await sb.from('daily_scores').select('username,score').eq('play_date', todayStr()).order('score',{ascending:false}).limit(10));
+    } else if (tab === 'week') {
+      ({data,error} = await sb.from('daily_scores').select('username,score').gte('play_date', weekStart()).order('score',{ascending:false}).limit(10));
+      // Sum per user for week
+      if (data) {
+        const agg = {};
+        data.forEach(r => { agg[r.username] = (agg[r.username]||0) + r.score; });
+        data = Object.entries(agg).map(([username,score])=>({username,score})).sort((a,b)=>b.score-a.score).slice(0,10);
+      }
+    } else {
+      ({data,error} = await sb.from('profiles').select('username,best_score,average_score').order('best_score',{ascending:false}).limit(10));
+      if (data) data = data.map(r=>({username:r.username, score:r.best_score, avg:r.average_score||0}));
+    }
+    if (error || !data || data.length===0) { rowsEl.innerHTML='<div class="lb-loading">No scores yet — be the first!</div>'; return; }
+    const myName = currentUser ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]) : null;
+    rowsEl.innerHTML = data.map((row,i) => {
+      const isYou = myName && row.username===myName;
+      const medal = ['gold','silver','bronze'][i]||'';
+      const tier  = tab==='alltime' ? getTier(row.avg||0) : null;
+      return `<div class="lb-row">
+        <div class="lb-pos ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+        ${tier?`<div class="lb-tier-dot" style="background:${tier.colour}"></div>`:''}
+        <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
+        <div class="lb-score">${row.score}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { rowsEl.innerHTML='<div class="lb-loading">Could not load leaderboard.</div>'; }
 }
 
-async function loadLeaderboard(daily = false) {
+async function loadGameLeaderboard(daily=false) {
+  if (!sb) return;
   const lbEl = document.getElementById('lb-rows');
   document.getElementById('lb-title').textContent = daily ? '⚡ Today\'s Leaderboard' : '🏆 All-Time Leaderboard';
   lbEl.innerHTML = '<div class="lb-loading">Loading...</div>';
+  try {
+    const {data,error} = daily
+      ? await sb.from('daily_scores').select('username,score').eq('play_date',todayStr()).order('score',{ascending:false}).limit(10)
+      : await sb.from('profiles').select('username,best_score').order('best_score',{ascending:false}).limit(10);
+    if (error||!data) { lbEl.innerHTML='<div class="lb-loading">Could not load.</div>'; return; }
+    const myName = currentUser ? (currentUser.user_metadata?.full_name||currentUser.email?.split('@')[0]) : null;
+    lbEl.innerHTML = data.map((row,i)=>{
+      const score=daily?row.score:row.best_score, isYou=myName&&row.username===myName;
+      const medal=['gold','silver','bronze'][i]||'';
+      return `<div class="lb-row"><div class="lb-pos ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+        <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
+        <div class="lb-score">${score}</div></div>`;
+    }).join('');
+  } catch(e) {}
+}
 
-  let query;
-  if (daily) {
-    query = sb.from('daily_scores')
-      .select('username, score')
-      .eq('play_date', todayStr())
-      .order('score', { ascending: false })
-      .limit(10);
-  } else {
-    query = sb.from('profiles')
-      .select('username, best_score')
-      .order('best_score', { ascending: false })
-      .limit(10);
+// ── STATS PAGE ───────────────────────────────────────────────────────
+async function showStatsScreen() {
+  hideAll();
+  document.getElementById('stats-screen').classList.add('visible');
+  if (!sb || !currentUser) return;
+  try {
+    const { data:profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    if (!profile) return;
+    const avg  = profile.average_score || 0;
+    const tier = getTier(avg);
+    const card = document.getElementById('stats-tier-card');
+    card.style.borderColor = tier.colour;
+    document.getElementById('stats-tier-icon').textContent = tier.icon;
+    document.getElementById('stats-tier-name').textContent = tier.name;
+    document.getElementById('stats-tier-name').style.color = tier.colour;
+    document.getElementById('stats-tier-sub').textContent  = `Average score: ${avg}/1000`;
+    document.getElementById('stats-elo-text').textContent  = `Elo: ${profile.elo||1000}`;
+    document.getElementById('st-streak').textContent      = profile.current_streak||0;
+    document.getElementById('st-best-streak').textContent = profile.best_streak||0;
+    document.getElementById('st-games').textContent       = profile.games_played||0;
+    document.getElementById('st-avg').textContent         = avg;
+    document.getElementById('st-best').textContent        = profile.best_score||0;
+    // Versus record
+    const {data:wins}   = await sb.from('challenges').select('id').eq('challenger_id',currentUser.id).eq('status','completed').gt('challenger_score','opponent_score');
+    const {data:losses} = await sb.from('challenges').select('id').eq('opponent_id',currentUser.id).eq('status','completed').gt('opponent_score','challenger_score');
+    document.getElementById('st-vs').textContent = `${(wins||[]).length}W ${(losses||[]).length}L`;
+    // Score chart — last 10 daily scores
+    const { data:scores } = await sb.from('daily_scores').select('score,play_date').eq('user_id', currentUser.id).order('play_date',{ascending:false}).limit(10);
+    drawScoreChart(scores ? scores.reverse() : []);
+  } catch(e) { console.warn('Stats error:', e); }
+}
+
+function drawScoreChart(scores) {
+  const svg = document.getElementById('score-chart');
+  svg.innerHTML = '';
+  if (!scores.length) { svg.innerHTML='<text x="150" y="40" text-anchor="middle" fill="#888" font-size="12">No data yet</text>'; return; }
+  const max=1000, w=300, h=80, pad=10;
+  const bw = (w-pad*2)/10;
+  scores.forEach((s,i)=>{
+    const bh = Math.max(2,((s.score||0)/max)*(h-pad*2));
+    const x  = pad + i*bw;
+    const y  = h - pad - bh;
+    const col= s.score>=850?'#f5c518':s.score>=550?'#4488ff':s.score>=250?'#44dd88':'#e84040';
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',x+2); rect.setAttribute('y',y); rect.setAttribute('width',bw-4); rect.setAttribute('height',bh);
+    rect.setAttribute('fill',col); rect.setAttribute('rx',2);
+    svg.appendChild(rect);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x',x+bw/2); txt.setAttribute('y',h-1); txt.setAttribute('text-anchor','middle');
+    txt.setAttribute('font-size',7); txt.setAttribute('fill','#666'); txt.textContent=s.score||0;
+    svg.appendChild(txt);
+  });
+}
+
+// ── VERSUS MODE ──────────────────────────────────────────────────────
+async function showVersusScreen() {
+  hideAll();
+  document.getElementById('versus-screen').classList.add('visible');
+  loadLobby();
+  loadChallenges();
+}
+
+// Load open challenges from all players (lobby)
+async function loadLobby() {
+  if (!sb || !currentUser) return;
+  const el = document.getElementById('vs-lobby-list');
+  el.innerHTML = '<div class="lb-loading">Loading...</div>';
+  try {
+    const { data } = await sb.from('challenges')
+      .select('id,challenger_id,challenger_name,seed,created_at')
+      .eq('status', 'open')
+      .neq('challenger_id', currentUser.id) // don't show your own
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (!data?.length) {
+      el.innerHTML = '<div class="lb-loading">No open challenges right now — post one above!</div>';
+      return;
+    }
+
+    el.innerHTML = data.map(c => {
+      const ago = timeAgo(c.created_at);
+      return `<div class="challenge-row">
+        <div>
+          <div class="challenge-opp">🧤 ${c.challenger_name || 'Anonymous'}</div>
+          <div class="challenge-status">Posted ${ago}</div>
+        </div>
+        <button class="challenge-action play" data-id="${c.id}" data-seed="${c.seed}">Accept</button>
+      </div>`;
+    }).join('');
+
+    el.querySelectorAll('.challenge-action.play').forEach(btn => {
+      btn.addEventListener('click', () => acceptOpenChallenge(btn.dataset.id, btn.dataset.seed));
+    });
+  } catch(e) {
+    el.innerHTML = '<div class="lb-loading">Could not load lobby.</div>';
   }
+}
 
-  const { data, error } = await query;
-  if (error || !data) { lbEl.innerHTML = '<div class="lb-loading">Could not load leaderboard.</div>'; return; }
+// Post an open challenge — challenger plays immediately
+async function postOpenChallenge() {
+  if (!sb || !currentUser) return;
+  const statusEl = document.getElementById('vs-post-status');
+  const btn = document.getElementById('btn-post-open-challenge');
+  statusEl.textContent = 'Posting...';
+  btn.disabled = true;
 
-  const myName = currentUser ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]) : null;
-  lbEl.innerHTML = data.map((row, i) => {
-    const score  = daily ? row.score : row.best_score;
-    const isYou  = myName && row.username === myName;
-    const medal  = ['gold','silver','bronze'][i] || '';
-    return `<div class="lb-row">
-      <div class="lb-rank ${medal}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
-      <div class="lb-name ${isYou?'you':''}">${row.username||'Anonymous'}${isYou?' (you)':''}</div>
-      <div class="lb-score">${score}</div>
-    </div>`;
-  }).join('');
+  try {
+    const myName = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
+    const seed   = Math.floor(Math.random() * 1000000);
+
+    const { data: challenge, error } = await sb.from('challenges').insert({
+      challenger_id:   currentUser.id,
+      challenger_name: myName,
+      seed,
+      status: 'open', // open = waiting for anyone to accept
+    }).select().single();
+
+    if (error) { statusEl.textContent = '⚠️ Could not post challenge.'; btn.disabled=false; return; }
+
+    statusEl.textContent = '✅ Challenge posted! Playing now...';
+    // Challenger plays immediately
+    setTimeout(() => startChallengeGame(challenge.id, true, seed), 800);
+  } catch(e) {
+    statusEl.textContent = '⚠️ Error posting challenge.';
+    btn.disabled = false;
+  }
+}
+
+// Opponent accepts from lobby — plays immediately
+async function acceptOpenChallenge(challengeId, seed) {
+  if (!sb || !currentUser) return;
+  const myName = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Player';
+
+  try {
+    // Claim the challenge atomically
+    const { error } = await sb.from('challenges')
+      .update({ opponent_id: currentUser.id, opponent_name: myName, status: 'pending' })
+      .eq('id', challengeId)
+      .eq('status', 'open'); // only update if still open
+
+    if (error) { alert('That challenge was just taken — try another!'); loadLobby(); return; }
+
+    // Play immediately
+    startChallengeGame(challengeId, false, parseInt(seed));
+  } catch(e) {
+    alert('Could not accept challenge. Try again.');
+  }
+}
+
+// Load your own active challenges
+async function loadChallenges() {
+  if (!sb || !currentUser) return;
+  const el = document.getElementById('vs-challenges-list');
+  el.innerHTML = '<div class="lb-loading">Loading...</div>';
+  try {
+    const uid = currentUser.id;
+    const { data } = await sb.from('challenges').select('*')
+      .or(`challenger_id.eq.${uid},opponent_id.eq.${uid}`)
+      .not('status', 'eq', 'open') // exclude lobby challenges already played
+      .order('created_at', { ascending: false })
+      .limit(15);
+
+    if (!data?.length) {
+      el.innerHTML = '<div class="lb-loading">No completed challenges yet.</div>';
+      return;
+    }
+
+    el.innerHTML = data.map(c => {
+      const isChallenger = c.challenger_id === uid;
+      const opp     = isChallenger ? c.opponent_name  : c.challenger_name;
+      const mine    = isChallenger ? c.challenger_score : c.opponent_score;
+      const theirs  = isChallenger ? c.opponent_score  : c.challenger_score;
+      let status = '';
+      if (mine && theirs) {
+        const won = mine > theirs;
+        status = `${won ? '✅ Won' : '❌ Lost'} — ${mine} vs ${theirs}`;
+      } else if (mine && !theirs) {
+        status = `You scored ${mine} — waiting for opponent`;
+      } else {
+        status = '⏳ Pending';
+      }
+      return `<div class="challenge-row">
+        <div>
+          <div class="challenge-opp">vs ${opp || 'Anonymous'}</div>
+          <div class="challenge-status">${status} · ${timeAgo(c.created_at)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="lb-loading">Could not load challenges.</div>';
+  }
+}
+
+function timeAgo(dateStr) {
+  const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+  if (diff < 60)  return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+
+async function startChallengeGame(challengeId, isChallenger=false, seedOverride=null) {
+  if (!sb) return;
+  try {
+    const { data:c } = await sb.from('challenges').select('*').eq('id', challengeId).single();
+    if (!c) return;
+    currentChallengeId = challengeId;
+    gameMode = 'versus';
+    const seed = seedOverride !== null ? seedOverride : c.seed;
+    scenarios = seededShuffle([...SCENARIOS], seed);
+    roundIdx=0; roundScores=[]; timedOut=false;
+    document.getElementById('game-mode-label').textContent = `⚔️ Versus — Go!`;
+    hideAll();
+    document.getElementById('game-screen').classList.add('visible');
+    timerBar.classList.remove('visible');
+    document.getElementById('btn-reset').style.display = 'none';
+    renderRound();
+    setTimeout(startDailyTimer, 500);
+  } catch(e) { alert('Could not load challenge.'); }
+}
+
+async function saveChallengeScore(total) {
+  if (!sb || !currentUser || !currentChallengeId) return;
+  try {
+    const { data:c } = await sb.from('challenges').select('*').eq('id', currentChallengeId).single();
+    if (!c) return;
+    const isChallenger = c.challenger_id === currentUser.id;
+    const updateData = isChallenger
+      ? { challenger_score:total, challenger_rounds:roundScores }
+      : { opponent_score:total, opponent_rounds:roundScores };
+    // Mark completed if both have played
+    const otherScore = isChallenger ? c.opponent_score : c.challenger_score;
+    if (otherScore !== null && otherScore !== undefined) updateData.status = 'completed';
+    await sb.from('challenges').update(updateData).eq('id', currentChallengeId);
+    // Update Elo if completed
+    if (updateData.status==='completed') {
+      const myScore    = total;
+      const theirScore = otherScore;
+      await updateElo(isChallenger ? c.challenger_id : c.opponent_id,
+                      isChallenger ? c.opponent_id   : c.challenger_id,
+                      myScore > theirScore);
+    }
+  } catch(e) { console.warn('Challenge save error:', e); }
+}
+
+async function updateElo(winnerId, loserId, iWon) {
+  if (!sb) return;
+  try {
+    const K = 32;
+    const {data:w} = await sb.from('profiles').select('elo').eq('id', winnerId).single();
+    const {data:l} = await sb.from('profiles').select('elo').eq('id', loserId).single();
+    const we = w?.elo||1000, le = l?.elo||1000;
+    const eW = 1/(1+Math.pow(10,(le-we)/400));
+    const eL = 1-eW;
+    await sb.from('profiles').upsert({id:winnerId, elo:Math.round(we+K*(1-eW))}, {onConflict:'id'});
+    await sb.from('profiles').upsert({id:loserId,  elo:Math.round(le+K*(0-eL))}, {onConflict:'id'});
+  } catch(e) {}
+}
+
+// ── SHARE IMAGE ──────────────────────────────────────────────────────
+function generateShareImage(total, scores, tier) {
+  const canvas = document.getElementById('share-canvas');
+  const ctx    = canvas.getContext('2d');
+  const W=600, H=340;
+  canvas.width=W; canvas.height=H;
+
+  // Background
+  ctx.fillStyle='#111318'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#1c2028'; ctx.beginPath(); ctx.roundRect(10,10,W-20,H-20,14); ctx.fill();
+
+  // Title
+  ctx.fillStyle='#f5c518'; ctx.font='bold 28px Arial Black, sans-serif';
+  ctx.textAlign='left'; ctx.fillText('KEEPERTAP', 24, 50);
+  ctx.fillStyle='#888'; ctx.font='12px Arial, sans-serif';
+  ctx.fillText('keepertap.com', 24, 68);
+
+  // Score
+  ctx.fillStyle='white'; ctx.font='bold 64px Arial Black, sans-serif';
+  ctx.textAlign='right'; ctx.fillText(total, W-24, 70);
+  ctx.fillStyle='#888'; ctx.font='13px Arial, sans-serif'; ctx.fillText('/1000', W-24, 88);
+
+  // Tier badge
+  ctx.fillStyle=tier.colour; ctx.font='bold 14px Arial, sans-serif';
+  ctx.textAlign='left'; ctx.fillText(`${tier.icon} ${tier.name}`, 24, 92);
+
+  // Mini pitch
+  const px=24, py=110, pw=200, ph=180;
+  ctx.fillStyle='#2d6a2d'; ctx.fillRect(px,py,pw,ph);
+  // Pitch lines
+  ctx.strokeStyle='rgba(255,255,255,0.6)'; ctx.lineWidth=1.5;
+  ctx.strokeRect(px,py,pw,ph);
+  // 18-yard box (left ~40% of half pitch width)
+  ctx.strokeRect(px, py+ph*0.28, pw*0.40, ph*0.44);
+  // 6-yard box
+  ctx.strokeRect(px, py+ph*0.38, pw*0.15, ph*0.24);
+  // Goal
+  ctx.fillStyle='white'; ctx.fillRect(px-4, py+ph*0.40, 4, ph*0.20);
+
+  // Plot ball positions coloured by score
+  const sc = scenarios.slice(0,10);
+  const SVG_W=370, SVG_H=460;
+  sc.forEach((s,i) => {
+    const bx = px + (s.bx/SVG_W)*pw;
+    const by = py + (s.by/SVG_H)*ph;
+    const score = scores[i]||0;
+    const col = score>=90?'#44dd88':score>=70?'#88cc44':score>=50?'#f5c518':score>=25?'#ff9933':'#e84040';
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(bx,by,5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='white'; ctx.font='bold 7px Arial';
+    ctx.textAlign='center'; ctx.fillText(score,bx,by+3);
+  });
+
+  // Round pip bars on right
+  const bx2=250, by2=115, bw2=300, bh2=14, gap=6;
+  scores.forEach((s,i) => {
+    const col = s>=90?'#44dd88':s>=70?'#88cc44':s>=50?'#f5c518':s>=25?'#ff9933':'#e84040';
+    ctx.fillStyle='#333'; ctx.beginPath(); ctx.roundRect(bx2,by2+i*(bh2+gap),bw2,bh2,4); ctx.fill();
+    ctx.fillStyle=col; ctx.beginPath(); ctx.roundRect(bx2,by2+i*(bh2+gap),bw2*(s/100),bh2,4); ctx.fill();
+    ctx.fillStyle='white'; ctx.font='bold 9px Arial'; ctx.textAlign='left';
+    ctx.fillText(`R${i+1}`,bx2+4,by2+i*(bh2+gap)+10);
+    ctx.textAlign='right'; ctx.fillText(s,bx2+bw2-4,by2+i*(bh2+gap)+10);
+  });
+
+  // Date
+  ctx.fillStyle='#555'; ctx.font='11px Arial'; ctx.textAlign='left';
+  ctx.fillText(todayStr(), 24, H-18);
+
+  canvas.style.display='block';
+  document.getElementById('btn-dl-image').style.display='inline-block';
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// GAME CONSTANTS & LOGIC
+// GAME — 50 SCENARIOS
 // ═══════════════════════════════════════════════════════════════════
 const GOAL_X=30, GOAL_TOP=196, GOAL_BTM=264, GOAL_CY=230;
-const MIN_GK_FROM_BALL=45;
-const ROUNDS_PER_GAME=10;
-const DAILY_TOTAL_SECS=25;
+const MIN_GK_FROM_BALL=45, ROUNDS_PER_GAME=10, DAILY_TOTAL_SECS=25;
 
 const SCENARIOS = [
-  {label:"Central — close range",     bx:155,by:230, tip:"Very close and central: advance well off the line to narrow the angle dramatically. Get to the edge of the 6-yard box, staying central between the posts."},
-  {label:"Left side of the box",       bx:140,by:172, tip:"Wide-left inside the box: move toward the near (left) post to cut off the most direct route. Body set wide, ready to spread."},
-  {label:"Right side of the box",      bx:140,by:288, tip:"Wide-right inside the box: mirror the left principle — protect the near (right) post and force the attacker to beat you at the far post."},
-  {label:"Central — long range",       bx:330,by:230, tip:"Long-range central: chip risk is high — don't advance too far. Sit around the penalty spot area, stay on your feet and be set to deal with a driven shot."},
-  {label:"Left channel — mid-range",   bx:260,by:158, tip:"Mid-range left channel: advance to bisect the angle but don't overcommit — a chip is very much on from here."},
-  {label:"Right channel — mid-range",  bx:260,by:302, tip:"Mid-range right channel: bisect the angle, protect the near post, but hold a depth that keeps a chip difficult."},
-  {label:"Penalty spot",               bx:150,by:230, tip:"Penalty: stand centrally on the goal line. Stay big, react late. Any early sideways movement is a gamble."},
-  {label:"Tight left byline",          bx:58, by:148, tip:"Tight angle from the left byline: hug the near post — the acute angle does the work. Don't give the near post away."},
-  {label:"Tight right byline",         bx:58, by:312, tip:"Tight angle from the right byline: same — guard the near post. The far post is naturally covered by the extreme angle."},
-  {label:"Edge of box — left",         bx:178,by:162, tip:"Top of the area, left of centre: step forward to around the penalty spot, bisect the angle, set low for a driven shot."},
+  // ── CENTRAL ──
+  {label:"Central — close range",       bx:90,  by:230, tip:"Very close central: commit forward to the edge of the 6-yard box. You can narrow the angle dramatically here — a chip from this close at pace is near impossible."},
+  {label:"Central — mid range",         bx:150, by:230, tip:"Central, penalty spot distance: advance to around the penalty spot. Bisect the angle, stay on your feet, be ready to spread."},
+  {label:"Central — long range",        bx:280, by:230, tip:"Long-range central: chip risk rises — don't overcommit. Advance to halfway between goal line and ball, stay deep enough to deal with a lofted effort."},
+  {label:"Central — edge of box",       bx:178, by:230, tip:"Top of the area, central: a driven shot is most likely. Step forward, stay compact, cut both sides of the goal."},
+  {label:"Central — very long range",   bx:340, by:230, tip:"Very long range: stay relatively deep. The chip is very much on from here. Hold your position and be set for a speculative effort."},
+  // ── LEFT SIDE ──
+  {label:"Left side — 6 yard box",      bx:75,  by:185, tip:"Wide left, very close: hug the near post. The angle is so acute that the far post is almost impossible to reach — protect the near post first."},
+  {label:"Left side of the box",        bx:130, by:172, tip:"Wide-left inside the box: move toward the near (left) post, cutting the direct route. Body set wide, ready to spread low."},
+  {label:"Left channel — close",        bx:120, by:190, tip:"Left channel, close: advance slightly off the line toward the ball, biased to the near post. Keep the far post in your peripheral vision."},
+  {label:"Left channel — mid range",    bx:200, by:165, tip:"Mid-range left channel: position on the bisector, don't overcommit — a chip is on. Stay at a depth that covers both a driven shot and a lofted effort."},
+  {label:"Left channel — deep",         bx:270, by:158, tip:"Deep left channel: chip risk is high. Advance only a third of the way to the ball. Set for a driven cross-shot."},
+  {label:"Left channel — wide",         bx:240, by:140, tip:"Wide left, mid range: very acute angle — hug the near post side, trust the far post is covered by the angle. Watch for cut-backs."},
+  {label:"Left byline — tight",         bx:60,  by:148, tip:"Tight left byline: near post is the only real threat. Pin yourself to it, spread your body to make yourself big."},
+  {label:"Left byline — mid",           bx:90,  by:148, tip:"Left byline: still a very acute angle. Near post priority. A driven low cross is the secondary threat — stay on your feet to react."},
+  {label:"Left edge of box",            bx:178, by:155, tip:"Top left of the area: step forward, bisect the angle biased to the near post. Set low for a driven shot."},
+  {label:"Left — just outside box",     bx:200, by:175, tip:"Just outside the box, left: advance to cut the angle but don't overcommit. The ball can be played wide or driven so stay balanced."},
+  // ── RIGHT SIDE ──
+  {label:"Right side — 6 yard box",     bx:75,  by:275, tip:"Wide right, very close: mirror the left principle — hug the near (right) post. The far post is unreachable from here."},
+  {label:"Right side of the box",       bx:130, by:288, tip:"Wide-right inside the box: protect the near (right) post, force the attacker to go across goal to the far post."},
+  {label:"Right channel — close",       bx:120, by:270, tip:"Right channel, close: advance off the line, near-post bias, body ready to spread to the right."},
+  {label:"Right channel — mid range",   bx:200, by:295, tip:"Mid-range right channel: bisect the angle, hold a depth that keeps a chip difficult. Don't rush out so far you're beaten over the top."},
+  {label:"Right channel — deep",        bx:270, by:302, tip:"Deep right channel: same principle as deep left — chip risk dominates. Hold deeper, be set for a driven shot."},
+  {label:"Right channel — wide",        bx:240, by:320, tip:"Wide right, mid range: acute angle, near post priority. Watch for a cut-back into the 6-yard box."},
+  {label:"Right byline — tight",        bx:60,  by:312, tip:"Tight right byline: near post only real threat. Body to the right post, spread wide, stay low."},
+  {label:"Right byline — mid",          bx:90,  by:312, tip:"Right byline: near post priority, but stay ready to drop for a driven low cross."},
+  {label:"Right edge of box",           bx:178, by:305, tip:"Top right of the area: step forward, bisect toward the near post. Set for a driven low effort."},
+  {label:"Right — just outside box",    bx:200, by:285, tip:"Just outside the box, right: advance to cut the angle. Balanced position covering driven shot and wide ball."},
+  // ── PENALTY ──
+  {label:"Penalty spot",                bx:150, by:230, tip:"Penalty: stand centrally on the goal line. Stay big, react late. Any early movement is a gamble — good keepers stay central and explode at the last moment."},
+  // ── DIAGONAL / DIFFICULT ANGLES ──
+  {label:"Sharp diagonal — left",       bx:100, by:155, tip:"Sharp diagonal from the left: the shooting angle is very tight. Hug the near post — almost touching it — to block the most direct route."},
+  {label:"Sharp diagonal — right",      bx:100, by:305, tip:"Sharp diagonal from the right: same principle, mirror image. Near post is the priority, far post is naturally covered by distance."},
+  {label:"Half-turn left",              bx:160, by:170, tip:"Inside left of the box: attacker may cut inside or cross. Position between penalty spot and near post, body angled to deal with both options."},
+  {label:"Half-turn right",             bx:160, by:290, tip:"Inside right of the box: mirror the left principle. Be prepared for a cut-in shot or a low cross."},
+  {label:"Wide diagonal — far left",    bx:240, by:120, tip:"Far left diagonal: very wide, very acute. Position slightly outside your near post, trust the far post is unreachable from this angle."},
+  {label:"Wide diagonal — far right",   bx:240, by:340, tip:"Far right diagonal: same logic — near post guard, far post protected by the extreme angle. Watch for a cross into the 6-yard area."},
+  // ── ONE-ON-ONE ──
+  {label:"1v1 — direct central",        bx:110, by:230, tip:"One-on-one, straight on: come off your line decisively to narrow the angle — make yourself as big as possible. Stay on your feet as long as possible, then spread."},
+  {label:"1v1 — left of centre",        bx:110, by:205, tip:"One-on-one, slightly left: advance on the bisector toward the ball. Your body angle should invite the attacker to go to the right (harder side)."},
+  {label:"1v1 — right of centre",       bx:110, by:255, tip:"One-on-one, slightly right: advance on the bisector, invite the attacker to go left. Stay on your feet and be patient."},
+  // ── CROSSES / SET PIECES ──
+  {label:"Deep cross — left",           bx:340, by:145, tip:"Deep cross from the left: position centrally, slightly toward the near post. Be prepared to attack the ball early — don't wait on your line."},
+  {label:"Deep cross — right",          bx:340, by:315, tip:"Deep cross from the right: mirror the left — central but near-post biased. Communicate with defenders and be decisive."},
+  {label:"Near post cross — left",      bx:210, by:140, tip:"Near post cross from the left: position close to the near post, ready to punch or tip over if needed. Defenders should be covering the far post."},
+  {label:"Near post cross — right",     bx:210, by:320, tip:"Near post cross from the right: same — be decisive, claim if you can, punch away from danger if not."},
+  // ── EDGE OF BOX VARIATIONS ──
+  {label:"Top of box — left of centre", bx:178, by:175, tip:"Top of the area, left of centre: step forward to bisect the angle. Near-post bias, set low for a driven shot or curl."},
+  {label:"Top of box — right of centre",bx:178, by:285, tip:"Top of the area, right of centre: mirror position — advance, bisect, near-post bias."},
+  {label:"Just inside box — left",      bx:155, by:185, tip:"Just inside the box, left channel: advance about halfway between goal line and ball. Body central-to-near-post."},
+  {label:"Just inside box — right",     bx:155, by:275, tip:"Just inside the box, right channel: same principle mirrored. Advance, cut the angle, stay balanced."},
+  // ── ADDITIONAL POSITIONS ──
+  {label:"Far left byline cutback",     bx:50,  by:160, tip:"Very tight left byline: the main threat is a low cut-back into the box. Stay on your feet and be ready to drop quickly for a rolled ball."},
+  {label:"Far right byline cutback",    bx:50,  by:300, tip:"Very tight right byline: same — cutback into the danger area is the primary threat. Stay tall and cover the near post."},
+  {label:"Left of D — long range",      bx:280, by:175, tip:"Long range, left of D: hold a conservative position. The chip is very much on from here. Be set for a driven effort rather than rushing forward."},
+  {label:"Right of D — long range",     bx:280, by:285, tip:"Long range, right of D: mirror position. Don't over-advance. Balanced depth that covers both shot and chip."},
+  {label:"Central — just inside box",   bx:145, by:230, tip:"Central, just inside the box: advance to halfway point between goal line and ball. This is a classic one-on-one distance — stay big, stay balanced."},
+  {label:"Left channel — penalty area", bx:165, by:170, tip:"Left channel inside the penalty area: the shooting angle is opening up. Bisect firmly, body to the near post, be ready to spread."},
+  {label:"Right channel — penalty area",bx:165, by:290, tip:"Right channel inside the penalty area: same as left but mirrored. Commit to the bisector, near-post priority, spread on contact."},
 ];
 
-function getIdealGK(bx,by) {
+// ── IDEAL GK ────────────────────────────────────────────────────────
+function getIdealGK(bx, by) {
   const toTop=norm(GOAL_X-bx,GOAL_TOP-by), toBtm=norm(GOAL_X-bx,GOAL_BTM-by);
-  const bisect=norm(toTop.x+toBtm.x,toTop.y+toBtm.y);
-  let goalLineY=GOAL_CY;
-  if(Math.abs(bisect.x)>0.01){ const t=(GOAL_X-bx)/bisect.x; goalLineY=by+t*bisect.y; goalLineY=Math.max(GOAL_TOP,Math.min(GOAL_BTM,goalLineY)); }
-  const totalDist=Math.hypot(bx-GOAL_X,by-goalLineY);
-  const factor=advanceFactorForDist(totalDist), advance=Math.min(totalDist*factor,148);
-  const outDir=norm(bx-GOAL_X,by-goalLineY);
-  let ix=GOAL_X+outDir.x*advance, iy=goalLineY+outDir.y*advance;
-  const gap=Math.hypot(ix-bx,iy-by);
-  if(gap<MIN_GK_FROM_BALL){ const pb=MIN_GK_FROM_BALL-gap; ix-=outDir.x*pb; iy-=outDir.y*pb; }
+  const bisect=norm(toTop.x+toBtm.x, toTop.y+toBtm.y);
+  let gly=GOAL_CY;
+  if(Math.abs(bisect.x)>0.01){ const t=(GOAL_X-bx)/bisect.x; gly=by+t*bisect.y; gly=Math.max(GOAL_TOP,Math.min(GOAL_BTM,gly)); }
+  const dist=Math.hypot(bx-GOAL_X, by-gly);
+  const adv=Math.min(dist*advanceFactorForDist(dist), 148);
+  const dir=norm(bx-GOAL_X, by-gly);
+  let ix=GOAL_X+dir.x*adv, iy=gly+dir.y*adv;
+  const gap=Math.hypot(ix-bx, iy-by);
+  if(gap<MIN_GK_FROM_BALL){ const pb=MIN_GK_FROM_BALL-gap; ix-=dir.x*pb; iy-=dir.y*pb; }
   ix=Math.max(GOAL_X+4,Math.min(178,ix)); iy=Math.max(133,Math.min(327,iy));
-  return {x:ix,y:iy,radius:26};
+  return {x:ix, y:iy, radius:26};
 }
-function advanceFactorForDist(dist) {
-  const cr=60,cf=0.55,lr=190,lf=0.20;
-  if(dist<=cr)return cf; if(dist>=lr)return lf;
-  return cf+(lf-cf)*((dist-cr)/(lr-cr));
-}
-function norm(x,y){const m=Math.hypot(x,y)||1;return{x:x/m,y:y/m};}
-function distToScore(dist){return Math.max(0,Math.min(100,Math.round(100*Math.exp(-0.025*dist))));}
-function scoreColourClass(s){if(s>=90)return's100';if(s>=70)return's80';if(s>=50)return's60';if(s>=25)return's40';if(s>=1)return's1';return's0';}
-function scoreEmoji(s){if(s>=90)return'🟩';if(s>=70)return'🟨';if(s>=50)return'🟧';if(s>=25)return'🟥';return'⬛';}
-function getRank(total){
-  const p=total/(ROUNDS_PER_GAME*100);
-  if(p>=0.95)return{text:'🏆 Elite Keeper',colour:'#f5c518'};
-  if(p>=0.80)return{text:'🟢 Professional',colour:'#44dd88'};
-  if(p>=0.65)return{text:'🔵 Semi-Pro',colour:'#4488ff'};
-  if(p>=0.45)return{text:'🟡 Amateur',colour:'#f5c518'};
-  return{text:'🔴 Still Learning',colour:'#e84040'};
-}
+function advanceFactorForDist(d){ const cr=60,cf=0.55,lr=190,lf=0.20; if(d<=cr)return cf; if(d>=lr)return lf; return cf+(lf-cf)*((d-cr)/(lr-cr)); }
+function norm(x,y){ const m=Math.hypot(x,y)||1; return {x:x/m,y:y/m}; }
+function distToScore(d){ return Math.max(0,Math.min(100,Math.round(100*Math.exp(-0.025*d)))); }
+function scoreColourClass(s){ if(s>=90)return's100';if(s>=70)return's80';if(s>=50)return's60';if(s>=25)return's40';if(s>=1)return's1';return's0'; }
+function scoreEmoji(s){ if(s>=90)return'🟩';if(s>=70)return'🟨';if(s>=50)return'🟧';if(s>=25)return'🟥';return'⬛'; }
 
 // ═══════════════════════════════════════════════════════════════════
 // GAME STATE
 // ═══════════════════════════════════════════════════════════════════
 let scenarios=[], roundIdx=0, roundScores=[], answered=false;
-let dailyTimer=null, dailySecsLeft=DAILY_TOTAL_SECS, dailyAutoAdvancing=false;
-let timedOut=false; // hard lock — no taps allowed after timer expires
+let dailyTimer=null, dailySecsLeft=DAILY_TOTAL_SECS, dailyAutoAdvancing=false, timedOut=false;
 
-const svg           = document.getElementById('pitch-svg');
-const wrapper       = document.getElementById('pitch-wrapper');
-const layer         = document.getElementById('dynamic-layer');
-const feedIcon      = document.getElementById('feedback-icon');
-const feedH3        = document.querySelector('#feedback-body h3');
-const feedP         = document.getElementById('scenario-label');
-const feedPanel     = document.getElementById('feedback-panel');
-const btnNext       = document.getElementById('btn-next');
-const btnShare      = document.getElementById('btn-share');
-const totalEl       = document.getElementById('total-val');
-const roundEl       = document.getElementById('round-val');
-const bestEl        = document.getElementById('best-val');
-const roundScoresEl = document.getElementById('round-scores');
-const endSummary    = document.getElementById('end-summary');
-const finalScoreEl  = document.getElementById('final-score-val');
-const rankLabelEl   = document.getElementById('rank-label');
-const shareTextEl   = document.getElementById('share-text');
-const savedNote     = document.getElementById('saved-note');
-const leaderboard   = document.getElementById('leaderboard');
-const timerBar      = document.getElementById('timer-bar');
-const timerFill     = document.getElementById('timer-fill');
-const timerText     = document.getElementById('timer-text');
+const svg=document.getElementById('pitch-svg'), wrapper=document.getElementById('pitch-wrapper');
+const layer=document.getElementById('dynamic-layer'), feedIcon=document.getElementById('feedback-icon');
+const feedH3=document.querySelector('#feedback-body h3'), feedP=document.getElementById('scenario-label');
+const feedPanel=document.getElementById('feedback-panel'), btnNext=document.getElementById('btn-next');
+const btnShare=document.getElementById('btn-share'), totalEl=document.getElementById('total-val');
+const roundEl=document.getElementById('round-val'), bestEl=document.getElementById('best-val');
+const roundScoresEl=document.getElementById('round-scores'), endSummary=document.getElementById('end-summary');
+const finalScoreEl=document.getElementById('final-score-val'), rankLabelEl=document.getElementById('rank-label');
+const shareTextEl=document.getElementById('share-text'), savedNote=document.getElementById('saved-note');
+const gameLeaderboard=document.getElementById('game-leaderboard');
+const timerBar=document.getElementById('timer-bar'), timerFill=document.getElementById('timer-fill'), timerText=document.getElementById('timer-text');
 
-function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
-function svgPoint(evt){
-  const rect=svg.getBoundingClientRect(),vb=svg.viewBox.baseVal;
-  const cx=evt.touches?evt.touches[0].clientX:evt.clientX;
-  const cy=evt.touches?evt.touches[0].clientY:evt.clientY;
-  return{x:(cx-rect.left)*(vb.width/rect.width),y:(cy-rect.top)*(vb.height/rect.height)};
-}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr; }
+function svgPoint(evt){ const r=svg.getBoundingClientRect(),vb=svg.viewBox.baseVal; const cx=evt.touches?evt.touches[0].clientX:evt.clientX,cy=evt.touches?evt.touches[0].clientY:evt.clientY; return{x:(cx-r.left)*(vb.width/r.width),y:(cy-r.top)*(vb.height/r.height)}; }
 
-// ── TIMER ──────────────────────────────────────────────────────────
-function startDailyTimer() {
-  dailySecsLeft = DAILY_TOTAL_SECS;
-  timerBar.classList.add('visible');
-  updateTimerDisplay();
-  dailyTimer = setInterval(() => {
-    dailySecsLeft -= 0.1;
-    updateTimerDisplay();
-    if (dailySecsLeft <= 0) { clearInterval(dailyTimer); dailyTimer = null; timeUp(); }
-  }, 100);
-}
+// ── TIMER ────────────────────────────────────────────────────────────
+function startDailyTimer(){ dailySecsLeft=DAILY_TOTAL_SECS; timerBar.classList.add('visible'); updateTimerDisplay(); dailyTimer=setInterval(()=>{ dailySecsLeft-=0.1; updateTimerDisplay(); if(dailySecsLeft<=0){clearInterval(dailyTimer);dailyTimer=null;timeUp();}},100); }
+function updateTimerDisplay(){ const pct=Math.max(0,dailySecsLeft/DAILY_TOTAL_SECS*100); timerFill.style.width=pct+'%'; timerText.textContent=Math.ceil(dailySecsLeft); timerFill.style.background=dailySecsLeft<=5?'var(--red)':dailySecsLeft<=10?'#ff9933':'var(--accent)'; timerText.className=dailySecsLeft<=5?'urgent':''; }
+function stopDailyTimer(){ if(dailyTimer){clearInterval(dailyTimer);dailyTimer=null;} }
+async function timeUp(){ timedOut=true; wrapper.classList.add('answered'); while(roundScores.length<ROUNDS_PER_GAME)roundScores.push(0); updatePips(); feedPanel.className='poor'; feedIcon.textContent='⏱️'; feedH3.textContent="Time's up!"; feedP.textContent='Remaining rounds scored zero.'; await showEndSummary(); }
 
-function updateTimerDisplay() {
-  const pct = Math.max(0, dailySecsLeft / DAILY_TOTAL_SECS * 100);
-  timerFill.style.width = pct + '%';
-  const secs = Math.ceil(dailySecsLeft);
-  timerText.textContent = secs;
-  timerFill.style.background = dailySecsLeft <= 5 ? 'var(--red)' : dailySecsLeft <= 10 ? '#ff9933' : 'var(--accent)';
-  timerText.className = dailySecsLeft <= 5 ? 'urgent' : '';
-}
+// ── STATS / PIPS ────────────────────────────────────────────────────
+function updateStatsBar(){ const tot=roundScores.reduce((a,b)=>a+b,0),best=roundScores.length?Math.max(...roundScores):null; totalEl.textContent=tot; roundEl.textContent=`${Math.min(roundIdx+1,ROUNDS_PER_GAME)} / ${ROUNDS_PER_GAME}`; bestEl.textContent=best!==null?best:'—'; }
+function updatePips(){ roundScoresEl.innerHTML=''; for(let i=0;i<ROUNDS_PER_GAME;i++){const p=document.createElement('div');p.className='round-pip';const b=document.createElement('div');b.className='pip-bar'+(i<roundScores.length?' '+scoreColourClass(roundScores[i]):'');const n=document.createElement('div');n.className='pip-num';n.textContent=i<roundScores.length?roundScores[i]:'·';p.appendChild(b);p.appendChild(n);roundScoresEl.appendChild(p);} }
 
-function stopDailyTimer() {
-  if (dailyTimer) { clearInterval(dailyTimer); dailyTimer = null; }
-}
-
-async function timeUp() {
-  timedOut = true; // hard lock — reject all future taps
-  wrapper.classList.add('answered'); // visual lock
-  // Fill remaining rounds with 0
-  while (roundScores.length < ROUNDS_PER_GAME) roundScores.push(0);
-  updatePips();
-  btnNext.disabled = false;
-  feedPanel.className = 'poor';
-  feedIcon.textContent = '⏱️';
-  feedH3.textContent = "Time's up!";
-  feedP.textContent = 'Remaining rounds scored zero.';
-  await showEndSummary();
-}
-
-// ── STATS & PIPS ───────────────────────────────────────────────────
-function updateStatsBar() {
-  const total=roundScores.reduce((a,b)=>a+b,0);
-  const best=roundScores.length?Math.max(...roundScores):null;
-  totalEl.textContent=total;
-  roundEl.textContent=`${Math.min(roundIdx+1,ROUNDS_PER_GAME)} / ${ROUNDS_PER_GAME}`;
-  bestEl.textContent=best!==null?best:'—';
-}
-function updatePips() {
-  roundScoresEl.innerHTML='';
-  for(let i=0;i<ROUNDS_PER_GAME;i++){
-    const pip=document.createElement('div');pip.className='round-pip';
-    const bar=document.createElement('div');
-    bar.className='pip-bar'+(i<roundScores.length?' '+scoreColourClass(roundScores[i]):'');
-    const num=document.createElement('div');num.className='pip-num';
-    num.textContent=i<roundScores.length?roundScores[i]:'·';
-    pip.appendChild(bar);pip.appendChild(num);roundScoresEl.appendChild(pip);
-  }
-}
-
-// ── END SUMMARY ────────────────────────────────────────────────────
+// ── END SUMMARY ─────────────────────────────────────────────────────
 async function showEndSummary() {
   stopDailyTimer();
   const total=roundScores.reduce((a,b)=>a+b,0);
-  const rank=getRank(total);
+  const avg=Math.round(total/ROUNDS_PER_GAME*10)/10;
+  const tier=getTier(avg);
   finalScoreEl.textContent=total;
-  rankLabelEl.textContent=rank.text;
-  rankLabelEl.style.color=rank.colour;
-  document.getElementById('end-mode-tag').textContent = gameMode==='daily' ? '⚡ Daily Challenge' : '∞ Free Play';
-
-  const modeLabel = gameMode==='daily' ? 'Daily' : 'Free Play';
+  document.getElementById('end-mode-tag').textContent = gameMode==='daily'?'⚡ Daily Challenge':gameMode==='versus'?'⚔️ Versus':'∞ Free Play';
+  document.getElementById('end-tier-text').innerHTML = tierBadgeHTML(tier);
   const bars=roundScores.map(scoreEmoji).join('');
-  shareTextEl.textContent=`⚽ KeeperTap — ${modeLabel}\n${rank.text}\nScore: ${total}/${ROUNDS_PER_GAME*100}\n${bars}\nkeepertap.com`;
-
+  const modeLabel=gameMode==='daily'?'Daily':gameMode==='versus'?'Versus':'Free Play';
+  shareTextEl.textContent=`⚽ KeeperTap — ${modeLabel}\n${tier.icon} ${tier.name}\nScore: ${total}/1000\n${bars}\nkeepertap.com`;
   endSummary.style.display='block';
   btnShare.style.display='inline-block';
   btnNext.style.display='none';
-  // Hide New Game in daily mode
-  document.getElementById('btn-reset').style.display = gameMode==='daily' ? 'none' : 'inline-block';
+  document.getElementById('btn-reset').style.display=gameMode==='daily'?'none':'inline-block';
+  savedNote.textContent=''; savedNote.style.color='var(--green)';
+
+  // Generate share image
+  generateShareImage(total, roundScores, tier);
 
   if (currentUser && !isGuest) {
-    savedNote.textContent = 'Saving score...';
-    if (gameMode === 'daily') {
-      savedNote.textContent = 'Saving daily score...';
+    savedNote.textContent='Saving...';
+    if (gameMode==='daily') {
       await saveDailyScore(total, roundScores);
-      // savedNote is set inside saveDailyScore now
-      if (!savedNote.textContent.includes('⚠️')) {
-        savedNote.textContent = '✅ Daily score saved!';
-      }
-      leaderboard.style.display = 'block';
-      await loadLeaderboard(true);
+      if(!savedNote.textContent.includes('⚠️')) savedNote.textContent='✅ Daily score saved!';
+      gameLeaderboard.style.display='block'; await loadGameLeaderboard(true);
+    } else if (gameMode==='versus') {
+      await saveChallengeScore(total);
+      savedNote.textContent='✅ Challenge score saved!';
     } else {
       await saveFreeScore(total);
-      savedNote.textContent = '✅ Score saved!';
-      leaderboard.style.display = 'block';
-      await loadLeaderboard(false);
+      savedNote.textContent='✅ Score saved!';
+      gameLeaderboard.style.display='block'; await loadGameLeaderboard(false);
     }
   } else if (isGuest) {
-    savedNote.textContent = 'Sign in to save your score to the leaderboard.';
-    savedNote.style.color = 'var(--muted)';
+    savedNote.textContent='Sign in to save your score.'; savedNote.style.color='var(--muted)';
   }
 }
 
-// ── RENDER ROUND ───────────────────────────────────────────────────
+// ── RENDER ──────────────────────────────────────────────────────────
 function renderRound() {
-  if (roundIdx >= ROUNDS_PER_GAME) { showEndSummary(); return; }
+  if(roundIdx>=ROUNDS_PER_GAME){showEndSummary();return;}
   const sc=scenarios[roundIdx];
-  layer.innerHTML='';
-  answered=false;
-  dailyAutoAdvancing=false;
+  layer.innerHTML=''; answered=false; dailyAutoAdvancing=false;
   wrapper.classList.remove('answered');
-  endSummary.style.display='none';
-  leaderboard.style.display='none';
+  endSummary.style.display='none'; gameLeaderboard.style.display='none';
   document.getElementById('btn-lb').textContent='🏆 Leaderboard';
-  btnShare.style.display='none';
-  btnNext.style.display= gameMode==='daily' ? 'none' : 'inline-block';
-  btnNext.disabled=true;
-  feedPanel.className='';
-  feedIcon.textContent='👆';
-  feedH3.textContent='Tap the pitch to place your goalkeeper';
+  btnShare.style.display='none'; btnNext.style.display=(gameMode==='daily'||gameMode==='versus')?'none':'inline-block';
+  btnNext.disabled=true; feedPanel.className='';
+  feedIcon.textContent='👆'; feedH3.textContent='Tap the pitch to place your goalkeeper';
   feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`;
   updateStatsBar(); updatePips();
-  // No shooting lines before tap — just ball and exclusion zone
   drawExclusionZone(sc.bx,sc.by,MIN_GK_FROM_BALL);
   drawBall(sc.bx,sc.by);
 }
 
-// ── DRAWING ────────────────────────────────────────────────────────
-function mk(tag){return document.createElementNS('http://www.w3.org/2000/svg',tag);}
-function attrs(el,obj){Object.entries(obj).forEach(([k,v])=>el.setAttribute(k,v));}
+// ── DRAWING ─────────────────────────────────────────────────────────
+function mk(t){return document.createElementNS('http://www.w3.org/2000/svg',t);}
+function attrs(el,o){Object.entries(o).forEach(([k,v])=>el.setAttribute(k,v));}
+function drawBall(bx,by){const g=mk('g');const sh=mk('ellipse');attrs(sh,{cx:bx,cy:by+5,rx:13,ry:5,fill:'rgba(0,0,0,0.4)'});g.appendChild(sh);const b=mk('circle');attrs(b,{cx:bx,cy:by,r:13,fill:'#f5f0e8',stroke:'#444','stroke-width':2});g.appendChild(b);[[bx-5,by-3,bx+1,by+7],[bx-1,by-7,bx+5,by+3],[bx-7,by+1,bx+7,by+1]].forEach(([x1,y1,x2,y2])=>{const l=mk('line');attrs(l,{x1,y1,x2,y2,stroke:'#999','stroke-width':1.2});g.appendChild(l);});const lbl=mk('text');attrs(lbl,{x:bx,y:by-19,'text-anchor':'middle','font-size':9.5,'font-weight':'700','font-family':'DM Sans,sans-serif',fill:'#f5c518'});lbl.textContent='ATTACKER';g.appendChild(lbl);layer.appendChild(g);}
+function drawShootingLines(bx,by){[[GOAL_X,GOAL_TOP],[GOAL_X,GOAL_BTM]].forEach(([gx,gy])=>{const l=mk('line');attrs(l,{x1:bx,y1:by,x2:gx,y2:gy,stroke:'rgba(220,50,50,0.85)','stroke-width':2.5});layer.appendChild(l);});}
+function drawExclusionZone(bx,by,r){const ring=mk('circle');attrs(ring,{cx:bx,cy:by,r,fill:'rgba(220,50,50,0.06)',stroke:'rgba(220,50,50,0.55)','stroke-width':1.5,'stroke-dasharray':'5 3','pointer-events':'none'});layer.appendChild(ring);const lbl=mk('text');attrs(lbl,{x:bx,y:by+r+11,'text-anchor':'middle','font-size':8,'font-weight':'600','font-family':'DM Sans,sans-serif',fill:'rgba(220,50,50,0.7)'});lbl.textContent='GK CANNOT REACH HERE';layer.appendChild(lbl);}
+function showIdeal(ideal){const z=mk('circle');attrs(z,{cx:ideal.x,cy:ideal.y,r:ideal.radius,class:'ideal-zone'});layer.appendChild(z);const d=mk('circle');attrs(d,{cx:ideal.x,cy:ideal.y,r:7,fill:'#ff6644',stroke:'white','stroke-width':2.5});layer.appendChild(d);const lbl=mk('text');attrs(lbl,{x:ideal.x,y:ideal.y-14,'text-anchor':'middle','font-size':9,'font-weight':'700','font-family':'DM Sans,sans-serif',fill:'#ff6644'});lbl.textContent='IDEAL';layer.appendChild(lbl);}
+function drawGKMarker(x,y,col){const g=mk('g');const b=mk('circle');attrs(b,{cx:x,cy:y,r:16,fill:col,stroke:'white','stroke-width':2.5});g.appendChild(b);const lbl=mk('text');attrs(lbl,{x,y:y+5,'text-anchor':'middle','font-size':11,'font-weight':'700','font-family':'DM Sans,sans-serif',fill:'white'});lbl.textContent='GK';g.appendChild(lbl);layer.appendChild(g);}
 
-function drawBall(bx,by){
-  const g=mk('g');
-  const sh=mk('ellipse');attrs(sh,{cx:bx,cy:by+5,rx:13,ry:5,fill:'rgba(0,0,0,0.4)'});g.appendChild(sh);
-  const b=mk('circle');attrs(b,{cx:bx,cy:by,r:13,fill:'#f5f0e8',stroke:'#444','stroke-width':2});g.appendChild(b);
-  [[bx-5,by-3,bx+1,by+7],[bx-1,by-7,bx+5,by+3],[bx-7,by+1,bx+7,by+1]].forEach(([x1,y1,x2,y2])=>{
-    const l=mk('line');attrs(l,{x1,y1,x2,y2,stroke:'#999','stroke-width':1.2});g.appendChild(l);
-  });
-  const lbl=mk('text');attrs(lbl,{x:bx,y:by-19,'text-anchor':'middle','font-size':9.5,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#f5c518'});lbl.textContent='ATTACKER';g.appendChild(lbl);
-  layer.appendChild(g);
-}
-
-function drawShootingLines(bx,by){
-  [[GOAL_X,GOAL_TOP],[GOAL_X,GOAL_BTM]].forEach(([gx,gy])=>{
-    const l=mk('line');attrs(l,{x1:bx,y1:by,x2:gx,y2:gy,stroke:'rgba(220,50,50,0.85)','stroke-width':2.5});layer.appendChild(l);
-  });
-}
-
-function drawExclusionZone(bx,by,r){
-  const ring=mk('circle');
-  attrs(ring,{cx:bx,cy:by,r,fill:'rgba(220,50,50,0.06)',stroke:'rgba(220,50,50,0.55)','stroke-width':1.5,'stroke-dasharray':'5 3','pointer-events':'none'});
-  layer.appendChild(ring);
-  const lbl=mk('text');
-  attrs(lbl,{x:bx,y:by+r+11,'text-anchor':'middle','font-size':8,'font-weight':'600','font-family':'DM Sans, sans-serif',fill:'rgba(220,50,50,0.7)'});
-  lbl.textContent='GK CANNOT REACH HERE';layer.appendChild(lbl);
-}
-
-function showIdeal(ideal){
-  const zone=mk('circle');attrs(zone,{cx:ideal.x,cy:ideal.y,r:ideal.radius,class:'ideal-zone'});layer.appendChild(zone);
-  const dot=mk('circle');attrs(dot,{cx:ideal.x,cy:ideal.y,r:7,fill:'#ff6644',stroke:'white','stroke-width':2.5});layer.appendChild(dot);
-  const lbl=mk('text');attrs(lbl,{x:ideal.x,y:ideal.y-14,'text-anchor':'middle','font-size':9,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'#ff6644'});lbl.textContent='IDEAL';layer.appendChild(lbl);
-}
-
-function drawGKMarker(x,y,colour){
-  const g=mk('g');
-  const body=mk('circle');attrs(body,{cx:x,cy:y,r:16,fill:colour,stroke:'white','stroke-width':2.5});g.appendChild(body);
-  const lbl=mk('text');attrs(lbl,{x,y:y+5,'text-anchor':'middle','font-size':11,'font-weight':'700','font-family':'DM Sans, sans-serif',fill:'white'});lbl.textContent='GK';g.appendChild(lbl);
-  layer.appendChild(g);
-}
-
-// ── PLACE GK ───────────────────────────────────────────────────────
+// ── PLACE GK ────────────────────────────────────────────────────────
 function placeGK(px,py){
-  if(timedOut) return; // hard lock — timer has expired
-  if(answered||dailyAutoAdvancing) return;
+  if(timedOut||answered||dailyAutoAdvancing)return;
   const sc=scenarios[roundIdx];
   if(Math.hypot(px-sc.bx,py-sc.by)<MIN_GK_FROM_BALL){
-    feedPanel.className='poor';feedIcon.textContent='🚫';
-    feedH3.textContent='Too close to the attacker!';
-    feedP.textContent='A goalkeeper cannot rush out that far — place them closer to goal.';
-    if(gameMode!=='daily') setTimeout(()=>{if(!answered){feedPanel.className='';feedIcon.textContent='👆';feedH3.textContent='Tap the pitch to place your goalkeeper';feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`;}},1800);
+    feedPanel.className='poor';feedIcon.textContent='🚫';feedH3.textContent='Too close to the attacker!';feedP.textContent='Place the GK closer to goal.';
+    if(gameMode==='free')setTimeout(()=>{if(!answered){feedPanel.className='';feedIcon.textContent='👆';feedH3.textContent='Tap the pitch to place your goalkeeper';feedP.textContent=`Round ${roundIdx+1} of ${ROUNDS_PER_GAME} — ${sc.label}`;}},1800);
     return;
   }
-  answered=true;wrapper.classList.add('answered');
-
-  const ideal=getIdealGK(sc.bx,sc.by);
-  const dist=Math.hypot(px-ideal.x,py-ideal.y);
+  answered=true; wrapper.classList.add('answered');
+  const ideal=getIdealGK(sc.bx,sc.by), dist=Math.hypot(px-ideal.x,py-ideal.y);
   layer.innerHTML='';
-  drawShootingLines(sc.bx,sc.by);
-  drawExclusionZone(sc.bx,sc.by,MIN_GK_FROM_BALL);
-  drawBall(sc.bx,sc.by);
-  showIdeal(ideal);
+  drawShootingLines(sc.bx,sc.by); drawExclusionZone(sc.bx,sc.by,MIN_GK_FROM_BALL);
+  drawBall(sc.bx,sc.by); showIdeal(ideal);
   const line=mk('line');attrs(line,{x1:px,y1:py,x2:ideal.x,y2:ideal.y,stroke:'rgba(255,100,68,0.55)','stroke-width':1.8,'stroke-dasharray':'5 3'});layer.appendChild(line);
   drawGKMarker(px,py,'#4488ff');
-
-  const roundScore=distToScore(dist);
-  roundScores.push(roundScore);updateStatsBar();updatePips();
-
-  let grade,icon,h3text;
-  if(roundScore>=90){grade='correct';icon='🟢';h3text=`${roundScore} / 100 — Elite!`;}
-  else if(roundScore>=70){grade='correct';icon='✅';h3text=`${roundScore} / 100 — Good positioning`;}
-  else if(roundScore>=50){grade='ok';icon='⚠️';h3text=`${roundScore} / 100 — Nearly there`;}
-  else if(roundScore>=25){grade='ok';icon='🟡';h3text=`${roundScore} / 100 — Off target`;}
-  else{grade='poor';icon='❌';h3text=`${roundScore} / 100 — Well off position`;}
-  feedPanel.className=grade;feedIcon.textContent=icon;feedH3.textContent=h3text;feedP.textContent=sc.tip;
-
-  if(gameMode==='daily'){
-    // Auto-advance after 1 second
+  const rs=distToScore(dist);
+  roundScores.push(rs); updateStatsBar(); updatePips();
+  let grade,icon,h3t;
+  if(rs>=90){grade='correct';icon='🟢';h3t=`${rs} / 100 — Elite!`;}
+  else if(rs>=70){grade='correct';icon='✅';h3t=`${rs} / 100 — Good positioning`;}
+  else if(rs>=50){grade='ok';icon='⚠️';h3t=`${rs} / 100 — Nearly there`;}
+  else if(rs>=25){grade='ok';icon='🟡';h3t=`${rs} / 100 — Off target`;}
+  else{grade='poor';icon='❌';h3t=`${rs} / 100 — Well off position`;}
+  feedPanel.className=grade; feedIcon.textContent=icon; feedH3.textContent=h3t; feedP.textContent=sc.tip;
+  if(gameMode==='daily'||gameMode==='versus'){
     dailyAutoAdvancing=true;
-    setTimeout(()=>{
-      dailyAutoAdvancing=false;
-      roundIdx++;
-      if(roundIdx>=ROUNDS_PER_GAME){ stopDailyTimer(); showEndSummary(); }
-      else renderRound();
-    }, 1000);
-  } else {
-    btnNext.disabled=false;
-  }
+    setTimeout(()=>{ dailyAutoAdvancing=false; roundIdx++; if(roundIdx>=ROUNDS_PER_GAME){stopDailyTimer();showEndSummary();}else renderRound(); },1000);
+  } else { btnNext.disabled=false; }
 }
 
-// ── START GAME ─────────────────────────────────────────────────────
+// ── START GAME ──────────────────────────────────────────────────────
 function startGame(mode) {
-  gameMode = mode;
-  roundIdx = 0; roundScores = [];
-  timedOut = false;
-
-  if (mode === 'daily') {
-    scenarios = seededShuffle([...SCENARIOS], getDailySeed());
-    document.getElementById('game-mode-label').textContent = '⚡ Daily Challenge — 20 seconds!';
-  } else {
-    scenarios = shuffle([...SCENARIOS]);
-    document.getElementById('game-mode-label').textContent = 'Tap the pitch to position your goalkeeper';
-  }
-
-  document.getElementById('mode-screen').classList.remove('visible');
+  gameMode=mode; roundIdx=0; roundScores=[]; timedOut=false; currentChallengeId=null;
+  if(mode==='daily'){ scenarios=seededShuffle([...SCENARIOS],getDailySeed()); document.getElementById('game-mode-label').textContent='⚡ Daily Challenge — 25 seconds!'; }
+  else { scenarios=shuffle([...SCENARIOS]); document.getElementById('game-mode-label').textContent='Tap the pitch to position your goalkeeper'; }
+  hideAll();
   document.getElementById('game-screen').classList.add('visible');
   timerBar.classList.remove('visible');
-  document.getElementById('btn-reset').style.display = 'inline-block';
-
+  document.getElementById('btn-reset').style.display='inline-block';
   renderRound();
-
-  if (mode === 'daily') {
-    // Short countdown before timer starts
-    setTimeout(startDailyTimer, 500);
-  }
+  if(mode==='daily') setTimeout(startDailyTimer,500);
 }
 
-// ── BOOT ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════════════
 async function boot() {
   initSupabase();
 
-  document.getElementById('btn-google-signin').addEventListener('click', async () => {
-    if (!sb) { alert('Still loading — please try again in a moment.'); return; }
-    try { await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo:window.location.origin+window.location.pathname } }); }
-    catch(e) { console.error('Sign in error:', e); }
+  document.getElementById('btn-google-signin').addEventListener('click', async()=>{
+    if(!sb){alert('Still loading — please try again.');return;}
+    try{await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});}catch(e){console.error(e);}
   });
+  document.getElementById('btn-guest').addEventListener('click',()=>{ isGuest=true; showModeScreen(null); });
+  document.getElementById('btn-signout').addEventListener('click',async()=>{ if(sb)await sb.auth.signOut(); currentUser=null;isGuest=false; stopDailyTimer(); document.getElementById('auth-screen').style.display='flex'; hideAll(); document.getElementById('auth-screen').style.display='flex'; });
 
-  document.getElementById('btn-guest').addEventListener('click', () => {
-    isGuest = true; showModeScreen(null);
-  });
-
-  document.getElementById('btn-signout').addEventListener('click', async () => {
-    if (sb) await sb.auth.signOut();
-    currentUser=null; isGuest=false;
-    stopDailyTimer();
-    document.getElementById('auth-screen').style.display='flex';
-    document.getElementById('mode-screen').classList.remove('visible');
-    document.getElementById('game-screen').classList.remove('visible');
-    document.getElementById('user-bar').classList.remove('visible');
-  });
-
-  document.getElementById('btn-daily-mode').addEventListener('click', async () => {
-    if (!currentUser || isGuest) { alert('Please sign in with Google to play the Daily Challenge.'); return; }
-    if (document.getElementById('btn-daily-mode').classList.contains('daily-done')) return;
-    // Double-check server-side — prevents replaying after refresh
-    const alreadyPlayed = await hasPlayedTodayAlready();
-    if (alreadyPlayed) {
-      const card = document.getElementById('btn-daily-mode');
-      card.classList.add('daily-done');
-      card.querySelector('p').textContent = "You've already played today — come back tomorrow!";
-      card.querySelector('h3').textContent = "Today's Game ✓";
-      return;
-    }
+  // Mode buttons
+  document.getElementById('btn-daily-mode').addEventListener('click',async()=>{
+    if(!currentUser||isGuest){alert('Please sign in to play Daily mode.');return;}
+    if(document.getElementById('btn-daily-mode').classList.contains('daily-done'))return;
+    const played=await hasPlayedTodayAlready();
+    if(played){const c=document.getElementById('btn-daily-mode');c.classList.add('daily-done');c.querySelector('p').textContent="You've already played today — come back tomorrow!";c.querySelector('h3').textContent="Today's Game ✓";return;}
     startGame('daily');
   });
-
-  document.getElementById('btn-free-mode').addEventListener('click', () => {
-    startGame('free');
+  document.getElementById('btn-free-mode').addEventListener('click',()=>startGame('free'));
+  document.getElementById('btn-versus-mode').addEventListener('click',()=>{
+    if(!currentUser||isGuest){alert('Please sign in to use Versus mode.');return;}
+    showVersusScreen();
   });
 
-  document.getElementById('lb-tab-daily').addEventListener('click', () => loadModeLeaderboard(true));
-  document.getElementById('lb-tab-alltime').addEventListener('click', () => loadModeLeaderboard(false));
-
-  document.getElementById('btn-modes').addEventListener('click', () => {
-    stopDailyTimer();
-    document.getElementById('game-screen').classList.remove('visible');
-    document.getElementById('mode-screen').classList.add('visible');
-    checkDailyPlayed();
-    loadModeLeaderboard(true);
+  // Stats & leaderboard toggles
+  document.getElementById('btn-stats-page').addEventListener('click',showStatsScreen);
+  document.getElementById('btn-back-modes').addEventListener('click',()=>showModeScreen(currentUser));
+  document.getElementById('btn-back-from-vs').addEventListener('click',()=>showModeScreen(currentUser));
+  document.getElementById('btn-mode-lb-toggle').addEventListener('click',()=>{
+    const lb=document.getElementById('mode-leaderboard');
+    lb.style.display=lb.style.display==='none'?'block':'none';
+    if(lb.style.display==='block') loadModeLeaderboard('today');
   });
+  document.getElementById('lb-tab-today').addEventListener('click',()=>loadModeLeaderboard('today'));
+  document.getElementById('lb-tab-week').addEventListener('click',()=>loadModeLeaderboard('week'));
+  document.getElementById('lb-tab-alltime').addEventListener('click',()=>loadModeLeaderboard('alltime'));
 
-  btnNext.addEventListener('click', () => { roundIdx++; renderRound(); });
+  // Game controls
+  btnNext.addEventListener('click',()=>{roundIdx++;renderRound();});
+  btnShare.addEventListener('click',()=>{navigator.clipboard.writeText(shareTextEl.textContent).then(()=>{btnShare.textContent='✅ Copied!';setTimeout(()=>{btnShare.textContent='📋 Copy Score';},2000);});});
+  document.getElementById('btn-modes').addEventListener('click',()=>{ stopDailyTimer(); showModeScreen(currentUser); checkDailyPlayed(); loadModeLeaderboard('today'); });
+  document.getElementById('btn-reset').addEventListener('click',()=>{ roundIdx=0;roundScores=[];timedOut=false;scenarios=shuffle([...SCENARIOS]);gameLeaderboard.style.display='none';renderRound(); });
+  document.getElementById('btn-lb').addEventListener('click',async()=>{ if(gameLeaderboard.style.display==='block'){gameLeaderboard.style.display='none';document.getElementById('btn-lb').textContent='🏆 Leaderboard';}else{gameLeaderboard.style.display='block';document.getElementById('btn-lb').textContent='✖ Hide';await loadGameLeaderboard(gameMode==='daily');} });
+  document.getElementById('btn-post-open-challenge').addEventListener('click', postOpenChallenge);
+  document.getElementById('btn-refresh-lobby').addEventListener('click', loadLobby);
+  document.getElementById('btn-dl-image').addEventListener('click',()=>{ const a=document.createElement('a');a.download=`keepertap-${todayStr()}.png`;a.href=document.getElementById('share-canvas').toDataURL();a.click(); });
 
-  btnShare.addEventListener('click', () => {
-    navigator.clipboard.writeText(shareTextEl.textContent).then(() => {
-      btnShare.textContent='✅ Copied!';
-      setTimeout(()=>{btnShare.textContent='📋 Copy Score';},2000);
-    });
-  });
-
-  document.getElementById('btn-reset').addEventListener('click', () => {
-    roundIdx=0; roundScores=[]; timedOut=false;
-    scenarios=shuffle([...SCENARIOS]);
-    leaderboard.style.display='none';
-    renderRound();
-  });
-
-  document.getElementById('btn-lb').addEventListener('click', async () => {
-    if(leaderboard.style.display==='block'){
-      leaderboard.style.display='none';
-      document.getElementById('btn-lb').textContent='🏆 Leaderboard';
-    } else {
-      leaderboard.style.display='block';
-      document.getElementById('btn-lb').textContent='✖ Hide';
-      await loadLeaderboard(gameMode==='daily');
-    }
-  });
-
-  svg.addEventListener('click', e => {
-    if(answered&&gameMode!=='daily') return;
-    if(dailyAutoAdvancing) return;
-    const p=svgPoint(e);
-    if(p.x<12||p.x>370||p.y<20||p.y>440) return;
-    placeGK(p.x,p.y);
-  });
-
-  svg.addEventListener('touchstart', e => {
-    if(answered&&gameMode!=='daily') return;
-    if(dailyAutoAdvancing) return;
-    e.preventDefault();
-    const p=svgPoint(e);
-    if(p.x<12||p.x>370||p.y<20||p.y>440) return;
-    placeGK(p.x,p.y);
-  },{passive:false});
+  svg.addEventListener('click',e=>{ if(timedOut||answered)return; const p=svgPoint(e); if(p.x<12||p.x>370||p.y<20||p.y>440)return; placeGK(p.x,p.y); });
+  svg.addEventListener('touchstart',e=>{ if(timedOut||answered)return; e.preventDefault(); const p=svgPoint(e); if(p.x<12||p.x>370||p.y<20||p.y>440)return; placeGK(p.x,p.y); },{passive:false});
 
   initAuth();
 }
