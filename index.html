@@ -697,10 +697,26 @@ async function showStatsScreen() {
     document.getElementById('st-games').textContent       = profile.games_played||0;
     document.getElementById('st-avg').textContent         = avg;
     document.getElementById('st-best').textContent        = profile.best_score||0;
-    // Versus record
-    const {data:wins}   = await sb.from('challenges').select('id').eq('challenger_id',currentUser.id).eq('status','completed').gt('challenger_score','opponent_score');
-    const {data:losses} = await sb.from('challenges').select('id').eq('opponent_id',currentUser.id).eq('status','completed').gt('opponent_score','challenger_score');
-    document.getElementById('st-vs').textContent = `${(wins||[]).length}W ${(losses||[]).length}L`;
+    // Versus record — fetch all completed challenges and compare scores in JS
+    const uid = currentUser.id;
+    const { data:vsData } = await sb.from('challenges')
+      .select('challenger_id, challenger_score, opponent_id, opponent_score')
+      .eq('status', 'completed')
+      .or(`challenger_id.eq.${uid},opponent_id.eq.${uid}`);
+
+    let wins=0, losses=0, draws=0;
+    (vsData||[]).forEach(c => {
+      const isChallenger = c.challenger_id === uid;
+      const mine   = isChallenger ? c.challenger_score : c.opponent_score;
+      const theirs = isChallenger ? c.opponent_score   : c.challenger_score;
+      if (mine === null || theirs === null) return;
+      if (mine > theirs) wins++;
+      else if (mine < theirs) losses++;
+      else draws++;
+    });
+    document.getElementById('st-vs').textContent = draws > 0
+      ? `${wins}W ${losses}L ${draws}D`
+      : `${wins}W ${losses}L`;
     // Score chart — last 10 daily scores
     const { data:scores } = await sb.from('daily_scores').select('score,play_date').eq('user_id', currentUser.id).order('play_date',{ascending:false}).limit(10);
     drawScoreChart(scores ? scores.reverse() : []);
