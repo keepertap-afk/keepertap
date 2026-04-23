@@ -951,9 +951,11 @@ async function saveChallengeScore(total) {
           ? `✅ You won! ${myScore} vs ${theirScore} — Elo updated`
           : `❌ You lost. ${myScore} vs ${theirScore} — Elo updated`;
       savedNote.style.color = drew ? 'var(--accent)' : won ? 'var(--green)' : 'var(--red)';
+      const myId    = currentUser.id;
+      const theirId = isChallenger ? c.opponent_id : c.challenger_id;
       await updateElo(
-        isChallenger ? c.challenger_id : c.opponent_id,
-        isChallenger ? c.opponent_id   : c.challenger_id,
+        won  ? myId    : theirId,   // winner
+        won  ? theirId : myId,      // loser
         won
       );
     } else if (updateData.status === 'pending') {
@@ -1354,4 +1356,3 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
- 
