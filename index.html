@@ -928,12 +928,14 @@ async function saveChallengeScore(total) {
       : { opponent_score:   total, opponent_rounds:   roundScores };
 
     // Status transitions:
-    // open → pending (challenger played first, waiting for opponent)
-    // pending → completed (both have now played)
-    if (c.status === 'open') {
-      updateData.status = 'pending'; // challenger played, now waiting
-    } else if (c.status === 'pending' && otherScore !== null && otherScore !== undefined) {
-      updateData.status = 'completed'; // both played
+    // open → open (challenger played, lobby still shows it)
+    // pending → completed (opponent accepted from lobby and now finished playing)
+    const challengerDone = c.challenger_score !== null && c.challenger_score !== undefined;
+    const opponentDone   = !isChallenger && true; // opponent just played (this save)
+    if (c.status === 'pending' && !isChallenger) {
+      updateData.status = 'completed'; // opponent just finished — both have now played
+    } else if (c.status === 'pending' && isChallenger && otherScore !== null && otherScore !== undefined) {
+      updateData.status = 'completed'; // edge case: challenger replayed somehow
     }
 
     const { error } = await sb.from('challenges').update(updateData).eq('id', currentChallengeId);
@@ -1356,3 +1358,4 @@ document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
 </html>
+ 
