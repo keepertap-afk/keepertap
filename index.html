@@ -901,24 +901,53 @@ async function saveChallengeScore(total) {
   if (!sb || !currentUser || !currentChallengeId) return;
   try {
     const { data:c } = await sb.from('challenges').select('*').eq('id', currentChallengeId).single();
-    if (!c) return;
+    if (!c) { savedNote.textContent = '⚠️ Could not find challenge.'; return; }
+
     const isChallenger = c.challenger_id === currentUser.id;
+    const otherScore   = isChallenger ? c.opponent_score : c.challenger_score;
+
+    // Build update — always move away from 'open' once someone has played
     const updateData = isChallenger
-      ? { challenger_score:total, challenger_rounds:roundScores }
-      : { opponent_score:total, opponent_rounds:roundScores };
-    // Mark completed if both have played
-    const otherScore = isChallenger ? c.opponent_score : c.challenger_score;
-    if (otherScore !== null && otherScore !== undefined) updateData.status = 'completed';
-    await sb.from('challenges').update(updateData).eq('id', currentChallengeId);
-    // Update Elo if completed
-    if (updateData.status==='completed') {
+      ? { challenger_score: total, challenger_rounds: roundScores }
+      : { opponent_score:   total, opponent_rounds:   roundScores };
+
+    // Status transitions:
+    // open → pending (challenger played first, waiting for opponent)
+    // pending → completed (both have now played)
+    if (c.status === 'open') {
+      updateData.status = 'pending'; // challenger played, now waiting
+    } else if (c.status === 'pending' && otherScore !== null && otherScore !== undefined) {
+      updateData.status = 'completed'; // both played
+    }
+
+    const { error } = await sb.from('challenges').update(updateData).eq('id', currentChallengeId);
+    if (error) { console.warn('Challenge update error:', error); savedNote.textContent = '⚠️ Could not save challenge score.'; return; }
+
+    // Show result if both have played
+    if (updateData.status === 'completed') {
       const myScore    = total;
       const theirScore = otherScore;
-      await updateElo(isChallenger ? c.challenger_id : c.opponent_id,
-                      isChallenger ? c.opponent_id   : c.challenger_id,
-                      myScore > theirScore);
+      const won = myScore > theirScore;
+      const drew = myScore === theirScore;
+      savedNote.textContent = drew
+        ? `🤝 Draw! Both scored ${myScore}`
+        : won
+          ? `✅ You won! ${myScore} vs ${theirScore} — Elo updated`
+          : `❌ You lost. ${myScore} vs ${theirScore} — Elo updated`;
+      savedNote.style.color = drew ? 'var(--accent)' : won ? 'var(--green)' : 'var(--red)';
+      await updateElo(
+        isChallenger ? c.challenger_id : c.opponent_id,
+        isChallenger ? c.opponent_id   : c.challenger_id,
+        won
+      );
+    } else if (updateData.status === 'pending') {
+      savedNote.textContent = '✅ Your score is locked in — waiting for opponent to play!';
+      savedNote.style.color = 'var(--accent)';
+    } else {
+      // Opponent played but challenger hasn't — shouldn't normally happen
+      savedNote.textContent = '✅ Challenge score saved!';
     }
-  } catch(e) { console.warn('Challenge save error:', e); }
+  } catch(e) { console.warn('Challenge save error:', e); savedNote.textContent = '⚠️ Error saving challenge.'; }
 }
 
 async function updateElo(winnerId, loserId, iWon) {
@@ -1154,8 +1183,9 @@ async function showEndSummary() {
       if(!savedNote.textContent.includes('⚠️')) savedNote.textContent='✅ Daily score saved!';
       gameLeaderboard.style.display='block'; await loadGameLeaderboard(true);
     } else if (gameMode==='versus') {
+      savedNote.textContent='Saving challenge score...';
       await saveChallengeScore(total);
-      savedNote.textContent='✅ Challenge score saved!';
+      // savedNote is set inside saveChallengeScore with win/loss result
     } else {
       await saveFreeScore(total);
       savedNote.textContent='✅ Score saved!';
